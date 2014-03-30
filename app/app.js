@@ -18,7 +18,7 @@ var makeUrl = function (url, odata) {
 };
 
 var makeRequest = function (url, callback) {
-    // console.log("REQUEST:", url);
+    // log("REQUEST:", url);
 
     request({ 
         'url': url,
@@ -28,7 +28,7 @@ var makeRequest = function (url, callback) {
         'auth': { 'user': user, 'pass': password }
         },
         function(error, response, body) {
-            // console.log("DONE:", body);
+            // log("DONE:", body);
             callback(body);
     });
 };
@@ -44,7 +44,7 @@ var forEachResult = function (body, callback) {
 };
 
 var simplifyBuild = function (res) {
-    //console.log(res);
+    //log(res);
     return {
         project: res.Project,
         definition: res.Definition,
@@ -122,7 +122,7 @@ var queryBuilds = function (resultCallback) {
         function (callback) {
             async.each(details.builds, function (build, callbackInner) {
                 if (build.status !== 'NotStarted') {
-                    makeRequest(build.changesetsUri, function (body) {
+                    makeRequest(build.changesetsUri + '?$top=1000', function (body) {
                         forEachResult(body, function (res) {                    
                             build.changesets.push(simplifyChangeset(res));
                         });
@@ -141,7 +141,7 @@ var queryBuilds = function (resultCallback) {
             var allChangesets = getAllChangesetsForAllBuilds(details.builds);
 
             async.each(allChangesets, function (changeset, callbackInner) {
-                makeRequest(changeset.changesUri, function (body) {
+                makeRequest(changeset.changesUri + '?$top=1000', function (body) {
                     forEachResult(body, function (res) {
                         changeset.changes.push(simplifyChange(res));
                     });
@@ -157,7 +157,7 @@ var queryBuilds = function (resultCallback) {
             var allChangesets = getAllChangesetsForAllBuilds(details.builds);
 
             async.each(allChangesets, function (changeset, callbackInner) {
-                makeRequest(changeset.workItemsUri, function (body) {
+                makeRequest(changeset.workItemsUri + '?$top=1000', function (body) {
                     forEachResult(body, function (res) {
                         changeset.workItems.push(simplifyWorkItem(res));
                     });
@@ -169,13 +169,13 @@ var queryBuilds = function (resultCallback) {
             });
         }
     ], function (err) {
-        // console.log('FINISHED:', err);
+        // log('FINISHED:', err);
         resultCallback(details);
     });
 };
 
 var queryBuildIds = function (resultCallback) {
-    makeRequest(makeUrl(urls[0], '$top=100&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
+    makeRequest(makeUrl(urls[0], '$top=1000&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
         var builds = [];
         
         forEachResult(body, function (res) {
@@ -186,17 +186,24 @@ var queryBuildIds = function (resultCallback) {
     });
 };
 
+var log = function (text) {
+    console.log(new Date().toLocaleTimeString(), '|', text);
+};
+
 // Check for changes
 var buildIds = '';
 
 var run = function () {
-    queryBuildIds(function(result) {
-        console.log(result);
+    log('Check for build changes...');
 
+    queryBuildIds(function(result) {
         if (buildIds !== result) {
+            log('New build identifier: ' + result);
+            log('Update build details...');
+
             queryBuilds(function(buildDetails) {
-                // console.log(require('util').inspect(buildDetails, {showHidden: false, depth: null}));
-                console.log('Update build details...');
+                // log(require('util').inspect(buildDetails, {showHidden: false, depth: null}));
+                log('Finished updating build details (' + buildDetails.builds.length + ' Builds) ...');
 
                 buildIds = result;
                 setTimeout(run, 5000);

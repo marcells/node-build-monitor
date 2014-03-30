@@ -1,0 +1,24 @@
+{
+  "name": "node-build-monitor",
+  "version": "0.0.1",
+  "author": "Marcell Spies <marcells@gmx.de>",
+  "contributors": [
+    {
+      "name": "Marcell Spies",
+      "email": "marcells@gmx.de"
+    }
+  ],
+  "dependencies": {
+    "request": "~2.34.0",
+    "async": "~0.6.1"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "repository": "git://github.com/marcells/node-build-monitor",
+  "scripts": {},
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "license": "MIT",
+  "config": {}
+}

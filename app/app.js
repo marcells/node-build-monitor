@@ -1,5 +1,7 @@
 var request = require('request'),
     async = require('async'),
+    path = require('path'),
+    fs = require('fs'),
     server = process.env.server, // 'https://odatawrapper'
     user = process.env.user, // 'Domain\User'
     password = process.env.password, // 'Password'
@@ -190,6 +192,13 @@ var log = function (text) {
     console.log(new Date().toLocaleTimeString(), '|', text);
 };
 
+var writeBuildLog = function (details) {
+    var toAppend = JSON.stringify(details, null, 4) + '\r\n================================================================================================\r\n'
+    var logFile = path.resolve(__dirname, 'log.txt');
+
+    fs.appendFileSync(logFile, toAppend);
+};
+
 // Check for changes
 var buildIds = '';
 
@@ -204,6 +213,7 @@ var run = function () {
             queryBuilds(function(buildDetails) {
                 // log(require('util').inspect(buildDetails, {showHidden: false, depth: null}));
                 log('Finished updating build details (' + buildDetails.builds.length + ' Builds) ...');
+                writeBuildLog(buildDetails.builds);
 
                 buildIds = result;
                 setTimeout(run, 5000);

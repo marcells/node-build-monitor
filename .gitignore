@@ -1,0 +1,5 @@
+node_modules/
+*.sublime-workspace
+coverage.html
+lcov.info
+coverage/

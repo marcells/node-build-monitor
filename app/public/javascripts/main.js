@@ -29,23 +29,35 @@ socket.on('buildstate', function (data) {
             var finishedAt = new Date(build.finishedAt);
             var lastChangeAt = new Date(build.lastChangeAt);
 
-            var li = '<li class="flex-item {COLOR}">'
-                + '<b>'
-                + build.project + '/' + build.definition + '/' + build.number
-                + '</b>'
-                + '<br>'
-                + timeOutput(startedAt, finishedAt, lastChangeAt, build.buildFinished)
-                + '<br>'
-                + '<span color="blue">'
-                + ' ==> Status: ' 
-                + build.status 
-                + ' (' + build.reason + ') '
+            var li = '<div class="flex-item {COLOR}">'
+                + '<span class="title">'
+                + build.project
                 + '</span>'
-                + '<br>'
+                + ' -> '
+                + '<span class="title">'
+                + build.definition
+                + '</span>'
+                + ' -> '
+                + '<span class="title">'
+                + build.number
+                + '</span>'
+                + '<div class="duration">'
+                + timeOutput(startedAt, finishedAt, lastChangeAt, build.buildFinished)
+                + '<div>'
+                + '<div class="status">'
+                + build.status
+                + '</div>'
+                + '<span class="reason">'
+                + build.reason
+                + '</span>'
+                + ' for '
+                + '<span class="for">'
+                + build.requestedFor
+                + '</span>'
+                + '<div class="warnings">'
                 + '[ warnings: ' + !isNullOrWhiteSpace(build.warnings) + ', errors: ' + !isNullOrWhiteSpace(build.errors) + ']'
-                + '</br>'
-                + '</br>'
-                + '</li>';
+                + '</div>'
+                + '</div>';
 
             li = li.replace('{COLOR}', build.status + '-color');
 

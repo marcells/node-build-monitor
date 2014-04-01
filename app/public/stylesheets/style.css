@@ -16,19 +16,44 @@ a {
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+  align-content: center;
 }
 
 .flex-item {
   background: pink;
-  padding: 5px;
+  padding: 20px;
+  margin: 10px;
   width: 500px;
   height: 200px;
-  margin-top: 10px;
-    
+  
   color: white;
-  font-weight: bold;
-  font-size: 15pt;
-  text-align: center;
+}
+
+.flex-item .title {
+	font-weight: bold;
+  	font-size: 30pt;
+}
+
+.flex-item .duration {
+  	font-size: 10pt;
+}
+
+.flex-item .status {
+	font-weight: bold;
+  	font-size: 25pt;
+}
+
+.flex-item .reason {
+  	font-size: 15pt;
+}
+
+.flex-item .for {
+  	font-size: 15pt;
+}
+
+.flex-item .warnings {
+	font-weight: bold;
+  	font-size: 20pt;
 }
 
 .InProgress-color {

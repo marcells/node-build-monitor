@@ -202,7 +202,7 @@ var writeBuildLog = function (details) {
 // Check for changes
 var buildIds = '';
 
-var run = function () {
+var run = function (buildsChanged) {
     log('Check for build changes...');
 
     queryBuildIds(function(result) {
@@ -216,12 +216,21 @@ var run = function () {
                 writeBuildLog(buildDetails.builds);
 
                 buildIds = result;
-                setTimeout(run, 5000);
+                
+                setTimeout(function () {
+                    run(); 
+                    buildsChanged(buildDetails);
+                }, 5000);
             });
         } else {
-            setTimeout(run, 5000);
+            setTimeout(function () {
+                run();
+                buildsChanged(buildDetails);
+            }, 5000);
         }
     });
 };
 
-run();
+exports.go = function(buildsChanged) {
+    run(buildsChanged);
+};

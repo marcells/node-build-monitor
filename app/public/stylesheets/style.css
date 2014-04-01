@@ -6,3 +6,51 @@ body {
 a {
   color: #00B7FF;
 }
+
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.flex-item {
+  background: pink;
+  padding: 5px;
+  width: 500px;
+  height: 200px;
+  margin-top: 10px;
+    
+  color: white;
+  font-weight: bold;
+  font-size: 15pt;
+  text-align: center;
+}
+
+.InProgress-color {
+	background: blue;
+}
+
+.Succeeded-color {
+	background: green;
+}
+
+.Stopped-color {
+	background: darkgray;
+}
+
+.PartiallySucceeded-color {
+	background: orange;
+}
+
+.Failed-color {
+	background: red;
+}

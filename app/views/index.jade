@@ -2,62 +2,9 @@ extends layout
 
 block scripts
     script(src='/socket.io/socket.io.js')
-    script.
-        function isNullOrWhiteSpace(str){
-            return str === null || str.match(/^ *$/) !== null;
-        }
-
-        function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
-            var output = startedAt.toLocaleString();
-
-            if (buildFinished) { 
-                output += ' - ' + finishedAt.toLocaleString() + ' (' + (finishedAt.getTime() - startedAt.getTime()) / 1000 + ' seconds)';
-            } else {
-                output += ' (currently running: ' + (lastChangeAt.getTime() - startedAt.getTime()) / 1000 + ')';
-            }
-
-            return output;
-        }
-
-        var socket = io.connect('http://localhost:3000');
-        socket.on('buildstate', function (data) {
-            console.log(data);
-
-            if (data) {
-                var ul = document.querySelector('#builds');
-
-                ul.innerHTML = '';
-
-                for(var i=0; i < data.builds.length; i++) {
-                    var build = data.builds[i];
-                    var startedAt = new Date(build.startedAt);
-                    var finishedAt = new Date(build.finishedAt);
-                    var lastChangeAt = new Date(build.lastChangeAt);
-
-                    var li = '<li>'
-                        + '<b>'
-                        + build.project + '/' + build.definition + '/' + build.number
-                        + '</b>'
-                        + '<br>'
-                        + timeOutput(startedAt, finishedAt, lastChangeAt, build.buildFinished)
-                        + '<br>'
-                        + '<span color="blue">'
-                        + ' ==> Status: ' 
-                        + build.status 
-                        + ' (' + build.reason + ') '
-                        + '</span>'
-                        + '<br>'
-                        + '[ warnings: ' + !isNullOrWhiteSpace(build.warnings) + ', errors: ' + !isNullOrWhiteSpace(build.errors) + ']'
-                        + '</br>'
-                        + '</br>'
-                        + '</li>';
-
-                    ul.innerHTML += li;
-                }
-            }
-        });
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js')
+    script(src='/javascripts/main.js')
 
 block content
     h1= title
-
-    ul#builds
+    ul#builds.flex-container

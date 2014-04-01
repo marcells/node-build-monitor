@@ -224,8 +224,7 @@ var run = function (buildsChanged) {
             });
         } else {
             setTimeout(function () {
-                run();
-                buildsChanged(buildDetails);
+                run(buildsChanged);
             }, 5000);
         }
     });

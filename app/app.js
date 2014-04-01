@@ -40,13 +40,13 @@ server.listen(app.get('port'), function() {
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+  socket.emit('buildstate', lastDetails);
 });
 
+var lastDetails;
 require('./prototype').go(function(details) {
-    console.log(details);
+    lastDetails = details;
+
+    io.sockets.emit('buildstate', details);
+    //console.log(details);
 });

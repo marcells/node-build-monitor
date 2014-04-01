@@ -214,18 +214,14 @@ var run = function (buildsChanged) {
                 // log(require('util').inspect(buildDetails, {showHidden: false, depth: null}));
                 log('Finished updating build details (' + buildDetails.builds.length + ' Builds) ...');
                 writeBuildLog(buildDetails.builds);
+                buildsChanged(buildDetails);
 
                 buildIds = result;
                 
-                setTimeout(function () {
-                    run(); 
-                    buildsChanged(buildDetails);
-                }, 5000);
+                setTimeout(run, 5000, buildsChanged);
             });
         } else {
-            setTimeout(function () {
-                run(buildsChanged);
-            }, 5000);
+            setTimeout(run, 5000, buildsChanged);
         }
     });
 };

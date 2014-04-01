@@ -58,6 +58,7 @@ var simplifyBuild = function (res) {
         warnings: res.Warnings,
         startedAt: parseDate(res.StartTime),
         finishedAt: parseDate(res.FinishTime),
+        lastChangeAt: parseDate(res.LastChangedOn),
         buildFinished: res.BuildFinished,
         changesetsUri: res.Changesets.__deferred.uri,
         changesets: []

@@ -7,13 +7,13 @@ block scripts
             return str === null || str.match(/^ *$/) !== null;
         }
 
-        function timeOutput(startedAt, finishedAt, buildFinished) {
+        function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
             var output = startedAt.toLocaleString();
 
             if (buildFinished) { 
                 output += ' - ' + finishedAt.toLocaleString() + ' (' + (finishedAt.getTime() - startedAt.getTime()) / 1000 + ' seconds)';
             } else {
-                output += ' (currently running)';
+                output += ' (currently running: ' + (lastChangeAt.getTime() - startedAt.getTime()) / 1000 + ')';
             }
 
             return output;
@@ -32,13 +32,14 @@ block scripts
                     var build = data.builds[i];
                     var startedAt = new Date(build.startedAt);
                     var finishedAt = new Date(build.finishedAt);
+                    var lastChangeAt = new Date(build.lastChangeAt);
 
                     var li = '<li>'
                         + '<b>'
                         + build.project + '/' + build.definition + '/' + build.number
                         + '</b>'
                         + '<br>'
-                        + timeOutput(startedAt, finishedAt, build.buildFinished)
+                        + timeOutput(startedAt, finishedAt, lastChangeAt, build.buildFinished)
                         + '<br>'
                         + '<span color="blue">'
                         + ' ==> Status: ' 

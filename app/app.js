@@ -32,6 +32,7 @@ app.get('/', routes.index);
 
 var server = http.createServer(app);
 var io = socketio.listen(server);
+io.set('log level', 1);
 
 server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

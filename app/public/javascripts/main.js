@@ -51,7 +51,7 @@ $(function() {
     app.builds.push(new BuildViewModel({ project: 'Loading...'}));
     ko.applyBindings(app);
 
-    var socket = io.connect('http://keller:3000');
+    var socket = io.connect(socketEndpoint);
 
     socket.on('buildstate', function (data) {
         if (data) {

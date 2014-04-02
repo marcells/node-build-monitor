@@ -1,6 +1,11 @@
+html {
+	height:100%;
+}
+
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;  
+  overflow: hidden;
 }
 
 a {
@@ -9,30 +14,18 @@ a {
 
 .flex-container {
   padding: 0;
-  margin: 0;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: center;
-
-
-
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
-  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  margin: 0 auto 0 auto;
+  height: 100%;
+  width: 100%;
 }
 
 .flex-item {
+  float: left;
   background: pink;
   padding: 20px;
   margin: 10px;
-  width: 500px;
-  height: 200px;
+  width: 30%;
+  height: 19%;
   
   color: white;
 }

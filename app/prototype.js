@@ -113,7 +113,7 @@ var queryBuilds = function (resultCallback) {
     async.series([
         // Builds
         function (callback) {
-            makeRequest(makeUrl(urls[0], '$top=100&$orderby=StartTime%20desc'), function (body) {
+            makeRequest(makeUrl(urls[0], '$top=12&$orderby=StartTime%20desc'), function (body) {
                 forEachResult(body, function (res) {
                     details.builds.push(simplifyBuild(res));
                 });
@@ -178,7 +178,7 @@ var queryBuilds = function (resultCallback) {
 };
 
 var queryBuildIds = function (resultCallback) {
-    makeRequest(makeUrl(urls[0], '$top=1000&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
+    makeRequest(makeUrl(urls[0], '$top=12&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
         var builds = [];
         
         forEachResult(body, function (res) {

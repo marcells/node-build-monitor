@@ -20,6 +20,7 @@ block content
             span  | 
             span.definition(data-bind='text: definition')
             br
+            span.duration.fontawesome-time
             span.duration(data-bind='text: duration')
             br
             span.status(data-bind='text: status')
@@ -27,10 +28,8 @@ block content
             span.reason(data-bind='text: reason')
             span )
             br
-            span requested for 
+            span.for.fontawesome-user
             span.for(data-bind='text: requestedFor')
             br
-            span Warnings: 
-            span.warnings(data-bind='text: hasWarnings')
-            span  - Errors: 
-            span.warnings(data-bind='text: hasErrors')
+            span.warnings.fontawesome-warning-sign(data-bind='visible: hasWarnings')
+            span.warnings.fontawesome-remove-sign(data-bind='visible: hasErrors')

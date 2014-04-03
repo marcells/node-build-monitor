@@ -121,56 +121,56 @@ var queryBuilds = function (resultCallback) {
                 callback();
             });
         },
-        // Changesets
-        function (callback) {
-            async.each(details.builds, function (build, callbackInner) {
-                if (build.status !== 'NotStarted') {
-                    makeRequest(build.changesetsUri + '?$top=1000', function (body) {
-                        forEachResult(body, function (res) {                    
-                            build.changesets.push(simplifyChangeset(res));
-                        });
+        // // Changesets
+        // function (callback) {
+        //     async.each(details.builds, function (build, callbackInner) {
+        //         if (build.status !== 'NotStarted') {
+        //             makeRequest(build.changesetsUri + '?$top=1000', function (body) {
+        //                 forEachResult(body, function (res) {                    
+        //                     build.changesets.push(simplifyChangeset(res));
+        //                 });
 
-                        callbackInner();
-                    });
-                } else {
-                    callbackInner();
-                }
-            }, function (err) {
-                callback();
-            });
-        },
-        // Changes
-        function (callback) {
-            var allChangesets = getAllChangesetsForAllBuilds(details.builds);
+        //                 callbackInner();
+        //             });
+        //         } else {
+        //             callbackInner();
+        //         }
+        //     }, function (err) {
+        //         callback();
+        //     });
+        // },
+        // // Changes
+        // function (callback) {
+        //     var allChangesets = getAllChangesetsForAllBuilds(details.builds);
 
-            async.each(allChangesets, function (changeset, callbackInner) {
-                makeRequest(changeset.changesUri + '?$top=1000', function (body) {
-                    forEachResult(body, function (res) {
-                        changeset.changes.push(simplifyChange(res));
-                    });
+        //     async.each(allChangesets, function (changeset, callbackInner) {
+        //         makeRequest(changeset.changesUri + '?$top=1000', function (body) {
+        //             forEachResult(body, function (res) {
+        //                 changeset.changes.push(simplifyChange(res));
+        //             });
 
-                    callbackInner();
-                });
-            }, function (err) {
-                callback();
-            });
-        },
-        // WorkItems
-        function (callback) {
-            var allChangesets = getAllChangesetsForAllBuilds(details.builds);
+        //             callbackInner();
+        //         });
+        //     }, function (err) {
+        //         callback();
+        //     });
+        // },
+        // // WorkItems
+        // function (callback) {
+        //     var allChangesets = getAllChangesetsForAllBuilds(details.builds);
 
-            async.each(allChangesets, function (changeset, callbackInner) {
-                makeRequest(changeset.workItemsUri + '?$top=1000', function (body) {
-                    forEachResult(body, function (res) {
-                        changeset.workItems.push(simplifyWorkItem(res));
-                    });
+        //     async.each(allChangesets, function (changeset, callbackInner) {
+        //         makeRequest(changeset.workItemsUri + '?$top=1000', function (body) {
+        //             forEachResult(body, function (res) {
+        //                 changeset.workItems.push(simplifyWorkItem(res));
+        //             });
 
-                    callbackInner();
-                });
-            }, function (err) {
-                callback();
-            });
-        }
+        //             callbackInner();
+        //         });
+        //     }, function (err) {
+        //         callback();
+        //     });
+        // }
     ], function (err) {
         // log('FINISHED:', err);
         resultCallback(details);
@@ -202,6 +202,7 @@ var writeBuildLog = function (details) {
 
 // Check for changes
 var buildIds = '';
+var runEvery = 1000;
 
 var run = function (buildsChanged) {
     log('Check for build changes...');
@@ -219,10 +220,10 @@ var run = function (buildsChanged) {
 
                 buildIds = result;
                 
-                setTimeout(run, 5000, buildsChanged);
+                setTimeout(run, runEvery, buildsChanged);
             });
         } else {
-            setTimeout(run, 5000, buildsChanged);
+            setTimeout(run, runEvery, buildsChanged);
         }
     });
 };

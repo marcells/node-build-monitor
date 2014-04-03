@@ -30,8 +30,16 @@ a {
   color: white;
 }
 
-.flex-item .title {
+.flex-item .project {
 	font-weight: bold;
+  	font-size: 15pt;
+}
+
+.flex-item .definition {
+  	font-size: 15pt;
+}
+
+.flex-item .number {
   	font-size: 30pt;
 }
 

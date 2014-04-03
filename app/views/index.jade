@@ -6,6 +6,7 @@ block scripts
 
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/moment.min.js')
+    script(src='/javascripts/countdown.min.js')
     script(src='/javascripts/jquery-2.1.0.min.js')
     script(src='/javascripts/knockout-3.1.0.js')
     script(src='/javascripts/main.js')
@@ -13,21 +14,23 @@ block scripts
 block content
     div#builds.flex-container(data-bind='foreach: builds')
         .flex-item(data-bind='{ css: cssClass }')
-            span.title(data-bind='text: project')
-            span  -> 
-            span.title(data-bind='text: definition')
-            span  -> 
-            span.title(data-bind='text: number')
+            span.number(data-bind='text: number')
+            br
+            span.project(data-bind='text: project')
+            span  | 
+            span.definition(data-bind='text: definition')
             br
             span.duration(data-bind='text: duration')
             br
             span.status(data-bind='text: status')
-            br
+            span  (
             span.reason(data-bind='text: reason')
-            span  for 
+            span )
+            br
+            span requested for 
             span.for(data-bind='text: requestedFor')
             br
-            span.warnings Warnings: 
+            span Warnings: 
             span.warnings(data-bind='text: hasWarnings')
-            span.warnings  - Errors: 
+            span  - Errors: 
             span.warnings(data-bind='text: hasErrors')

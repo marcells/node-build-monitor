@@ -19,15 +19,11 @@ function isNullOrWhiteSpace(str) {
 }
 
 function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
-    var output = moment(startedAt).calendar();
-
     if (buildFinished) { 
-        output += ' till ' + moment(finishedAt).calendar() + ' (' + moment(finishedAt.diff(startedAt)).seconds() + ' seconds) [finished ' + moment(finishedAt).fromNow() + ']';
+        return 'finished ' + moment(finishedAt).calendar() + ' [finished ' + moment(finishedAt).fromNow() + '] (ran for ' + countdown(startedAt, finishedAt).toString() + ')';
     } else {
-        output += ' (currently running: ' + moment.duration(moment().diff(startedAt)).seconds() + ' seconds) [started ' + moment(startedAt).fromNow() + ']';
+        return 'running for ' + countdown(startedAt).toString() + ' [started ' + moment(startedAt).fromNow() + ']';
     }
-
-    return output;
 }
 
 var BuildViewModel = function (build) {

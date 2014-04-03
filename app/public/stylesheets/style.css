@@ -27,13 +27,17 @@ a {
 
 .flex-item {
   float: left;
-  background: pink;
-  padding: 20px;
-  margin: 10px;
-  width: 30%;
-  height: 19%;
+  
+  width: 33%;
+  height: 25%;
   
   color: white;
+}
+
+.flex-item-inner {
+	background: pink;
+    margin: 5px;
+	padding: 25px;
 }
 
 .flex-item .project {

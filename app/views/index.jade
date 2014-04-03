@@ -13,23 +13,24 @@ block scripts
 
 block content
     div#builds.flex-container(data-bind='foreach: builds')
-        .flex-item(data-bind='{ css: cssClass }')
-            span.number(data-bind='text: number')
-            br
-            span.project(data-bind='text: project')
-            span  | 
-            span.definition(data-bind='text: definition')
-            br
-            span.duration.fontawesome-time
-            span.duration(data-bind='text: duration')
-            br
-            span.status(data-bind='text: status')
-            span  (
-            span.reason(data-bind='text: reason')
-            span )
-            br
-            span.for.fontawesome-user
-            span.for(data-bind='text: requestedFor')
-            br
-            span.warnings.fontawesome-warning-sign(data-bind='visible: hasWarnings')
-            span.warnings.fontawesome-remove-sign(data-bind='visible: hasErrors')
+        .flex-item
+            .flex-item-inner(data-bind='{ css: cssClass }')
+                span.number(data-bind='text: number')
+                br
+                span.project(data-bind='text: project')
+                span  | 
+                span.definition(data-bind='text: definition')
+                br
+                span.duration.fontawesome-time
+                span.duration(data-bind='text: duration')
+                br
+                span.status(data-bind='text: status')
+                span  (
+                span.reason(data-bind='text: reason')
+                span )
+                br
+                span.for.fontawesome-user
+                span.for(data-bind='text: requestedFor')
+                br
+                span.warnings.fontawesome-warning-sign(data-bind='visible: hasWarnings')
+                span.warnings.fontawesome-remove-sign(data-bind='visible: hasErrors')

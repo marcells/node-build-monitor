@@ -1,3 +1,15 @@
+ko.forcibleComputed = function(readFunc, context, options) {
+    var trigger = ko.observable(),
+        target = ko.computed(function() {
+            trigger();
+            return readFunc.call(context);
+        }, null, options);
+    target.evaluateImmediate = function() {
+        trigger.valueHasMutated();
+    };
+    return target;
+};
+
 function isNullOrWhiteSpace(str) {
     if(!str) {
         return true;
@@ -7,12 +19,12 @@ function isNullOrWhiteSpace(str) {
 }
 
 function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
-    var output = startedAt.toLocaleString();
+    var output = moment(startedAt).calendar();
 
     if (buildFinished) { 
-        output += ' - ' + finishedAt.toLocaleString() + ' (' + (finishedAt.getTime() - startedAt.getTime()) / 1000 + ' seconds)';
+        output += ' till ' + moment(finishedAt).calendar() + ' (' + moment(finishedAt.diff(startedAt)).seconds() + ' seconds) [finished ' + moment(finishedAt).fromNow() + ']';
     } else {
-        output += ' (currently running: ' + (lastChangeAt.getTime() - startedAt.getTime()) / 1000 + ')';
+        output += ' (currently running: ' + moment.duration(moment().diff(startedAt)).seconds() + ' seconds) [started ' + moment(startedAt).fromNow() + ']';
     }
 
     return output;
@@ -23,9 +35,9 @@ var BuildViewModel = function (build) {
     this.project = ko.observable(build.project);
     this.definition = ko.observable(build.definition);
     this.number = ko.observable(build.number);
-    this.startedAt = ko.observable(new Date(build.startedAt));
-    this.finishedAt = ko.observable(new Date(build.finishedAt));
-    this.lastChangeAt = ko.observable(new Date(build.lastChangeAt));
+    this.startedAt = ko.observable(moment(build.startedAt));
+    this.finishedAt = ko.observable(moment(build.finishedAt));
+    this.lastChangeAt = ko.observable(moment(build.lastChangeAt));
     this.status = ko.observable(build.status);
     this.reason = ko.observable(build.reason);
     this.requestedFor = ko.observable(build.requestedFor);
@@ -36,9 +48,13 @@ var BuildViewModel = function (build) {
         return this.status() + '-color';
     }, this);
 
-    this.duration = ko.computed(function () {
+    this.duration = ko.forcibleComputed(function () {
         return timeOutput(this.startedAt(), this.finishedAt(), this.lastChangeAt(), this.buildFinished());
     }, this);
+
+    setInterval(function (buildViewModel) {
+        buildViewModel.duration.evaluateImmediate();
+    }, 1000, this);
 };
 
 var AppViewModel = function() {

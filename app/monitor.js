@@ -1,6 +1,10 @@
 var async = require('async'),
     events = require('events');
 
+var log = function (text) {
+    console.log(new Date().toLocaleTimeString(), '|', text);
+};
+
 exports.Monitor = function () {
     var self = this;
 
@@ -15,6 +19,8 @@ exports.Monitor = function () {
         var results = [];
 
         async.each(self.plugins, function (plugin, pluginCallback) {
+            log('Check for builds...');
+
             plugin.check(function (result) {
                 for (var i = 0; i < result.length; i++) {
                     results.push(result[i]);
@@ -24,6 +30,8 @@ exports.Monitor = function () {
             });
         },
         function (error) {
+            log(results.length + ' builds found....');
+
             self.currentBuilds = results;
             self.emit('update', results);
 

@@ -10,16 +10,8 @@ ko.forcibleComputed = function(readFunc, context, options) {
     return target;
 };
 
-function isNullOrWhiteSpace(str) {
-    if(!str) {
-        return true;
-    }
-
-    return str === null || str.match(/^ *$/) !== null;
-}
-
-function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
-    if (buildFinished) { 
+function timeOutput(startedAt, finishedAt, lastChangeAt, isRunning) {
+    if (!isRunning) { 
         return 'finished ' + moment(finishedAt).calendar() + ' [finished ' + moment(finishedAt).fromNow() + '] (ran for ' + countdown(startedAt, finishedAt).toString() + ')';
     } else {
         return 'running for ' + countdown(startedAt).toString() + ' [started ' + moment(startedAt).fromNow() + ']';
@@ -27,7 +19,7 @@ function timeOutput(startedAt, finishedAt, lastChangeAt, buildFinished) {
 }
 
 var BuildViewModel = function (build) {
-    this.buildFinished = ko.observable(build.buildFinished);
+    this.isRunning = ko.observable(build.isRunning);
     this.project = ko.observable(build.project);
     this.definition = ko.observable(build.definition);
     this.number = ko.observable(build.number);
@@ -37,15 +29,15 @@ var BuildViewModel = function (build) {
     this.status = ko.observable(build.status);
     this.reason = ko.observable(build.reason);
     this.requestedFor = ko.observable(build.requestedFor);
-    this.hasWarnings = ko.observable(!isNullOrWhiteSpace(build.warnings));
-    this.hasErrors = ko.observable(!isNullOrWhiteSpace(build.errors));
+    this.hasWarnings = ko.observable(build.hasWarnings);
+    this.hasErrors = ko.observable(build.hasErrors);
 
     this.cssClass = ko.computed(function () {
         return this.status() + '-color';
     }, this);
 
     this.duration = ko.forcibleComputed(function () {
-        return timeOutput(this.startedAt(), this.finishedAt(), this.lastChangeAt(), this.buildFinished());
+        return timeOutput(this.startedAt(), this.finishedAt(), this.lastChangeAt(), this.isRunning());
     }, this);
 
     setInterval(function (buildViewModel) {
@@ -65,14 +57,14 @@ $(function() {
 
     var socket = io.connect(socketEndpoint);
 
-    socket.on('buildstate', function (data) {
-        if (data) {
-            console.log(data);
+    socket.on('buildstate', function (builds) {
+        if (builds) {
+            console.log(builds);
 
             app.builds.removeAll();
 
-            for(var i=0; i < data.builds.length; i++) {
-                var build = data.builds[i];
+            for(var i=0; i < builds.length; i++) {
+                var build = builds[i];
                 
                 app.builds.push(new BuildViewModel(build));
             }

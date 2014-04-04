@@ -43,13 +43,23 @@ server.listen(app.get('port'), function() {
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('buildstate', lastDetails);
+  socket.emit('buildstate', monitor.currentBuilds);
 });
 
-var lastDetails;
-require('./prototype').go(function(details) {
-    lastDetails = details;
+var monitor = new (require('./monitor').Monitor)();
+var tfs = require('./monitor-tfs');
 
-    io.sockets.emit('buildstate', details);
-    //console.log(details);
+tfs.configure({
+    server: process.env.server, // 'https://odatawrapper'
+    user: process.env.user, // 'Domain\User'
+    password: process.env.password, // 'Password'
+    collection: process.env.collection || 'DefaultCollection'
 });
+
+monitor.extendWith(tfs);
+
+monitor.on('update', function (builds) {
+  io.sockets.emit('buildstate', monitor.currentBuilds);
+});
+
+monitor.run();

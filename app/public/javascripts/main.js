@@ -39,10 +39,6 @@ var BuildViewModel = function (build) {
     this.duration = ko.forcibleComputed(function () {
         return timeOutput(this.startedAt(), this.finishedAt(), this.lastChangeAt(), this.isRunning());
     }, this);
-
-    setInterval(function (buildViewModel) {
-        buildViewModel.duration.evaluateImmediate();
-    }, 1000, this);
 };
 
 var AppViewModel = function() {
@@ -52,6 +48,12 @@ var AppViewModel = function() {
 var app = new AppViewModel();
 
 $(function() {
+    setInterval(function () {
+        app.builds().forEach(function (build) {
+            build.duration.evaluateImmediate();
+        })
+    }, 1000);
+
     app.builds.push(new BuildViewModel({ project: 'Loading...'}));
     ko.applyBindings(app);
 

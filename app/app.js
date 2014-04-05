@@ -58,7 +58,7 @@ tfs.configure({
 });
 
 travis.configure({
-    slug: 'marcells/bloggy'
+    slug: process.env.slug
 });
 
 monitor.configure({

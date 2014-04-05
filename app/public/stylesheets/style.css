@@ -75,22 +75,22 @@ a {
   	font-size: 20pt;
 }
 
-.InProgress-color {
+.Green-color {
+  background: green;
+}
+
+.Red-color {
+  background: red;
+}
+
+.Blue-color {
 	background: blue;
 }
 
-.Succeeded-color {
-	background: green;
-}
-
-.Stopped-color {
+.Gray-color {
 	background: darkgray;
 }
 
-.PartiallySucceeded-color {
-	background: orange;
-}
-
-.Failed-color {
-	background: red;
+.Orange-color {
+  background: orange;
 }

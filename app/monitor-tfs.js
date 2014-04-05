@@ -36,6 +36,15 @@ var request = require('request'),
 
         return string === null || string.match(/^ *$/) !== null;
     },
+    getStatus = function (statusText) {
+        if (statusText === "Succeeded") return "Green";
+        if (statusText === "Failed") return "Red";
+        if (statusText === "InProgress") return "Blue";
+        if (statusText === "Stopped") return "Gray";
+        if (statusText === "PartiallySucceeded") return "Orange";
+
+        return null;
+    },
     simplifyBuild = function (res) {
         return {
             id: res.Project + '|' + res.Definition + '|' + res.Number,
@@ -46,7 +55,8 @@ var request = require('request'),
             startedAt: parseDate(res.StartTime),
             finishedAt: parseDate(res.FinishTime),
             requestedFor: res.RequestedFor,
-            status: res.Status,
+            statusText: res.Status,
+            status: getStatus(res.Status),
             reason: res.Reason,
             hasErrors: !isNullOrWhiteSpace(res.Errors),
             hasWarnings: !isNullOrWhiteSpace(res.Warnings)

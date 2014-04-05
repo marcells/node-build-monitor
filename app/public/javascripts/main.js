@@ -26,6 +26,7 @@ var BuildViewModel = function (build) {
     this.startedAt = ko.observable(moment(build.startedAt));
     this.finishedAt = ko.observable(moment(build.finishedAt));
     this.status = ko.observable(build.status);
+    this.statusText = ko.observable(build.statusText);
     this.reason = ko.observable(build.reason);
     this.requestedFor = ko.observable(build.requestedFor);
     this.hasWarnings = ko.observable(build.hasWarnings);

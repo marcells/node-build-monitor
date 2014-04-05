@@ -12,6 +12,14 @@ var request = require('request'),
     parseDate = function (dateAsString) {
         return new Date(dateAsString);
     },
+    getStatus = function (result, state) {
+        if (state === 'started') return "Blue";
+        if (state === 'canceled') return "Gray";
+        if (result === null || result === 1) return "Red";
+        if (result === 0) return "Green";
+        
+        return null;
+    },
     simplifyBuild = function (res) {
         return {
             id: configuration.slug + '|' + res.number,
@@ -22,7 +30,8 @@ var request = require('request'),
             startedAt: parseDate(res.started_at),
             finishedAt: parseDate(res.finished_at),
             requestedFor: 'TODO',
-            status: res.result === 0 ? 'Succeeded' : 'Failed',
+            status: getStatus(res.result, res.state),
+            statusText: res.state,
             reason: res.event_type,
             hasErrors: false,
             hasWarnings: false

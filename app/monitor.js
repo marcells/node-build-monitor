@@ -44,6 +44,46 @@ var async = require('async'),
             .join('|');
 
         return newbuildsHash !== currentBuildsHash;
+    },
+    detectChanges = function (currentBuilds, newBuilds) {
+        var changes = {
+                added: [],
+                removed: [],
+                updated: []
+            },
+            getById = function (builds, id) {
+                return builds.filter(function (build) {
+                    return build.id == id;
+                })[0];
+            };
+
+        var currentBuildIds = currentBuilds.map(function (build) { return build.id; });
+        var newBuildIds = newBuilds.map(function (build) { return build.id; });
+
+        newBuildIds.forEach(function (newBuildId) {
+            if (currentBuildIds.indexOf(newBuildId) == -1) {
+                changes.added.push(getById(newBuilds, newBuildId));
+            }
+
+            if (currentBuildIds.indexOf(newBuildId) >= 0) {
+                var currentBuild = getById(currentBuilds, newBuildId);
+                var newBuild = getById(newBuilds, newBuildId);
+
+                if (currentBuild.etag !== newBuild.etag) {
+                    changes.updated.push(getById(newBuilds, newBuildId));
+                }
+            }
+        });
+
+        currentBuildIds.forEach(function (currentBuildId) {
+            if (newBuildIds.indexOf(currentBuildId) == -1) {
+                changes.removed.push(getById(currentBuilds, currentBuildId));
+            }
+        });
+
+        console.log(changes);
+
+        return changes;
     };
 
 exports.Monitor = function () {
@@ -84,6 +124,8 @@ exports.Monitor = function () {
 
             if(changed(self.currentBuilds, allBuilds)) {
                 log('builds changed');
+
+                self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 
                 self.currentBuilds = allBuilds;
                 self.emit('updateAll', allBuilds);

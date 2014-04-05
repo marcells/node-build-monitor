@@ -73,4 +73,8 @@ monitor.on('updateAll', function (builds) {
   io.sockets.emit('buildstate', monitor.currentBuilds);
 });
 
+monitor.on('buildsChanged', function (changes) {
+  io.sockets.emit('buildsChanged', changes);
+});
+
 monitor.run();

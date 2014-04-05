@@ -61,7 +61,7 @@ $(function() {
 
     socket.on('buildstate', function (builds) {
         if (builds) {
-            console.log(builds);
+            console.log('buildstate', builds);
 
             app.builds.removeAll();
 
@@ -71,5 +71,9 @@ $(function() {
                 app.builds.push(new BuildViewModel(build));
             }
         }
+    });
+
+    socket.on('buildsChanged', function (changes) {
+        console.log('buildsChanged', changes);
     });
 });

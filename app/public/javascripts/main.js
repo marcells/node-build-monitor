@@ -10,7 +10,7 @@ ko.forcibleComputed = function(readFunc, context, options) {
     return target;
 };
 
-function timeOutput(startedAt, finishedAt, lastChangeAt, isRunning) {
+function timeOutput(startedAt, finishedAt, isRunning) {
     if (!isRunning) { 
         return 'finished ' + moment(finishedAt).calendar() + ' [finished ' + moment(finishedAt).fromNow() + '] (ran for ' + countdown(startedAt, finishedAt).toString() + ')';
     } else {
@@ -25,7 +25,6 @@ var BuildViewModel = function (build) {
     this.number = ko.observable(build.number);
     this.startedAt = ko.observable(moment(build.startedAt));
     this.finishedAt = ko.observable(moment(build.finishedAt));
-    this.lastChangeAt = ko.observable(moment(build.lastChangeAt));
     this.status = ko.observable(build.status);
     this.reason = ko.observable(build.reason);
     this.requestedFor = ko.observable(build.requestedFor);
@@ -37,7 +36,7 @@ var BuildViewModel = function (build) {
     }, this);
 
     this.duration = ko.forcibleComputed(function () {
-        return timeOutput(this.startedAt(), this.finishedAt(), this.lastChangeAt(), this.isRunning());
+        return timeOutput(this.startedAt(), this.finishedAt(), this.isRunning());
     }, this);
 };
 

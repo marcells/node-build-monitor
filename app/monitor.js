@@ -14,8 +14,17 @@ var async = require('async'),
         };
     },
     sortBuilds = function (newBuilds) {
+        var takeDate = function (build) {
+            return build.isRunning ? build.startedAt : build.finishedAt;
+        };
+
         newBuilds.sort(function (a, b) {
-            
+            var dateA = takeDate(a);
+            var dateB = takeDate(b);
+
+            if(dateA < dateB) return 1;
+            if(dateA > dateB) return -1;
+            if(dateA == dateB) return 0;
         });
     },
     onlyTake = function (numberOfBuilds, newBuilds) {

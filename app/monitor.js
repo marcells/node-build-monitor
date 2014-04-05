@@ -13,6 +13,14 @@ var async = require('async'),
                 .digest('hex');
         };
     },
+    sortBuilds = function (newBuilds) {
+        newBuilds.sort(function (a, b) {
+
+        });
+    },
+    onlyTake = function (numberOfBuilds, newBuilds) {
+        newBuilds.splice(numberOfBuilds);
+    },
     changed = function (currentBuilds, newBuilds) {
         var newbuildsHash = newBuilds
             .map(function (value) {
@@ -33,7 +41,8 @@ exports.Monitor = function () {
     var self = this;
 
     self.configuration = {
-        interval: 5000
+        interval: 5000,
+        numberOfBuilds: 12
     };
     self.plugins = [];
     self.currentBuilds = [];
@@ -47,29 +56,28 @@ exports.Monitor = function () {
     };
 
     self.run = function () {
-        var results = [];
+        var allBuilds = [];
 
         async.each(self.plugins, function (plugin, pluginCallback) {
             log('Check for builds...');
 
-            plugin.check(function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    results.push(result[i]);
-                };
-
+            plugin.check(function (pluginBuilds) {
+                Array.prototype.push.apply(allBuilds, pluginBuilds);
                 pluginCallback();
             });
         },
         function (error) {
-            log(results.length + ' builds found....');
+            log(allBuilds.length + ' builds found....');
             
-            generateAndApplyETags(results);
+            sortBuilds(allBuilds);
+            onlyTake(self.configuration.numberOfBuilds, allBuilds);
+            generateAndApplyETags(allBuilds);
 
-            if(changed(self.currentBuilds, results)) {
+            if(changed(self.currentBuilds, allBuilds)) {
                 log('builds changed');
 
-                self.currentBuilds = results;
-                self.emit('updateAll', results);
+                self.currentBuilds = allBuilds;
+                self.emit('updateAll', allBuilds);
             }
 
             setTimeout(self.run, self.configuration.interval);

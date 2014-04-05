@@ -47,7 +47,8 @@ io.sockets.on('connection', function (socket) {
 });
 
 var monitor = new (require('./monitor').Monitor)();
-var tfs = require('./monitor-tfs');
+var tfs = require('./monitor-tfs'),
+    travis = require('./monitor-travis');
 
 tfs.configure({
     server: process.env.server, // 'https://odatawrapper'
@@ -56,7 +57,12 @@ tfs.configure({
     collection: process.env.collection || 'DefaultCollection'
 });
 
+travis.configure({
+    slug: 'marcells/bloggy'
+});
+
 monitor.extendWith(tfs);
+monitor.extendWith(travis);
 
 monitor.on('updateAll', function (builds) {
   io.sockets.emit('buildstate', monitor.currentBuilds);

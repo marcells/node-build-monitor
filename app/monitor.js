@@ -60,7 +60,7 @@ exports.Monitor = function () {
         self.configuration = config;
     };
 
-    self.extendWith = function (plugin) {
+    self.watchOn = function (plugin) {
         self.plugins.push(plugin);
     };
 

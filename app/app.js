@@ -66,8 +66,8 @@ monitor.configure({
     numberOfBuilds: 24
 });
 
-monitor.extendWith(tfs);
-monitor.extendWith(travis);
+monitor.watchOn(tfs);
+monitor.watchOn(travis);
 
 monitor.on('updateAll', function (builds) {
   io.sockets.emit('buildstate', monitor.currentBuilds);

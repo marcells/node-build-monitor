@@ -61,6 +61,11 @@ travis.configure({
     slug: 'marcells/bloggy'
 });
 
+monitor.configure({
+    interval: 5000,
+    numberOfBuilds: 24
+});
+
 monitor.extendWith(tfs);
 monitor.extendWith(travis);
 

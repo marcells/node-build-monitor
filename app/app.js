@@ -58,7 +58,7 @@ tfs.configure({
 
 monitor.extendWith(tfs);
 
-monitor.on('update', function (builds) {
+monitor.on('updateAll', function (builds) {
   io.sockets.emit('buildstate', monitor.currentBuilds);
 });
 

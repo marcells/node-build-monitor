@@ -38,6 +38,7 @@ var request = require('request'),
     },
     simplifyBuild = function (res) {
         return {
+            id: res.Project + '|' + res.Definition + '|' + res.Number,
             project: res.Project,
             definition: res.Definition,
             number: res.Number,

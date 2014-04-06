@@ -43,7 +43,7 @@ server.listen(app.get('port'), function() {
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('buildstate', monitor.currentBuilds);
+  socket.emit('buildsLoaded', monitor.currentBuilds);
 });
 
 var monitor = new (require('./monitor').Monitor)();
@@ -69,8 +69,8 @@ monitor.configure({
 monitor.watchOn(tfs);
 monitor.watchOn(travis);
 
-monitor.on('updateAll', function (builds) {
-  io.sockets.emit('buildstate', monitor.currentBuilds);
+monitor.on('buildsLoaded', function (builds) {
+  io.sockets.emit('buildsLoaded', monitor.currentBuilds);
 });
 
 monitor.on('buildsChanged', function (changes) {

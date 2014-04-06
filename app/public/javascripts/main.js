@@ -59,9 +59,9 @@ $(function() {
 
     var socket = io.connect(socketEndpoint);
 
-    socket.on('buildstate', function (builds) {
+    socket.on('buildsLoaded', function (builds) {
         if (builds) {
-            console.log('buildstate', builds);
+            console.log('buildsLoaded', builds);
 
             app.builds.removeAll();
 

@@ -63,7 +63,7 @@ travis.configure({
 
 monitor.configure({
     interval: 5000,
-    numberOfBuilds: 24
+    numberOfBuilds: 12
 });
 
 monitor.watchOn(tfs);

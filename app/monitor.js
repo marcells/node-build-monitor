@@ -81,6 +81,8 @@ var async = require('async'),
             }
         });
 
+        changes.order = newBuildIds;
+        
         console.log(changes);
 
         return changes;

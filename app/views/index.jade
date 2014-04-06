@@ -8,13 +8,14 @@ block scripts
     script(src='/javascripts/moment.min.js')
     script(src='/javascripts/countdown.min.js')
     script(src='/javascripts/jquery-2.1.0.min.js')
+    script(src='/javascripts/jquery.color-2.1.2.min.js')
     script(src='/javascripts/knockout-3.1.0.js')
     script(src='/javascripts/main.js')
 
 block content
     div#builds.flex-container(data-bind='foreach: builds')
         .flex-item
-            .flex-item-inner(data-bind='{ css: cssClass }')
+            .flex-item-inner(data-bind='{ animateCss: style }')
                 span.number(data-bind='text: number')
                 br
                 span.project(data-bind='text: project')

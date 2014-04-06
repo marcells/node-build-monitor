@@ -10,6 +10,17 @@ ko.forcibleComputed = function(readFunc, context, options) {
     return target;
 };
 
+ko.bindingHandlers.animateCss = {
+    update: function(element, valueAccessor) {
+        var value = valueAccessor();
+        var unwrap = ko.unwrap(value);
+
+        if(unwrap) {
+           $(element).animate(unwrap, 1000);
+        }
+    }
+};
+
 function timeOutput(startedAt, finishedAt, isRunning) {
     if (!isRunning) { 
         return 'finished ' + moment(finishedAt).calendar() + ' [finished ' + moment(finishedAt).fromNow() + '] (ran for ' + countdown(startedAt, finishedAt).toString() + ')';
@@ -51,8 +62,12 @@ var BuildViewModel = function (build) {
 
     this.update(build);
 
-    this.cssClass = ko.computed(function () {
-        return this.status() + '-color';
+    this.style = ko.computed(function () {
+        if (this.status()) {
+            return {
+                'background-color': this.status().toLowerCase()
+            };
+        }
     }, this);
 
     this.duration = ko.forcibleComputed(function () {
@@ -99,21 +114,28 @@ $(function() {
     });
 
     socket.on('buildsChanged', function (changes) {
-        changes.added.forEach(function (build, index) {
-            app.builds.splice(index, 0, new BuildViewModel(build));
-        });
-
         changes.removed.forEach(function (build) {
             app.builds.remove(function (item) {
                 return item.id() === build.id;
             });
         });
 
+        changes.added.forEach(function (build, index) {
+            app.builds.splice(index, 0, new BuildViewModel(build));
+        });
+
         changes.updated.forEach(function (build) {
             var vm = app.getBuildById(build.id);
             vm.update(build);
+        });
 
-            console.log('updated', build);
+        changes.order.forEach(function (id, index) {
+            var build = app.getBuildById(id);
+            var from = app.builds.indexOf(build);
+
+            if (from !== index) {
+                app.builds.splice(index, 0, app.builds.splice(from, 1)[0]);
+            }
         });
 
         console.log('buildsChanged', changes);

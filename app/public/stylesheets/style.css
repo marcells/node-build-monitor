@@ -35,7 +35,7 @@ a {
 }
 
 .flex-item-inner {
-	background: pink;
+	background: transparent;
   margin: 5px;
 	padding: 25px;
 }

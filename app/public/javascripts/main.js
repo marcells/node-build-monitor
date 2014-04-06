@@ -103,9 +103,9 @@ $(function() {
             app.builds.splice(index, 0, new BuildViewModel(build));
         });
 
-        changes.removed.forEach(function (build, index) {
+        changes.removed.forEach(function (build) {
             app.builds.remove(function (item) {
-                return item.id === build.id;
+                return item.id() === build.id;
             });
         });
 

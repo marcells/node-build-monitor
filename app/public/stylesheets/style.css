@@ -45,22 +45,20 @@ a {
 	padding: 25px;
 }
 
+.flex-item .info-block {
+    font-size: 15pt;
+}
+
 .flex-item .project {
 	  font-weight: bold;
-  	font-size: 15pt;
 }
 
 .flex-item .definition {
-  	font-size: 15pt;
 }
 
 .flex-item .number {
     float: left;
   	font-size: 25pt;
-}
-
-.flex-item .info {
-    float: right;
 }
 
 .flex-item .duration-icon {
@@ -69,7 +67,8 @@ a {
     margin-top: 3px;
 }
 
-.flex-item .duration {
+.flex-item .duration-block {
+    float:right;
   	font-size: 10pt;
 }
 

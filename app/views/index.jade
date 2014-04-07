@@ -16,19 +16,20 @@ block content
     div#builds.flex-container(data-bind='foreach: builds')
         .flex-item
             .flex-item-inner(data-bind='{ animateCss: style }')
-                span.number(data-bind='text: number')
-                span.info
-                    span.project(data-bind='text: project')
-                    span  | 
-                    span.definition(data-bind='text: definition')
+                span(style='white-space: nowrap')
+                    span.number(data-bind='text: number')
+                    div.duration-block
+                        span.duration-icon.fontawesome-time
+                        span.time(data-bind='text: time')
+                        br
+                        span.time(data-bind='text: duration')
 
                 .clear
 
-                div.duration
-                    span.duration-icon.fontawesome-time
-                    span.time(data-bind='text: time')
-                    br
-                    span.time(data-bind='text: duration')
+                span.info-block
+                    span.project(data-bind='text: project')
+                    span | 
+                    span.definition(data-bind='text: definition')
 
                 .clear
 

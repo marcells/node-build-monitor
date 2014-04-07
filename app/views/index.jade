@@ -17,21 +17,30 @@ block content
         .flex-item
             .flex-item-inner(data-bind='{ animateCss: style }')
                 span.number(data-bind='text: number')
-                br
-                span.project(data-bind='text: project')
-                span  | 
-                span.definition(data-bind='text: definition')
-                br
-                span.duration.fontawesome-time
-                span.duration(data-bind='text: duration')
-                br
+                span.info
+                    span.project(data-bind='text: project')
+                    span  | 
+                    span.definition(data-bind='text: definition')
+
+                .clear
+
+                div.duration
+                    span.duration-icon.fontawesome-time
+                    span.time(data-bind='text: time')
+                    br
+                    span.time(data-bind='text: duration')
+
+                .clear
+
                 span.status(data-bind='text: statusText')
-                span  (
                 span.reason(data-bind='text: reason')
-                span )
-                br
-                span.for.fontawesome-user
-                span.for(data-bind='text: requestedFor')
-                br
-                span.warnings.fontawesome-warning-sign(data-bind='visible: hasWarnings')
-                span.warnings.fontawesome-remove-sign(data-bind='visible: hasErrors')
+
+                .clear
+
+                span.requestedFor-block
+                    span.fontawesome-user
+                    span.for(style='margin-left: 15px', data-bind='text: requestedFor')
+                span.warnings
+                    span.fontawesome-warning-sign(data-bind='visible: hasWarnings')
+                    span.fontawesome-remove-sign(data-bind='visible: hasErrors')
+                .clear

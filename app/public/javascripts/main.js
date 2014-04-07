@@ -70,8 +70,16 @@ var BuildViewModel = function (build) {
         }
     }, this);
 
+    this.time = ko.forcibleComputed(function () {
+        return this.isRunning() 
+            ? 'started ' + countdown(this.startedAt()).toString() + ' ago'
+            : 'finished ' + moment(this.finishedAt()).calendar();
+    }, this);
+
     this.duration = ko.forcibleComputed(function () {
-        return timeOutput(this.startedAt(), this.finishedAt(), this.isRunning());
+        return this.isRunning() 
+            ? 'running for ' + moment(this.startedAt()).fromNow() 
+            : 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
     }, this);
 };
 

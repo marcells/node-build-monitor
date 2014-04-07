@@ -67,7 +67,7 @@ monitor.configure({
 });
 
 monitor.watchOn(tfs);
-monitor.watchOn(travis);
+//monitor.watchOn(travis);
 
 monitor.on('buildsLoaded', function (builds) {
   io.sockets.emit('buildsLoaded', monitor.currentBuilds);

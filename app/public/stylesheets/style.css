@@ -1,4 +1,5 @@
 @import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url("fonts.css");
 
 [class*="fontawesome-"]:before {
   font-family: 'FontAwesome', sans-serif;
@@ -9,7 +10,7 @@ html {
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px 'open_sanscondensed_light', Helvetica, Arial, sans-serif;
   height: 100%;  
   overflow: hidden;
 }
@@ -18,8 +19,12 @@ a {
   color: #00B7FF;
 }
 
+.clear {
+    clear: both;
+}
+
 .flex-container {
-  padding: 0;
+  padding: 0px;
   margin: 0 auto 0 auto;
   height: 100%;
   width: 100%;
@@ -36,12 +41,12 @@ a {
 
 .flex-item-inner {
 	background: transparent;
-  margin: 5px;
+  margin: 25px;
 	padding: 25px;
 }
 
 .flex-item .project {
-	font-weight: bold;
+	  font-weight: bold;
   	font-size: 15pt;
 }
 
@@ -50,47 +55,50 @@ a {
 }
 
 .flex-item .number {
+    float: left;
   	font-size: 25pt;
+}
+
+.flex-item .info {
+    float: right;
+}
+
+.flex-item .duration-icon {
+    font-size: 25px;
+    float: left;
+    margin-top: 3px;
 }
 
 .flex-item .duration {
   	font-size: 10pt;
 }
 
+.flex-item .time {
+    margin-left: 10px;
+}
+
 .flex-item .status {
-	font-weight: bold;
+    float: left;
+    font-family: 'open_sans_condensedbold';
+	  font-weight: bold;
   	font-size: 25pt;
 }
 
 .flex-item .reason {
+    float: right;
   	font-size: 15pt;
 }
 
 .flex-item .for {
-  	font-size: 15pt;
+}
+
+.requestedFor-block {
+    font-size: 15pt;
+    float: left;
 }
 
 .flex-item .warnings {
-	font-weight: bold;
+	  font-weight: bold;
   	font-size: 20pt;
-}
-
-.Green-color {
-  background: green;
-}
-
-.Red-color {
-  background: red;
-}
-
-.Blue-color {
-	background: blue;
-}
-
-.Gray-color {
-	background: darkgray;
-}
-
-.Orange-color {
-  background: orange;
+    float: right;
 }

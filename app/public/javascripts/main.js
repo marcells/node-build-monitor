@@ -72,13 +72,15 @@ var BuildViewModel = function (build) {
 
     this.time = ko.forcibleComputed(function () {
         return this.isRunning() 
-            ? 'started ' + countdown(this.startedAt()).toString() + ' ago'
+            ? 'started ' + moment(this.startedAt()).fromNow()
             : 'finished ' + moment(this.finishedAt()).calendar();
     }, this);
 
     this.duration = ko.forcibleComputed(function () {
+        console.log(moment(this.startedAt()).fromNow());
+
         return this.isRunning() 
-            ? 'running for ' + moment(this.startedAt()).fromNow() 
+            ? 'running for ' + countdown(this.startedAt()).toString()
             : 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
     }, this);
 };
@@ -100,6 +102,7 @@ var app = new AppViewModel();
 $(function() {
     setInterval(function () {
         app.builds().forEach(function (build) {
+            build.time.evaluateImmediate();
             build.duration.evaluateImmediate();
         })
     }, 1000);

@@ -15,33 +15,35 @@ block scripts
 block content
     div#builds.flex-container(data-bind='foreach: builds')
         .flex-item
-            .flex-item-inner(data-bind='{ animateCss: style }')
-                span(style='white-space: nowrap')
-                    span.number(data-bind='text: number')
-                    div.duration-block
+            .flex-item-inner(data-bind='{ animateCss: style }').nowrap
+                span.number(data-bind='text: number').nowrap
+                .clear
+
+                div.medium-height.nowrap.prio-vertical-two
+                    span.info-block.middle
+                        span.project.project-definition-separator(data-bind='text: project')
+                        span.definition(data-bind='text: definition')
+                    span.reason-block.prio-horizontal-two
+                        span.reason-icon.middle.fontawesome-cog
+                        span.middle.reason(data-bind='text: reason')
+
+                .clear
+
+                div.medium-height.nowrap.prio-vertical-one
+                    span.middle.status(data-bind='text: statusText')
+                    span.middle.duration-block.reset-height.prio-horizontal-three
                         span.duration-icon.fontawesome-time
-                        span.time(data-bind='text: time')
+                        span.middle.time(data-bind='text: time')
                         br
-                        span.time(data-bind='text: duration')
+                        span.middle.time(data-bind='text: duration')
 
                 .clear
 
-                span.info-block
-                    span.project(data-bind='text: project')
-                    span | 
-                    span.definition(data-bind='text: definition')
-
-                .clear
-
-                span.status(data-bind='text: statusText')
-                span.reason(data-bind='text: reason')
-
-                .clear
-
-                span.requestedFor-block
-                    span.fontawesome-user
-                    span.for(style='margin-left: 15px', data-bind='text: requestedFor')
-                span.warnings
-                    span.fontawesome-warning-sign(data-bind='visible: hasWarnings')
-                    span.fontawesome-remove-sign(data-bind='visible: hasErrors')
+                div.medium-height.nowrap.prio-vertical-three
+                    span.middle.requestedFor-block
+                        span.middle.fontawesome-user
+                        span.middle.for(data-bind='text: requestedFor')
+                    span.middle.warnings.prio-horizontal-one
+                        span.middle.fontawesome-warning-sign(data-bind='visible: hasWarnings')
+                        span.middle.fontawesome-remove-sign(data-bind='visible: hasErrors')
                 .clear

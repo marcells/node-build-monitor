@@ -23,6 +23,29 @@ a {
     clear: both;
 }
 
+.nowrap {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.box {
+    border: 1px solid black;
+}
+
+.middle { 
+  vertical-align: middle;
+}
+
+.medium-height {
+    line-height: 40px;
+    height: 40px;
+}
+
+.reset-height {
+    display: inline-block;
+    line-height: normal;
+}
+
 .flex-container {
   padding: 0px;
   margin: 0 auto 0 auto;
@@ -46,6 +69,7 @@ a {
 }
 
 .flex-item .info-block {
+    float: left;
     font-size: 15pt;
 }
 
@@ -53,11 +77,15 @@ a {
 	  font-weight: bold;
 }
 
+.flex-item .project-definition-separator {
+    border-right: 1px solid white; padding-right: 10px;
+    margin-right: 10px
+}
+
 .flex-item .definition {
 }
 
 .flex-item .number {
-    float: left;
   	font-size: 25pt;
 }
 
@@ -84,20 +112,68 @@ a {
 }
 
 .flex-item .reason {
-    float: right;
+    margin-left: 10px;
   	font-size: 15pt;
 }
 
+.flex-item .reason-icon {
+    font-size: 25px;
+}
+
+.flex-item .reason-block {
+    float: right;
+}
+
 .flex-item .for {
+    margin-left: 15px;
+    font-size: 20px;
 }
 
 .requestedFor-block {
     font-size: 15pt;
     float: left;
+    vertical-align: middle;
 }
 
 .flex-item .warnings {
 	  font-weight: bold;
   	font-size: 20pt;
     float: right;
+    vertical-align: middle;
+}
+
+@media (max-height: 600px) {
+  .prio-vertical-one {
+      display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .prio-vertical-two {
+      display: none;
+  }
+}
+
+@media (max-height: 900px) {
+  .prio-vertical-three {
+      display: none;
+  }
+}
+
+@media (max-width: 870px) {
+  .prio-horizontal-one {
+      display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .prio-horizontal-two {
+      display: none;
+  }
+}
+
+@media (max-width: 1300px) {
+  .prio-horizontal-three {
+      display: none;
+  }
 }

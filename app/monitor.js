@@ -99,7 +99,7 @@ var async = require('async'),
         return changes;
     };
 
-exports.Monitor = function () {
+module. exports = function () {
     var self = this;
 
     self.configuration = {
@@ -149,4 +149,4 @@ exports.Monitor = function () {
     };
 };
 
-exports.Monitor.prototype = new events.EventEmitter();
+module.exports.prototype = new events.EventEmitter();

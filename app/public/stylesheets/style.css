@@ -93,15 +93,15 @@ body {
   	font-size: 25pt;
 }
 
+.flex-item .duration-block {
+    float: right;
+    font-size: 10pt;
+}
+
 .flex-item .duration-icon {
     font-size: 25px;
     float: left;
     margin-top: 3px;
-}
-
-.flex-item .duration-block {
-    float:right;
-  	font-size: 10pt;
 }
 
 .flex-item .time {

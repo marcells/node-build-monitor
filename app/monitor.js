@@ -82,8 +82,6 @@ var async = require('async'),
         });
 
         changes.order = newBuildIds;
-        
-        console.log(changes);
 
         return changes;
     };
@@ -130,7 +128,6 @@ exports.Monitor = function () {
                 self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 
                 self.currentBuilds = allBuilds;
-                //self.emit('buildsLoaded', allBuilds);
             }
 
             setTimeout(self.run, self.configuration.interval);

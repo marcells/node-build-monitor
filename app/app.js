@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -48,17 +43,40 @@ io.sockets.on('connection', function (socket) {
 
 var monitor = new (require('./monitor').Monitor)();
 var tfs = require('./monitor-tfs'),
-    travis = require('./monitor-travis');
+    tfsMonitor = require('./monitor-tfs'),
+    travisMonitor = require('./monitor-travis'),
+    tfs,
+    tfs2 = new tfsMonitor.TfsPlugin(),
+    travis = new travisMonitor.TravisPlugin();
 
-tfs.configure({
-    server: process.env.server, // 'https://odatawrapper'
-    user: process.env.user, // 'Domain\User'
-    password: process.env.password, // 'Password'
-    collection: process.env.collection || 'DefaultCollection'
-});
+if(process.env.TFS1_ACTIVE) {
+    tfs = new tfsMonitor.TfsPlugin(),
+
+    tfs.configure({
+        server: process.env.TFS1_ODATA_WRAPPER, // 'https://odatawrapper'
+        user: process.env.TFS1_USER, // 'Domain\User'
+        password: process.env.TFS1_PASSWORD, // 'Password'
+        collection: process.env.TFS1_COLLECTION || 'DefaultCollection'
+    });
+
+    monitor.watchOn(tfs);
+}
+
+if(process.env.TFS2_ACTIVE) {
+    tfs2 = new tfsMonitor.TfsPlugin(),
+
+    tfs2.configure({
+        server: process.env.TFS2_ODATA_WRAPPER, // 'https://odatawrapper'
+        user: process.env.TFS2_USER, // 'Domain\User'
+        password: process.env.TFS2_PASSWORD, // 'Password'
+        collection: process.env.TFS2_COLLECTION || 'DefaultCollection'
+    });
+
+    monitor.watchOn(tfs2);
+}
 
 travis.configure({
-    slug: process.env.slug
+    slug: process.env.TRAVIS1_SLUG
 });
 
 monitor.configure({
@@ -66,8 +84,8 @@ monitor.configure({
     numberOfBuilds: 12
 });
 
-monitor.watchOn(tfs);
-//monitor.watchOn(travis);
+monitor.watchOn(tfs2);
+monitor.watchOn(travis);
 
 monitor.on('buildsLoaded', function (builds) {
   io.sockets.emit('buildsLoaded', monitor.currentBuilds);

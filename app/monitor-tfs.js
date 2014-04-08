@@ -1,93 +1,96 @@
-var request = require('request'),
-    configuration,
-    makeUrl = function (url, odata) {
-        var baseUrl = configuration.server + '/' + configuration.collection + url;
+var request = require('request');
 
-        if (odata) {
-            baseUrl += '?' + odata;
-        }
+exports.TfsPlugin = function () {
+    var self = this,
+        makeUrl = function (url, odata) {
+            var baseUrl = self.configuration.server + '/' + self.configuration.collection + url;
 
-        return baseUrl;
-    },
-    makeRequest = function (url, callback) {
-        request({ 
-            'url': url,
-            'rejectUnauthorized': false,
-            'headers': { 'Accept': 'application/json' },
-            'json' : true,
-            'auth': { 'user': configuration.user, 'pass': configuration.password }
-            },
-            function(error, response, body) {
-                callback(body);
-        });
-    },
-    parseDate = function (dateAsString) {
-        return new Date(parseInt(dateAsString.substr(6)));
-    },
-    forEachResult = function (body, callback) {
-        for (var i = 0; i < body.d.results.length; i++) {
-            callback(body.d.results[i]);
-        }
-    },
-    isNullOrWhiteSpace = function (string) {
-        if(!string) {
-            return true;
-        }
+            if (odata) {
+                baseUrl += '?' + odata;
+            }
 
-        return string === null || string.match(/^ *$/) !== null;
-    },
-    getStatus = function (statusText) {
-        if (statusText === "Succeeded") return "Green";
-        if (statusText === "Failed") return "Red";
-        if (statusText === "InProgress") return "Blue";
-        if (statusText === "Stopped") return "Gray";
-        if (statusText === "PartiallySucceeded") return "Orange";
+            return baseUrl;
+        },
+        makeRequest = function (url, callback) {
+            request({ 
+                'url': url,
+                'rejectUnauthorized': false,
+                'headers': { 'Accept': 'application/json' },
+                'json' : true,
+                'auth': { 'user': self.configuration.user, 'pass': self.configuration.password }
+                },
+                function(error, response, body) {
+                    callback(body);
+            });
+        },
+        parseDate = function (dateAsString) {
+            return new Date(parseInt(dateAsString.substr(6)));
+        },
+        forEachResult = function (body, callback) {
+            for (var i = 0; i < body.d.results.length; i++) {
+                callback(body.d.results[i]);
+            }
+        },
+        isNullOrWhiteSpace = function (string) {
+            if(!string) {
+                return true;
+            }
 
-        return null;
-    },
-    simplifyBuild = function (res) {
-        return {
-            id: res.Project + '|' + res.Definition + '|' + res.Number,
-            project: res.Project,
-            definition: res.Definition,
-            number: res.Number,
-            isRunning: !res.BuildFinished,
-            startedAt: parseDate(res.StartTime),
-            finishedAt: parseDate(res.FinishTime),
-            requestedFor: res.RequestedFor,
-            statusText: res.Status,
-            status: getStatus(res.Status),
-            reason: res.Reason,
-            hasErrors: !isNullOrWhiteSpace(res.Errors),
-            hasWarnings: !isNullOrWhiteSpace(res.Warnings)
-        };
-    },
-    queryBuildIds = function (callback) {
-        makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
+            return string === null || string.match(/^ *$/) !== null;
+        },
+        getStatus = function (statusText) {
+            if (statusText === "Succeeded") return "Green";
+            if (statusText === "Failed") return "Red";
+            if (statusText === "InProgress") return "Blue";
+            if (statusText === "Stopped") return "Gray";
+            if (statusText === "PartiallySucceeded") return "Orange";
+
+            return null;
+        },
+        simplifyBuild = function (res) {
+            return {
+                id: res.Project + '|' + res.Definition + '|' + res.Number,
+                project: res.Project,
+                definition: res.Definition,
+                number: res.Number,
+                isRunning: !res.BuildFinished,
+                startedAt: parseDate(res.StartTime),
+                finishedAt: parseDate(res.FinishTime),
+                requestedFor: res.RequestedFor,
+                statusText: res.Status,
+                status: getStatus(res.Status),
+                reason: res.Reason,
+                hasErrors: !isNullOrWhiteSpace(res.Errors),
+                hasWarnings: !isNullOrWhiteSpace(res.Warnings)
+            };
+        },
+        queryBuildIds = function (callback) {
+            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
+                var builds = [];
+                
+                forEachResult(body, function (res) {
+                    builds.push(res.Project + '_' + res.Number + '_' + res.Status);
+                });
+
+                callback(builds.join('|'));
+            });
+        },
+        queryBuilds = function (callback) {
             var builds = [];
-            
-            forEachResult(body, function (res) {
-                builds.push(res.Project + '_' + res.Number + '_' + res.Status);
-            });
+            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (body) {
+                forEachResult(body, function (res) {
+                    builds.push(simplifyBuild(res));
+                });
 
-            callback(builds.join('|'));
-        });
-    },
-    queryBuilds = function (callback) {
-        var builds = [];
-        makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (body) {
-            forEachResult(body, function (res) {
-                builds.push(simplifyBuild(res));
+                callback(builds);
             });
+        };
 
-            callback(builds);
-        });
+    self.configure = function (config) {
+        self.configuration = config;
     };
 
-exports.configure = function (config) {
-    configuration = config;
-};
-
-exports.check = function (callback) {
-    queryBuilds(callback);
+    self.check = function (callback) {
+        queryBuilds(callback);
+    };
 };

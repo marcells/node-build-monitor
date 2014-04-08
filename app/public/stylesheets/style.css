@@ -10,6 +10,8 @@ html {
 }
 
 body {
+  padding: 0px;
+  margin: 0px;
   font: 14px 'open_sanscondensed_light', Helvetica, Arial, sans-serif;
   height: 100%;  
   overflow: hidden;
@@ -44,6 +46,11 @@ a {
 .reset-height {
     display: inline-block;
     line-height: normal;
+}
+
+.carbon-background {
+  background-image: url(/images/pattern-b8gl.png);
+  background-repeat: repeat;
 }
 
 .flex-container {

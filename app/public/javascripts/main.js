@@ -77,8 +77,6 @@ var BuildViewModel = function (build) {
     }, this);
 
     this.duration = ko.forcibleComputed(function () {
-        console.log(moment(this.startedAt()).fromNow());
-
         return this.isRunning() 
             ? 'running for ' + countdown(this.startedAt()).toString()
             : 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();

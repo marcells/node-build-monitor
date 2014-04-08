@@ -13,7 +13,7 @@ block scripts
     script(src='/javascripts/main.js')
 
 block content
-    div#builds.flex-container(data-bind='foreach: builds')
+    div#builds.flex-container(data-bind='foreach: builds').carbon-background
         .flex-item
             .flex-item-inner(data-bind='{ animateCss: style }').nowrap
                 span.number(data-bind='text: number').nowrap

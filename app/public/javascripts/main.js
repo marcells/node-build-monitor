@@ -65,6 +65,7 @@ var BuildViewModel = function (build) {
     this.style = ko.computed(function () {
         if (this.status()) {
             return {
+                'color': 'white',
                 'background-color': this.status().toLowerCase()
             };
         }

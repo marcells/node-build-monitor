@@ -17,10 +17,6 @@ body {
   overflow: hidden;
 }
 
-a {
-  color: #00B7FF;
-}
-
 .clear {
     clear: both;
 }
@@ -66,7 +62,7 @@ a {
   width: 33%;
   height: 25%;
   
-  color: white;
+  color: transparent;
 }
 
 .flex-item-inner {
@@ -85,7 +81,8 @@ a {
 }
 
 .flex-item .project-definition-separator {
-    border-right: 1px solid white; padding-right: 10px;
+    border-right: 1px solid;
+    padding-right: 10px;
     margin-right: 10px
 }
 

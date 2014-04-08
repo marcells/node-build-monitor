@@ -27,6 +27,19 @@ var async = require('async'),
             if(dateA == dateB) return 0;
         });
     },
+    distinctBuildsByETag = function (newBuilds) {
+        var unique = {};
+        
+        for (var i = newBuilds.length - 1; i >= 0; i--) {
+            var build = newBuilds[i];
+
+            if (unique[build.etag]) {
+                newBuilds.splice(i, 1);
+            }
+
+            unique[build.etag] = true;
+        };
+    },
     onlyTake = function (numberOfBuilds, newBuilds) {
         newBuilds.splice(numberOfBuilds);
     },
@@ -118,9 +131,10 @@ exports.Monitor = function () {
         function (error) {
             log(allBuilds.length + ' builds found....');
             
+            generateAndApplyETags(allBuilds);
+            distinctBuildsByETag(allBuilds);
             sortBuilds(allBuilds);
             onlyTake(self.configuration.numberOfBuilds, allBuilds);
-            generateAndApplyETags(allBuilds);
 
             if(changed(self.currentBuilds, allBuilds)) {
                 log('builds changed');

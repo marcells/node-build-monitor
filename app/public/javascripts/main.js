@@ -137,6 +137,11 @@ $(function() {
         changes.updated.forEach(function (build) {
             var vm = app.getBuildById(build.id);
             vm.update(build);
+
+            if (build.status === 'Red') {
+                var audio = new Audio('/audio/woop.mp3');
+                audio.play();
+            }
         });
 
         changes.order.forEach(function (id, index) {

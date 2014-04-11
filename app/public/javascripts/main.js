@@ -74,7 +74,7 @@ var BuildViewModel = function (build) {
     this.time = ko.forcibleComputed(function () {
         return this.isRunning() 
             ? 'started ' + moment(this.startedAt()).fromNow()
-            : 'finished ' + moment(this.finishedAt()).calendar();
+            : 'finished ' + moment(this.finishedAt()).fromNow();
     }, this);
 
     this.duration = ko.forcibleComputed(function () {

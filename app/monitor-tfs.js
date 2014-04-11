@@ -43,7 +43,7 @@ exports.TfsPlugin = function () {
             if (statusText === "Failed") return "Red";
             if (statusText === "InProgress") return "Blue";
             if (statusText === "Stopped") return "Gray";
-            if (statusText === "PartiallySucceeded") return "Orange";
+            if (statusText === "PartiallySucceeded") return "'#FFA500'";
 
             return null;
         },

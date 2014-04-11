@@ -84,8 +84,7 @@ monitor.configure({
     numberOfBuilds: 12
 });
 
-monitor.watchOn(tfs2);
-monitor.watchOn(travis);
+//monitor.watchOn(travis);
 
 monitor.on('buildsLoaded', function (builds) {
   io.sockets.emit('buildsLoaded', monitor.currentBuilds);

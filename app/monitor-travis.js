@@ -1,6 +1,6 @@
 var request = require('request');
 
-exports.TravisPlugin = function () {
+module.exports = function () {
     var self = this,
         requestBuilds = function (callback) {
             request({ 

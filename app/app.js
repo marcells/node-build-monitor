@@ -41,16 +41,16 @@ io.sockets.on('connection', function (socket) {
   socket.emit('buildsLoaded', monitor.currentBuilds);
 });
 
-var monitor = new (require('./monitor').Monitor)();
-var tfs = require('./monitor-tfs'),
-    tfsMonitor = require('./monitor-tfs'),
-    travisMonitor = require('./monitor-travis'),
+var Monitor = require('./monitor'),
+    Tfs = require('./monitor-tfs'),
+    Travis = require('./monitor-travis'),
+    monitor = new Monitor(),
     tfs,
-    tfs2 = new tfsMonitor.TfsPlugin(),
-    travis = new travisMonitor.TravisPlugin();
+    tfs2,
+    travis;
 
 if(process.env.TFS1_ACTIVE) {
-    tfs = new tfsMonitor.TfsPlugin(),
+    tfs = new Tfs(),
 
     tfs.configure({
         server: process.env.TFS1_ODATA_WRAPPER, // 'https://odatawrapper'
@@ -63,7 +63,7 @@ if(process.env.TFS1_ACTIVE) {
 }
 
 if(process.env.TFS2_ACTIVE) {
-    tfs2 = new tfsMonitor.TfsPlugin(),
+    tfs2 = new Tfs(),
 
     tfs2.configure({
         server: process.env.TFS2_ODATA_WRAPPER, // 'https://odatawrapper'
@@ -75,16 +75,20 @@ if(process.env.TFS2_ACTIVE) {
     monitor.watchOn(tfs2);
 }
 
-travis.configure({
-    slug: process.env.TRAVIS1_SLUG
-});
+if(process.env.TRAVIS1_ACTIVE) {
+    travis = new Travis();
+
+    travis.configure({
+        slug: process.env.TRAVIS1_SLUG
+    });
+
+    monitor.watchOn(travis);
+}
 
 monitor.configure({
     interval: 5000,
     numberOfBuilds: 12
 });
-
-//monitor.watchOn(travis);
 
 monitor.on('buildsLoaded', function (builds) {
   io.sockets.emit('buildsLoaded', monitor.currentBuilds);

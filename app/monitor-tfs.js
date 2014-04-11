@@ -1,6 +1,6 @@
 var request = require('request');
 
-exports.TfsPlugin = function () {
+module.exports = function () {
     var self = this,
         makeUrl = function (url, odata) {
             var baseUrl = self.configuration.server + '/' + self.configuration.collection + url;

@@ -81,9 +81,9 @@ body {
 }
 
 .flex-item .project-definition-separator {
-    border-right: 1px solid;
-    padding-right: 10px;
-    margin-right: 10px
+    border-left: 1px solid;
+    padding-left: 10px;
+    margin-left: 10px
 }
 
 .flex-item .definition {

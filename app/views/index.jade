@@ -21,8 +21,8 @@ block content
 
                 div.medium-height.nowrap.prio-vertical-two
                     span.info-block.middle
-                        span.project.project-definition-separator(data-bind='text: project')
-                        span.definition(data-bind='text: definition')
+                        span.project(data-bind='text: project')
+                        span.definition.project-definition-separator(data-bind='text: definition, visible: definition')
                     span.reason-block.prio-horizontal-two
                         span.reason-icon.middle.fontawesome-cog
                         span.middle.reason(data-bind='text: reason')

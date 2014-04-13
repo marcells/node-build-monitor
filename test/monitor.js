@@ -43,6 +43,22 @@ describe('monitor', function () {
 
                 monitor.run();
             });
+
+            it('should invoke the buildsChanged two times, when a build is updated', function(done) {
+                monitor.once('buildsChanged', function (firstChanges) {
+                    monitor.once('buildsChanged', function (secondChanges) {
+                        firstChanges.added.should.have.lengthOf(1);
+                        secondChanges.updated.should.have.lengthOf(1);
+                        secondChanges.order.should.have.lengthOf(1);
+
+                        done();
+                    });
+
+                    fake.update(0);
+                });
+
+                monitor.run();
+            });
         });
     });
 });

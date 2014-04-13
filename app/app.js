@@ -47,7 +47,8 @@ var Monitor = require('./monitor'),
     monitor = new Monitor(),
     tfs,
     tfs2,
-    travis;
+    travis,
+    travis2;
 
 if(process.env.TFS1_ACTIVE) {
     tfs = new Tfs(),
@@ -83,6 +84,16 @@ if(process.env.TRAVIS1_ACTIVE) {
     });
 
     monitor.watchOn(travis);
+}
+
+if(process.env.TRAVIS2_ACTIVE) {
+    travis2 = new Travis();
+
+    travis2.configure({
+        slug: process.env.TRAVIS2_SLUG
+    });
+
+    monitor.watchOn(travis2);
 }
 
 monitor.configure({

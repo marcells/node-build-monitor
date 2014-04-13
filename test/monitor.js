@@ -75,12 +75,12 @@ describe('monitor', function () {
                     monitor.once('buildsChanged', function (secondChanges) {
                         firstChanges.added.should.have.lengthOf(1);
                         secondChanges.added.should.have.lengthOf(1);
-                        secondChanges.order.should.have.lengthOf(2);
+                        secondChanges.order.should.eql(['project_2', 'project_1']);
 
                         done();
                     });
 
-                    fake.add();
+                    fake.addLater();
                 });
 
                 monitor.run();

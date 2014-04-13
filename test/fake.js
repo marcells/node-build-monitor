@@ -11,7 +11,7 @@ module.exports = function () {
     };
 
     self.add = function () {
-        self.builds.push({
+        var build = {
             id: 'project_' + (self.builds.length + 1),
             project: 'project',
             number: 'number',
@@ -24,7 +24,19 @@ module.exports = function () {
             reason: 'reason',
             hasErrors: true,
             hasWarnings: true
-        });
+        };
+
+        self.builds.push(build);
+        return build;
+    };
+
+    self.addLater = function () {
+        var build = self.add();
+
+        build.startedAt = new Date(2001, 0, 1);
+        build.finishedAt = new Date(2001, 0, 2);
+
+        return build;
     };
 
     self.update = function (index) {

@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     jshint: {
-      files: ['Gruntfile.js', 'app/monitor*.js'],
+      files: ['Gruntfile.js', 'app/monitor*.js', 'app/monitors/**.js'],
       options: {
         // options here to override JSHint defaults
         globals: {

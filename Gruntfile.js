@@ -1,26 +1,37 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     jshint: {
-      files: ['Gruntfile.js', 'app/monitor*.js', 'app/monitors/**.js'],
+      files: ['Gruntfile.js', 'app/monitor*.js', 'app/monitors/**.js', 'test/**/*.js'],
       options: {
-        // options here to override JSHint defaults
-        globals: {
-          jQuery: true,
-          console: true,
-          module: true,
-          document: true
-        }
+        expr: true
+      }
+    },
+    mochaTest: {
+      test: {
+        options : {
+          reporter: 'spec',
+          require: 'should'
+        },
+        src: ['test/**/*.js']
+      },
+      watch: {
+        options : {
+          reporter: 'dot',
+          require: 'should'
+        },
+        src: ['test/**/*.js']
       }
     },
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
+      tasks: ['jshint', 'mochaTest:watch']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
-  grunt.registerTask('ci', ['jshint']);
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('ci', ['jshint', 'mochaTest:test' ]);
+  grunt.registerTask('default', ['ci']);
 };

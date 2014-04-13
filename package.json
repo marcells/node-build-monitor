@@ -24,7 +24,9 @@
   },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
-  "scripts": {},
+  "scripts": {
+    "ci": "grunt ci"
+    },
   "engines": {
     "node": ">= 0.8.0"
   },

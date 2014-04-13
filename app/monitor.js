@@ -124,7 +124,7 @@ module.exports = function () {
         var allBuilds = [];
 
         async.each(self.plugins, function (plugin, pluginCallback) {
-            log('Check for builds...', self.debug);
+            log('Check for builds...', self.configuration.debug);
 
             plugin.check(function (pluginBuilds) {
                 Array.prototype.push.apply(allBuilds, pluginBuilds);
@@ -132,7 +132,7 @@ module.exports = function () {
             });
         },
         function (error) {
-            log(allBuilds.length + ' builds found....', self.debug);
+            log(allBuilds.length + ' builds found....', self.configuration.debug);
             
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
@@ -140,7 +140,7 @@ module.exports = function () {
             onlyTake(self.configuration.numberOfBuilds, allBuilds);
 
             if(changed(self.currentBuilds, allBuilds)) {
-                log('builds changed', self.debug);
+                log('builds changed', self.configuration.debug);
 
                 self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 

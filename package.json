@@ -19,7 +19,8 @@
     "grunt": "^0.4.4",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-mocha-test": "^0.10.2",
-    "should": "^3.3.0"
+    "should": "^3.3.0",
+    "grunt-contrib-watch": "^0.6.1"
   },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",

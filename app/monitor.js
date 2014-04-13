@@ -1,5 +1,5 @@
 var async = require('async'),
-    events = require('events')
+    events = require('events'),
     log = function (text) {
         console.log(new Date().toLocaleTimeString(), '|', text);
     },
@@ -11,7 +11,7 @@ var async = require('async'),
                 .createHash('md5')
                 .update(JSON.stringify(build))
                 .digest('hex');
-        };
+        }
     },
     sortBuilds = function (newBuilds) {
         var takeDate = function (build) {
@@ -38,7 +38,7 @@ var async = require('async'),
             }
 
             unique[build.etag] = true;
-        };
+        }
     },
     onlyTake = function (numberOfBuilds, newBuilds) {
         newBuilds.splice(numberOfBuilds);

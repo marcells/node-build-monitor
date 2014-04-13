@@ -10,9 +10,9 @@ module.exports = function () {
         callback(clone(self.builds));
     };
 
-    self.generateNew = function () {
+    self.add = function () {
         self.builds.push({
-            id: '0',
+            id: 'project_' + (self.builds.length + 1),
             project: 'project',
             number: 'number',
             isRunning: true,
@@ -31,7 +31,7 @@ module.exports = function () {
         self.builds[0].status = 'newStatus';
     };
 
-    self.generateNew();
+    self.add();
 
     return self;
 };

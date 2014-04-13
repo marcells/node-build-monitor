@@ -33,7 +33,7 @@ describe('monitor', function () {
         });
 
         describe('which is running', function () {
-            it('should invoke the buildsChanged event', function(done) {
+            it('should invoke the buildsChanged event', function (done) {
                 monitor.once('buildsChanged', function (changes) {
                     changes.added.should.have.lengthOf(1);
                     changes.order.should.have.lengthOf(1);
@@ -44,7 +44,17 @@ describe('monitor', function () {
                 monitor.run();
             });
 
-            it('should invoke the buildsChanged two times, when a build is updated', function(done) {
+            it('should invoke the buildsChanged event and contain an etag', function (done) {
+                monitor.once('buildsChanged', function (changes) {
+                    changes.added[0].should.have.ownProperty('etag');
+                    
+                    done();
+                });
+
+                monitor.run();
+            });
+
+            it('should invoke the buildsChanged two times, when a build is updated', function (done) {
                 monitor.once('buildsChanged', function (firstChanges) {
                     monitor.once('buildsChanged', function (secondChanges) {
                         firstChanges.added.should.have.lengthOf(1);
@@ -55,6 +65,22 @@ describe('monitor', function () {
                     });
 
                     fake.update(0);
+                });
+
+                monitor.run();
+            });
+
+            it('should invoke the buildsChanged two times, when a build is added', function (done) {
+                monitor.once('buildsChanged', function (firstChanges) {
+                    monitor.once('buildsChanged', function (secondChanges) {
+                        firstChanges.added.should.have.lengthOf(1);
+                        secondChanges.added.should.have.lengthOf(1);
+                        secondChanges.order.should.have.lengthOf(2);
+
+                        done();
+                    });
+
+                    fake.add();
                 });
 
                 monitor.run();

@@ -98,7 +98,8 @@ if(process.env.TRAVIS2_ACTIVE) {
 
 monitor.configure({
     interval: 5000,
-    numberOfBuilds: 12
+    numberOfBuilds: 12,
+    debug: true
 });
 
 monitor.on('buildsLoaded', function (builds) {

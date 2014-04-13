@@ -1,7 +1,9 @@
 var async = require('async'),
     events = require('events'),
-    log = function (text) {
-        console.log(new Date().toLocaleTimeString(), '|', text);
+    log = function (text, debug) {
+        if(debug) {
+            console.log(new Date().toLocaleTimeString(), '|', text);
+        }
     },
     generateAndApplyETags = function (newBuilds) {
         for (var i = 0; i < newBuilds.length; i++) {
@@ -104,7 +106,8 @@ module.exports = function () {
 
     self.configuration = {
         interval: 5000,
-        numberOfBuilds: 12
+        numberOfBuilds: 12,
+        debug: false
     };
     self.plugins = [];
     self.currentBuilds = [];
@@ -121,7 +124,7 @@ module.exports = function () {
         var allBuilds = [];
 
         async.each(self.plugins, function (plugin, pluginCallback) {
-            log('Check for builds...');
+            log('Check for builds...', self.debug);
 
             plugin.check(function (pluginBuilds) {
                 Array.prototype.push.apply(allBuilds, pluginBuilds);
@@ -129,7 +132,7 @@ module.exports = function () {
             });
         },
         function (error) {
-            log(allBuilds.length + ' builds found....');
+            log(allBuilds.length + ' builds found....', self.debug);
             
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
@@ -137,7 +140,7 @@ module.exports = function () {
             onlyTake(self.configuration.numberOfBuilds, allBuilds);
 
             if(changed(self.currentBuilds, allBuilds)) {
-                log('builds changed');
+                log('builds changed', self.debug);
 
                 self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 

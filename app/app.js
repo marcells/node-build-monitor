@@ -42,8 +42,8 @@ io.sockets.on('connection', function (socket) {
 });
 
 var Monitor = require('./monitor'),
-    Tfs = require('./monitor-tfs'),
-    Travis = require('./monitor-travis'),
+    Tfs = require('./monitors/Tfs'),
+    Travis = require('./monitors/Travis'),
     monitor = new Monitor(),
     tfs,
     tfs2,

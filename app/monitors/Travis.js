@@ -33,6 +33,7 @@ module.exports = function () {
         },
         getStatus = function (result, state) {
             if (state === 'started') return "Blue";
+            if (state === 'created') return "Blue";
             if (state === 'canceled') return "Gray";
             if (result === null || result === 1) return "Red";
             if (result === 0) return "Green";

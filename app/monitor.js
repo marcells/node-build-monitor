@@ -99,7 +99,7 @@ var async = require('async'),
         return changes;
     };
 
-module. exports = function () {
+module.exports = function () {
     var self = this;
 
     self.configuration = {

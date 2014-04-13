@@ -15,7 +15,12 @@
     "jade": "^1.3.0",
     "socket.io": "^0.9.16"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-mocha-test": "^0.10.2",
+    "should": "^3.3.0"
+  },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {},

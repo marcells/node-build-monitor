@@ -109,7 +109,7 @@ $(function() {
     app.builds.push(new BuildViewModel({ project: 'Loading...'}));
     ko.applyBindings(app);
 
-    var socket = io.connect(socketEndpoint);
+    var socket = io.connect();
 
     socket.on('buildsLoaded', function (builds) {
          if (builds) {

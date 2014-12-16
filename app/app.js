@@ -23,8 +23,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', function(req, res) {
     res.render('index', {
-        title: 'Running builds',
-        socket: process.env.socket || 'http://localhost:3000/'
+        title: 'Running builds'
     });
 });
 

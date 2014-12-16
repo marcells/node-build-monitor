@@ -1,1 +1,1 @@
-FROM monitor
+FROM marcells/node-build-monitor

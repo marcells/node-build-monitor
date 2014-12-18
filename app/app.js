@@ -44,7 +44,7 @@ var Monitor = require('./monitor'),
 
 for (var i = 0; i < config.services.length; i++) {
     var serviceConfig = config.services[i];
-    var service = new (require('./monitors/' + serviceConfig.name))();
+    var service = new (require('./services/' + serviceConfig.name))();
     
     service.configure(serviceConfig.configuration);
 

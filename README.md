@@ -5,6 +5,7 @@
 ### Supported services
 
 - [Visual Studio Online](http://www.visualstudio.com/)
+- [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy)
 - [Travis CI](https://travis-ci.org/)
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.

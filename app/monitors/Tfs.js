@@ -17,7 +17,7 @@ module.exports = function () {
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
                 'json' : true,
-                'auth': { 'user': self.configuration.user, 'pass': self.configuration.password }
+                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
                 },
                 function(error, response, body) {
                     callback(body);

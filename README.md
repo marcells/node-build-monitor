@@ -41,6 +41,14 @@ Place a file `config.json` next to the `Dockerfile` and configure the services:
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
+    },
+    {
+      "name": "TfsProxy",
+      "configuration": {
+        "url": "http://tfs-server:8080/tfs/DefaultCollection",
+        "username": "domain\\buildadmin",
+        "password": "buildadmin_secret"
+      }
     }
   ]
 }

@@ -16,6 +16,14 @@
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
+    },
+    {
+      "name": "TfsProxy",
+      "configuration": {
+        "url": "http://tfs-server:8080/tfs/DefaultCollection",
+        "username": "domain\\buildadmin",
+        "password": "buildadmin_secret"
+      }
     }
   ]
 }

@@ -2,9 +2,16 @@ var request = require('request');
 
 module.exports = function () {
     var self = this,
+        tryGetTfsProxyUrlOfDocker = function () {
+            return 'http://' 
+                + process.env.TFS_PROXY_PORT_4567_TCP_ADDR
+                + ':'
+                + process.env.TFS_PROXY_PORT_4567_TCP_PORT
+                + '/builds';
+        },
         makeRequest = function (callback) {
             request({ 
-                'url': self.configuration.tfsProxyUrl,
+                'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
                 'rejectUnauthorized': false,
                 'headers': { 
                     'Accept': 'application/json',

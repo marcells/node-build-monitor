@@ -53,10 +53,6 @@ for (var i = 0; i < config.services.length; i++) {
 
 monitor.configure(config.monitor);
 
-monitor.on('buildsLoaded', function (builds) {
-  io.sockets.emit('buildsLoaded', monitor.currentBuilds);
-});
-
 monitor.on('buildsChanged', function (changes) {
   io.sockets.emit('buildsChanged', changes);
 });

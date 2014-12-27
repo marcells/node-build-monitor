@@ -16,6 +16,8 @@ Here's a sample: http://buildmon.apphb.com/ (it could take a short time to load,
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
+Scroll down to see how to run it [with Docker](#run-it-with-docker-in-production) or [manually](#run-it-manually-during-development).
+
 #### Configuration
 
 The build monitor is configured in the file `config.json` in the app directory.

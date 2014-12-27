@@ -59,17 +59,6 @@ module.exports = function () {
                 hasWarnings: false
             };
         },
-        queryBuildIds = function (callback) {
-            makeRequest(function (body) {
-                var builds = [];
-                
-                forEachResult(body, function (res) {
-                    builds.push(res.teamProjectDefinition + '_' + res.buildNumber + '_' + res.buildStatusText);
-                });
-
-                callback(builds.join('|'));
-            });
-        },
         queryBuilds = function (callback) {
             var builds = [];
             makeRequest(function (body) {

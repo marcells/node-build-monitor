@@ -64,17 +64,6 @@ module.exports = function () {
                 hasWarnings: !isNullOrWhiteSpace(res.Warnings)
             };
         },
-        queryBuildIds = function (callback) {
-            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc&$select=Project,Number,Status'), function (body) {
-                var builds = [];
-                
-                forEachResult(body, function (res) {
-                    builds.push(res.Project + '_' + res.Number + '_' + res.Status);
-                });
-
-                callback(builds.join('|'));
-            });
-        },
         queryBuilds = function (callback) {
             var builds = [];
             makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (body) {

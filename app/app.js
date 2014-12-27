@@ -49,7 +49,7 @@ for (var i = 0; i < config.services.length; i++) {
     service.configure(serviceConfig.configuration);
 
     monitor.watchOn(service);
-};
+}
 
 monitor.configure(config.monitor);
 

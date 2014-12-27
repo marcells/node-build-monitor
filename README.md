@@ -2,30 +2,138 @@
 
 [![Build Status](https://travis-ci.org/marcells/node-build-monitor.svg?branch=master)](https://travis-ci.org/marcells/node-build-monitor)
 
+node-build-monitor is a __Build Monitor__ written in __Node.js__, which supports several build services. It can __easily be extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run it as a __Docker__ container.
+
+Here's a sample: http://buildmon.apphb.com/ (it could take a short time to load, cause it's running on a free App Harbor instance)
+
+[![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
+
 ### Supported services
 
+- [Travis CI](https://travis-ci.org/)
 - [Visual Studio Online](http://www.visualstudio.com/)
 - [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy)
-- [Travis CI](https://travis-ci.org/)
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
-__Documentation is following soon.__
+#### Configuration
 
-### Docker
+The build monitor is configured in the file `config.json` in the app directory.
+
+```json
+{
+  "monitor": {
+    "interval": 30000,
+    "numberOfBuilds": 12,
+    "debug": true
+  },
+  "services": [
+    {
+      "name": "Travis",
+      "configuration": {
+        "slug": "node-build-monitor"
+      }
+    },
+    {
+      "name": "Travis",
+      "configuration": {
+        "slug": "marcells/bloggy"
+      }
+    }
+  ]
+}
+```
+
+In the `monitor` section you can set up some general settings:
+- the update interval (in milliseconds)
+- the number of builds, which will be read and displayed in the web frontend
+- enable or disable some debug output on the console
+
+The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
+- the `name` setting refers to the used service
+- the `configuration` setting refers to its configuration, which may differ from each service (see below)
+
+##### Travis CI
+
+Supports the [Travis CI](https://travis-ci.org/) build service.
+
+```json
+{
+  "name": "Travis",
+  "configuration": {
+    "slug": "marcells/node-build-monitor"
+  }
+}
+```
+
+| Setting      | Description                                                                |
+|--------------|----------------------------------------------------------------------------|
+| `slug`       | The name of the build (usually your GitHub user name and the project name) |
+
+
+##### Visual Studio Online
+
+Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
+
+```json
+{
+  "name": "Tfs",
+  "configuration": {
+    "server": "https://myusername.visualstudio.com",
+    "collection": "DefaultCollection",
+    "username": "vs_online_username",
+    "password": "vs_online_password"
+  }
+}
+```
+
+| Setting      | Description                                                                                                                             |
+|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `server`     | Your Visual Studio Online account main page                                                                                             |
+| `collection` | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently) |
+| `username`   | Your Visual Studio Online user name                                                                                                     |
+| `password`   | Your Visual Studio Online password                                                                                                      |
+
+##### Team Foundation Server (on-premise) 
+
+Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](https://github.com/marcells/tfs-proxy) bridge.
+
+```json
+{
+  "name": "TfsProxy",
+  "configuration": {
+    "tfsProxyUrl": "http://tfs-proxy:4567/builds",
+    "url": "http://tfs-server:8080/tfs/DefaultCollection",
+    "username": "domain\\buildadmin",
+    "password": "buildadmin_password"
+  }
+}
+```
+
+| Setting       | Description                                                                                                                                                                                          |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section). |
+| `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)                                                            |
+| `username`    | User with permission to query build details                                                                                                                                                          |
+| `password`    | Your Visual Studio Online password                                                                                                                                                                   |
+
+### Run it with Docker (in production)
 
 You can try out or install the build monitor server with [Docker](https://www.docker.com/) easily.
+
+#### 1. Create Dockerfile
 
 Create a `Dockerfile` with the following content (just this one line). You can find information about the base image [here](https://registry.hub.docker.com/u/marcells/node-build-monitor/dockerfile/).
 ```
 FROM marcells/node-build-monitor
 ```
 
+#### 2. Create configuration and set up the build monitor
 Place a file `config.json` next to the `Dockerfile` and configure the services:
 ```json
 {
   "monitor": {
-    "interval": 5000,
+    "interval": 30000,
     "numberOfBuilds": 12,
     "debug": true
   },
@@ -41,36 +149,63 @@ Place a file `config.json` next to the `Dockerfile` and configure the services:
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
-    },
-    {
-      "name": "TfsProxy",
-      "configuration": {
-        "url": "http://tfs-server:8080/tfs/DefaultCollection",
-        "username": "domain\\buildadmin",
-        "password": "buildadmin_secret"
-      }
     }
   ]
 }
 ```
+
+See the description of this file in the configuration section above.
+
+#### 3. Build your custom build monitor image
 
 Build your custom node-build-monitor docker image. This will also include your configuration from the previous step.
 ```
 docker build -t my-node-build-monitor .
 ```
 
+#### 4. Run the container
+
+##### a. Without tfs-proxy
+
 Run a new container from your custom image and provide the exposed port 3000 a port number you want.
 ```
 docker run -d -p 12345:3000 my-node-build-monitor
 ```
 
+##### a. With tfs-proxy
 
-### Raspberry Pi Configuration
+If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
+
+1. Run the tfs-proxy container and give it a unique name.
+2. Run a new container from your custom image, link the tfs-proxy container into it and provide the exposed port 3000 a port number you want.
+```
+docker run -d --name tfs-proxy marcells/tfs-proxy
+docker run -d -p 12345:3000 --link tfs-proxy:tfs-proxy my-node-build-monitor
+```
+
+Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
+
+#### 5. Access it with your browser
+
+Now open your browser and navigate to http://localhost:12345 to see your running or finished builds.
+
+### Run it manually (during development)
+
+1. Pull the repository
+2. Place a file `config.json` in the app folder (see the description of the file in the configuration section above)
+3. Run the build monitor with `node app/app.js`
+4. Open your browser and navigate to http://localhost:12345 (switch to fullscreen for the best experience)
+
+Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
+
+### Additional: Raspberry Pi Configuration
 
 Here are some useful links, how to run the build monitor frontend on a Raspberry Pi.
 
-1. [Boot to browser](http://www.niteoweb.com/blog/raspberry-pi-boot-to-browser)
-2. [Automatically turn the monitor of in the evening](http://glframebuffer.wordpress.com/2013/08/28/raspberrypi-how-to-turn-off-hdmi-from-raspberry-pi/)
+- [Boot to browser](http://www.niteoweb.com/blog/raspberry-pi-boot-to-browser)
+- [Automatically turn the monitor off in the evening](http://glframebuffer.wordpress.com/2013/08/28/raspberrypi-how-to-turn-off-hdmi-from-raspberry-pi/)
+
+This sample script can be used in a cronjob to automatically send your screen to sleep mode in the evening and wake it up in the morning.
 
 ```bash
 #!/bin/bash
@@ -89,3 +224,27 @@ if [ $1 = 'off' ]; then
   echo 'Switched Screen OFF!'
 fi
 ```
+
+### License
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Marcell Spies
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

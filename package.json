@@ -1,6 +1,7 @@
 {
   "name": "node-build-monitor",
   "version": "0.8.0",
+  "description" : "A Build Monitor written in Node.js, which supports several build services and can be extended easily.",
   "author": "Marcell Spies <marcells@gmx.de>",
   "contributors": [
     {
@@ -30,6 +31,5 @@
   "engines": {
     "node": ">= 0.8.0"
   },
-  "license": "MIT",
-  "config": {}
+  "license": "MIT"
 }

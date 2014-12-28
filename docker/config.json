@@ -1,8 +1,8 @@
 {
   "monitor": {
-    "interval": 5000,
+    "interval": 300000,
     "numberOfBuilds": 12,
-    "debug": true
+    "debug": false
   },
   "services": [
     {
@@ -18,11 +18,9 @@
       }
     },
     {
-      "name": "TfsProxy",
+      "name": "Travis",
       "configuration": {
-        "url": "http://tfs-server:8080/tfs/DefaultCollection",
-        "username": "domain\\buildadmin",
-        "password": "buildadmin_secret"
+        "slug": "bagder/curl"
       }
     }
   ]

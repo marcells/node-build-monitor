@@ -1,7 +1,7 @@
 {
   "name": "node-build-monitor",
   "version": "0.8.0",
-  "description" : "A Build Monitor written in Node.js, which supports several build services and can be extended easily.",
+  "description": "A Build Monitor written in Node.js, which supports several build services and can be extended easily.",
   "author": "Marcell Spies <marcells@gmx.de>",
   "contributors": [
     {
@@ -10,10 +10,11 @@
     }
   ],
   "dependencies": {
-    "request": "~2.34.0",
     "async": "~0.6.1",
     "express": "~3.5.1",
     "jade": "^1.3.0",
+    "jenkins-api": "^0.2.5",
+    "request": "~2.34.0",
     "socket.io": "^0.9.16"
   },
   "devDependencies": {
@@ -27,7 +28,7 @@
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
     "ci": "grunt ci"
-    },
+  },
   "engines": {
     "node": ">= 0.8.0"
   },

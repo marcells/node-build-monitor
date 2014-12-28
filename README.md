@@ -11,6 +11,7 @@ Here's a sample: http://buildmon.apphb.com/ (it could take a short time to load,
 ### Supported services
 
 - [Travis CI](https://travis-ci.org/)
+- [Jenkins](http://jenkins-ci.org/)
 - [Visual Studio Online](http://www.visualstudio.com/)
 - [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy)
 
@@ -71,6 +72,25 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 | Setting      | Description                                                                |
 |--------------|----------------------------------------------------------------------------|
 | `slug`       | The name of the build (usually your GitHub user name and the project name) |
+
+##### Jenkins
+
+Supports the [Jenkins](http://jenkins-ci.org/) build service.
+
+```json
+{
+  "name": "Jenkins",
+  "configuration": {
+    "url": "http://jenkins_username:jenkins_password@jenkins-server:8080",
+    "job": "JenkinsJobName"
+  }
+}
+```
+
+| Setting      | Description                                                                                                                |
+|--------------|----------------------------------------------------------------------------------------------------------------------------|
+| `url`        | The url to the Jenkins Server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
+| `job`        | The name of the Jenkins Job                                                                                                |
 
 
 ##### Visual Studio Online

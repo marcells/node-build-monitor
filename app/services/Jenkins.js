@@ -49,14 +49,14 @@ module.exports = function () {
                 for (var i = 0; i < build.actions.length; i++) {
                     var action = build.actions[i];
                     if (action.causes) {
-                        for (var i = 0; i < action.causes.length; i++) {
-                            var cause = build.actions[i].causes[i];
+                        for (var j = 0; j < action.causes.length; j++) {
+                            var cause = action.causes[j];
                             if(cause && cause.userName) {
                                 return cause.userName;
                             }
-                        };
+                        }
                     }
-                };
+                }
             }
 
             return "Unknown";

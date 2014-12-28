@@ -113,8 +113,8 @@ module.exports = function () {
                 statusText: getStatusText(res),
                 status: getStatus(res),
                 reason: res.triggered.type,
-                hasErrors: true,
-                hasWarnings: true
+                hasErrors: false,
+                hasWarnings: false
             };
         };
 

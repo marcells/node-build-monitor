@@ -14,6 +14,7 @@ Here's a sample: http://buildmon.apphb.com/ (it could take a short time to load,
 
 - [Travis CI](https://travis-ci.org/)
 - [Jenkins](http://jenkins-ci.org/)
+- [TeamCity](https://www.jetbrains.com/teamcity/)
 - [Visual Studio Online](http://www.visualstudio.com/)
 - [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy)
 
@@ -91,9 +92,27 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 
 | Setting      | Description                                                                                                                |
 |--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `url`        | The url to the Jenkins Server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
+| `url`        | The url to the Jenkins server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
 | `job`        | The name of the Jenkins Job                                                                                                |
 
+##### TeamCity
+
+Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
+
+```json
+{
+  "name": "TeamCity",
+  "configuration": {
+    "url": "http://teamcity_username:teamcity_password@teamcity-server:8111",
+    "buildConfigurationId": "TeamCityProject_TeamCityBuildConfiguration"
+  }
+}
+```
+
+| Setting                 | Description                                                                                                     |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).                        |
+| `buildConfigurationId`  | The id of the TeamCity build configuration                                                                      |
 
 ##### Visual Studio Online
 

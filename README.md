@@ -195,7 +195,7 @@ Run a new container from your custom image and provide the exposed port 3000 a p
 docker run -d -p 12345:3000 my-node-build-monitor
 ```
 
-##### a. With tfs-proxy
+##### b. With tfs-proxy
 
 If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
 

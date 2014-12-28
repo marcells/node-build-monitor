@@ -16,7 +16,20 @@ ko.bindingHandlers.animateCss = {
         var unwrap = ko.unwrap(value);
 
         if(unwrap) {
-           $(element).animate(unwrap, 1000);
+            $(element).animate(unwrap, 1000);
+        }
+    }
+};
+
+ko.bindingHandlers.fadeOverlay = {
+    update: function(element, valueAccessor) {
+        var value = valueAccessor();
+        var unwrap = ko.unwrap(value);
+
+        if(unwrap) {
+            $(element).fadeOut(1500);
+        } else {
+            $(element).fadeIn(300);
         }
     }
 };
@@ -87,6 +100,7 @@ var BuildViewModel = function (build) {
 var AppViewModel = function() {
     var self = this;
 
+    this.isConnected = ko.observable(true);
     this.builds = ko.observableArray([]);
 
     this.getBuildById = function (id) {
@@ -112,11 +126,11 @@ $(function() {
     var socket = io.connect();
 
     socket.on('connect', function(){
-        console.log('connected!');
+        app.isConnected(true);
     });
 
     socket.on('disconnect', function(){
-        console.log('disconnected!');
+        app.isConnected(false);
     });
 
     socket.on('buildsLoaded', function (builds) {

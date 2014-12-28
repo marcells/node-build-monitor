@@ -64,6 +64,7 @@ body {
 	background: transparent;
   margin: 25px;
 	padding: 25px;
+  box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
 }
 
 .flex-item .info-block {

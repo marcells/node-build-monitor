@@ -21,7 +21,7 @@ block content
                         span.project(data-bind='text: project')
                         span.definition.project-definition-separator(data-bind='text: definition, visible: definition')
                     span.reason-block.prio-horizontal-two
-                        span.reason-icon.middle.fontawesome-cog
+                        span.reason-icon.middle.fa.fa-cog
                         span.middle.reason(data-bind='text: reason')
 
                 .clear
@@ -29,7 +29,7 @@ block content
                 div.medium-height.nowrap.prio-vertical-one
                     span.middle.status(data-bind='text: statusText')
                     span.middle.duration-block.reset-height.prio-horizontal-three
-                        span.duration-icon.fontawesome-time
+                        span.duration-icon.fa.fa-clock-o
                         span.middle.time(data-bind='text: time')
                         br
                         span.middle.time(data-bind='text: duration')
@@ -38,9 +38,9 @@ block content
 
                 div.medium-height.nowrap.prio-vertical-three
                     span.middle.requestedFor-block
-                        span.middle.fontawesome-user
+                        span.middle.fa.fa-user
                         span.middle.for(data-bind='text: requestedFor')
                     span.middle.warnings.prio-horizontal-one
-                        span.middle.fontawesome-warning-sign(data-bind='visible: hasWarnings')
-                        span.middle.fontawesome-remove-sign(data-bind='visible: hasErrors')
+                        span.middle.fa.fa-exclamation-triangle(data-bind='visible: hasWarnings')
+                        span.middle.fa.fa-times-circle(data-bind='visible: hasErrors')
                 .clear

@@ -1,9 +1,4 @@
-@import url(http://weloveiconfonts.com/api/?family=fontawesome);
 @import url("fonts.css");
-
-[class*="fontawesome-"]:before {
-  font-family: 'FontAwesome', sans-serif;
-}
 
 html {
 	height:100%;
@@ -13,7 +8,7 @@ body {
   padding: 0px;
   margin: 0px;
   font: 14px 'open_sanscondensed_light', Helvetica, Arial, sans-serif;
-  height: 100%;  
+  height: 100%;
   overflow: hidden;
 }
 
@@ -99,7 +94,7 @@ body {
 }
 
 .flex-item .duration-icon {
-    font-size: 25px;
+    font-size: 35px;
     float: left;
     margin-top: 3px;
 }

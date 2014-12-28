@@ -1,6 +1,7 @@
 ## node-build-monitor
 
 [![Build Status](https://travis-ci.org/marcells/node-build-monitor.svg?branch=master)](https://travis-ci.org/marcells/node-build-monitor)
+[![Code Climate](https://codeclimate.com/github/marcells/node-build-monitor/badges/gpa.svg)](https://codeclimate.com/github/marcells/node-build-monitor)
 
 node-build-monitor is a __Build Monitor__ written in __Node.js__, which supports several build services. It can __easily be extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run it as a __Docker__ container.
 

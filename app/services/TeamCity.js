@@ -91,6 +91,15 @@ module.exports = function () {
 
             return null;
         },
+        getRequestedFor = function (build) {
+            if(build.triggered.type === 'user' && build.triggered.user) {
+                return build.triggered.user.username;
+            } else if (build.triggered.type === 'vcs') {
+                return build.triggered.details;
+            }
+
+            return null;
+        },
         simplifyBuild = function (res) {
             return {
                 id: res.buildTypeId + '|' + res.number,
@@ -100,12 +109,12 @@ module.exports = function () {
                 isRunning: res.running === true,
                 startedAt: parseStartDate(res),
                 finishedAt: parseFinishDate(res),
-                requestedFor: res.triggered.user.username,
+                requestedFor: getRequestedFor(res),
                 statusText: getStatusText(res),
                 status: getStatus(res),
                 reason: res.triggered.type,
-                hasErrors: false,
-                hasWarnings: false
+                hasErrors: true,
+                hasWarnings: true
             };
         };
 

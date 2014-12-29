@@ -16,12 +16,6 @@
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
-    },
-    {
-      "name": "Travis",
-      "configuration": {
-        "slug": "bagder/curl"
-      }
     }
   ]
 }

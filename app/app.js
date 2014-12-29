@@ -24,6 +24,7 @@ if ('development' == app.get('env')) {
   app.use(errorhandler());
 }
 
+// run express
 var server = http.createServer(app),
     io = socketio.listen(server);
 
@@ -31,10 +32,16 @@ server.listen(app.get('port'), function() {
   console.log('node-build-monitor is listening on port ' + app.get('port'));
 });
 
+// run socket.io
 io.sockets.on('connection', function (socket) {
+  socket.emit('settingsChanged', {
+    version: require('../package').version
+  });
+
   socket.emit('buildsLoaded', monitor.currentBuilds);
 });
 
+// configure monitor
 var Monitor = require('./monitor'),
     monitor = new Monitor();
 
@@ -53,4 +60,5 @@ monitor.on('buildsChanged', function (changes) {
   io.emit('buildsChanged', changes);
 });
 
+// run monitor
 monitor.run();

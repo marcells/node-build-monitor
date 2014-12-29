@@ -7,7 +7,7 @@ require.config({
     }
 });
 
-define(['ko', 'bindingHandlers', 'BuildServer', 'AppViewModel'], function (ko, bindingHandlers, BuildServer, AppViewModel) {
+define(['ko', 'bindingHandlers', 'BuildMonitorServer', 'AppViewModel'], function (ko, bindingHandlers, BuildMonitorServer, AppViewModel) {
     bindingHandlers.register();
 
     var app = new AppViewModel();
@@ -15,27 +15,31 @@ define(['ko', 'bindingHandlers', 'BuildServer', 'AppViewModel'], function (ko, b
     $(function() {
         ko.applyBindings(app);
 
-        var buildServer = new BuildServer();
+        var buildMonitorServer = new BuildMonitorServer();
 
-        buildServer.onConnected = function() {
+        buildMonitorServer.onConnected = function() {
             app.setIsConnected(true);
         };
 
-        buildServer.onDisconnected = function() {
+        buildMonitorServer.onDisconnected = function() {
             app.setIsConnected(false);
         };
 
-        buildServer.onBuildsLoaded = function (builds) {
+        buildMonitorServer.onBuildsLoaded = function (builds) {
             app.loadBuilds(builds);
             app.setIsLoading(false);
         };
 
-        buildServer.onBuildsChanged = function (changes) {
+        buildMonitorServer.onBuildsChanged = function (changes) {
             app.updateCurrentBuildsWithChanges(changes);
             app.setIsLoading(false);
         };
 
-        buildServer.connect();
+        buildMonitorServer.onVersionChanged = function () {
+            window.location.reload(true);
+        };
+
+        buildMonitorServer.connect();
 
         setInterval(app.updateBuildTimes, 1000);
     });

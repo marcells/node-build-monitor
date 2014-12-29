@@ -1,6 +1,7 @@
 define(['io'], function (io) {
-    var BuildServer = function () {
-        var self = this;
+    var BuildMonitorServer = function () {
+        var self = this,
+            cachedSettings;
 
         this.connect = function () {
             var socket = io.connect();
@@ -11,13 +12,23 @@ define(['io'], function (io) {
                 if (!builds) {
                     return;
                 }
-                
+
                 self.onBuildsLoaded(builds);
             });
 
             socket.on('buildsChanged', self.onBuildsChanged);
+            socket.on('settingsChanged', function (settings) {
+                if (!cachedSettings) {
+                    cachedSettings = settings;
+                    return;
+                }
+
+                if(cachedSettings.version !== settings.version) {
+                    self.onVersionChanged();
+                }
+            });
         };
     };
 
-    return BuildServer;
+    return BuildMonitorServer;
 });

@@ -1,12 +1,12 @@
-## node-build-monitor
-
 [![Build Status](https://travis-ci.org/marcells/node-build-monitor.svg?branch=master)](https://travis-ci.org/marcells/node-build-monitor)
 [![Code Climate](https://codeclimate.com/github/marcells/node-build-monitor/badges/gpa.svg)](https://codeclimate.com/github/marcells/node-build-monitor)
 [![Dependency Status](https://david-dm.org/marcells/node-build-monitor.svg)](https://david-dm.org/marcells/node-build-monitor)
 
-node-build-monitor is a __Build Monitor__ written in __Node.js__, which supports several build services. It can __be easily extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run as a __Docker__ container.
+## node-build-monitor
 
-__Here's a sample:__ http://builds.mspi.es
+> A __Build Monitor__ written in __Node.js__, which supports several build services. It can __be easily extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run as a __Docker__ container.
+
+__Here's a demo:__ http://builds.mspi.es
 <br />
 <sub><sup>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sup></sub>
 
@@ -14,17 +14,24 @@ __Here's a sample:__ http://builds.mspi.es
 
 ### Supported services
 
-- [Travis CI](https://travis-ci.org/)
-- [Jenkins](http://jenkins-ci.org/)
-- [TeamCity](https://www.jetbrains.com/teamcity/)
-- [Visual Studio Online](http://www.visualstudio.com/)
-- [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy)
+- [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
+- [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
+- [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
+- [Visual Studio Online](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-online))</sup></sub>
+- [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-on-premise))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
-Scroll down to see how to run it [with Docker](#run-it-with-docker-in-production) or [manually](#run-it-manually-during-development).
+Jump to the [configuration documentation](#configuration) and see how the services are configured.
 
-#### Configuration
+### Quickstart
+
+You have two options:
+
+- Run node-build-monitor [manually with node](#run-it-manually-during-development)
+- Run node-build-monitor [with Docker](#run-it-with-docker-in-production)
+
+### Configuration
 
 The build monitor is configured in the file `config.json` in the app directory.
 
@@ -61,7 +68,7 @@ The `services` section accepts an array, each describing a single build service 
 - the `name` setting refers to the used service
 - the `configuration` setting refers to its configuration, which may differ from each service (see below)
 
-##### Travis CI
+#### Travis CI
 
 Supports the [Travis CI](https://travis-ci.org/) build service.
 
@@ -78,7 +85,7 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 |--------------|----------------------------------------------------------------------------|
 | `slug`       | The name of the build (usually your GitHub user name and the project name) |
 
-##### Jenkins
+#### Jenkins
 
 Supports the [Jenkins](http://jenkins-ci.org/) build service.
 
@@ -97,7 +104,7 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 | `url`        | The url to the Jenkins server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
 | `job`        | The name of the Jenkins Job                                                                                                |
 
-##### TeamCity
+#### TeamCity
 
 Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 
@@ -116,7 +123,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 | `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).                        |
 | `buildConfigurationId`  | The id of the TeamCity build configuration                                                                      |
 
-##### Visual Studio Online
+#### Visual Studio Online
 
 Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 
@@ -139,7 +146,7 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 | `username`   | Your Visual Studio Online user name                                                                                                     |
 | `password`   | Your Visual Studio Online password                                                                                                      |
 
-##### Team Foundation Server (on-premise) 
+#### Team Foundation Server (on-premise) 
 
 Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](https://github.com/marcells/tfs-proxy) bridge.
 
@@ -168,7 +175,7 @@ You can try out or install the build monitor with [Docker](https://www.docker.co
 
 __TL;DR:__ Go to the [docker directory](docker/), edit the file `config.json` and execute the script, which you need.
 
-Below is each step of the script explained in detail.
+Below, each step of the script is explained in detail.
 
 #### 1. Create Dockerfile
 

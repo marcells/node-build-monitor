@@ -6,7 +6,9 @@
 
 node-build-monitor is a __Build Monitor__ written in __Node.js__, which supports several build services. It can __easily be extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run it as a __Docker__ container.
 
-Here's a sample: http://buildmon.apphb.com/ (it could take a short time to load, cause it's running on a free App Harbor instance)
+__Here's a sample:__ http://builds.mspi.es
+<br />
+<sub><sup>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sup></sub>
 
 [![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
 

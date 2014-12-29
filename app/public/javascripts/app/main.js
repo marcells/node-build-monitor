@@ -7,7 +7,7 @@ require.config({
     }
 });
 
-define(['ko', 'BuildServer', 'bindingHandlers', 'AppViewModel'], function (ko, BuildServer, bindingHandlers, AppViewModel) {
+define(['ko', 'bindingHandlers', 'BuildServer', 'AppViewModel'], function (ko, bindingHandlers, BuildServer, AppViewModel) {
     bindingHandlers.register();
 
     var app = new AppViewModel();

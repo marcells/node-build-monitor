@@ -1,12 +1,12 @@
-var express = require('express');
-var http = require('http');
-var path = require('path');
-var socketio = require('socket.io');
-var config = require('./config');
-var favicon = require('serve-favicon');
-var morgan = require('morgan');
-var errorhandler = require('errorhandler');
-var app = express();
+var express = require('express'),
+    http = require('http'),
+    path = require('path'),
+    socketio = require('socket.io'),
+    config = require('./config'),
+    favicon = require('serve-favicon'),
+    morgan = require('morgan'),
+    errorhandler = require('errorhandler'),
+    app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -24,8 +24,8 @@ if ('development' == app.get('env')) {
   app.use(errorhandler());
 }
 
-var server = http.createServer(app);
-var io = socketio.listen(server);
+var server = http.createServer(app),
+    io = socketio.listen(server);
 
 server.listen(app.get('port'), function() {
   console.log('node-build-monitor is listening on port ' + app.get('port'));
@@ -39,8 +39,8 @@ var Monitor = require('./monitor'),
     monitor = new Monitor();
 
 for (var i = 0; i < config.services.length; i++) {
-    var serviceConfig = config.services[i];
-    var service = new (require('./services/' + serviceConfig.name))();
+    var serviceConfig = config.services[i],
+        service = new (require('./services/' + serviceConfig.name))();
     
     service.configure(serviceConfig.configuration);
 

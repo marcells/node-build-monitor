@@ -8,7 +8,7 @@
 
 __Here's a demo:__ http://builds.mspi.es
 <br />
-<sub><sup>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sup></sub>
+<sup>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sup>
 
 [![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
 
@@ -285,7 +285,7 @@ fi
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Marcell Spies
+Copyright (c) 2014 Marcell Spies ([@marcells](https://twitter.com/marcells) | http://mspi.es)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

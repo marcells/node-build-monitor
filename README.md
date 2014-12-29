@@ -164,7 +164,11 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 
 ### Run it with Docker (in production)
 
-You can try out or install the build monitor server with [Docker](https://www.docker.com/) easily.
+You can try out or install the build monitor with [Docker](https://www.docker.com/) easily.
+
+__TL;DR:__ Go to the [docker directory](docker/), edit the file `config.json` and execute the script, which you need.
+
+Below is each step of the script explained in detail.
 
 #### 1. Create Dockerfile
 

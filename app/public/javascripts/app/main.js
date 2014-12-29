@@ -7,81 +7,36 @@ require.config({
     }
 });
 
-define(['ko', 'io', 'bindingHandlers', 'BuildViewModel', 'AppViewModel'], function (ko, io, bindingHandlers, BuildViewModel, AppViewModel) {
+define(['ko', 'BuildServer', 'bindingHandlers', 'AppViewModel'], function (ko, BuildServer, bindingHandlers, AppViewModel) {
     bindingHandlers.register();
 
     var app = new AppViewModel();
 
     $(function() {
-        setInterval(function () {
-            app.builds().forEach(function (build) {
-                build.time.evaluateImmediate();
-                build.duration.evaluateImmediate();
-            })
-        }, 1000);
-
         ko.applyBindings(app);
-        
-        var socket = io.connect();
 
-        socket.on('connect', function() {
-            if(app.isLoadingInitially) {
-                app.isLoadingInitially = false;
-            } else {
-                app.setIsConnected(true);
-            }
-        });
+        var buildServer = new BuildServer();
 
-        socket.on('disconnect', function() {
+        buildServer.onConnected = function() {
+            app.setIsConnected(true);
+        };
+
+        buildServer.onDisconnected = function() {
             app.setIsConnected(false);
-        });
+        };
 
-        socket.on('buildsLoaded', function (builds) {
-            if (builds) {
-                console.log('buildsLoaded', builds);
-
-                app.builds.removeAll();
-
-                builds.forEach(function (build) {
-                    app.builds.push(new BuildViewModel(build));
-                });
-
-                app.setIsLoading(false);
-            }
-        });
-
-        socket.on('buildsChanged', function (changes) {
-            changes.removed.forEach(function (build) {
-                app.builds.remove(function (item) {
-                    return item.id() === build.id;
-                });
-            });
-
-            changes.added.forEach(function (build, index) {
-                app.builds.splice(index, 0, new BuildViewModel(build));
-            });
-
-            changes.updated.forEach(function (build) {
-                var vm = app.getBuildById(build.id);
-                vm.update(build);
-
-                if (build.status === 'Red') {
-                    var audio = new Audio('/audio/woop.mp3');
-                    audio.play();
-                }
-            });
-
-            changes.order.forEach(function (id, index) {
-                var build = app.getBuildById(id);
-                var from = app.builds.indexOf(build);
-
-                if (from !== index) {
-                    app.builds.splice(index, 0, app.builds.splice(from, 1)[0]);
-                }
-            });
-
-            console.log('buildsChanged', changes);
+        buildServer.onBuildsLoaded = function (builds) {
+            app.loadBuilds(builds);
             app.setIsLoading(false);
-        });
+        };
+
+        buildServer.onBuildsChanged = function (changes) {
+            app.updateCurrentBuildsWithChanges(changes);
+            app.setIsLoading(false);
+        };
+
+        buildServer.connect();
+
+        setInterval(app.updateBuildTimes, 1000);
     });
 });

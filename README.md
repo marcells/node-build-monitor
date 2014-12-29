@@ -222,7 +222,7 @@ docker run -d -p 12345:3000 my-node-build-monitor
 If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
 
 1. Run the tfs-proxy container and give it a unique name.
-2. Run a new container from your custom image, link the tfs-proxy container into it and provide the exposed port 3000 a port number you want.
+2. Run a new container from your custom image, link the tfs-proxy container into it and provide the exposed port 3000 a port number you want (in this sample 12345).
 ```
 docker run -d --name tfs-proxy marcells/tfs-proxy
 docker run -d -p 12345:3000 --link tfs-proxy:tfs-proxy my-node-build-monitor
@@ -232,14 +232,14 @@ Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it
 
 #### 5. Access it with your browser
 
-Now open your browser and navigate to http://localhost:12345 to see your running or finished builds.
+Now open your browser and navigate to [http://localhost:12345](http://localhost:12345) to see your running or finished builds. Switch to fullscreen for the best experience.
 
 ### Run it manually (during development)
 
 1. Pull the repository
 2. Place a file `config.json` in the app folder (see the description of the file in the configuration section above)
 3. Run the build monitor with `node app/app.js`
-4. Open your browser and navigate to http://localhost:12345 (switch to fullscreen for the best experience)
+4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
 
 Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
 

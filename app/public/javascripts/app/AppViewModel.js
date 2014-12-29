@@ -9,8 +9,8 @@ define(['ko', 'BuildViewModel'], function (ko, BuildViewModel) {
         this.builds = ko.observableArray([]);
 
         this.setIsConnected = function (value) {
-            if(self.isLoadingInitially) {
-                self.isLoadingInitially = false;
+            if(isLoadingInitially) {
+                isLoadingInitially = false;
                 return;
             }
 

@@ -1,13 +1,9 @@
 extends layout
 
 block scripts
-    script(src='/socket.io/socket.io.js')
-    script(src='/javascripts/moment.min.js')
-    script(src='/javascripts/countdown.min.js')
-    script(src='/javascripts/jquery-2.1.0.min.js')
-    script(src='/javascripts/jquery.color-2.1.2.min.js')
-    script(src='/javascripts/knockout-3.1.0.js')
-    script(src='/javascripts/main.js')
+    script(src='/javascripts/app/libs/jquery-2.1.0.min.js')
+    script(src='/javascripts/app/libs/jquery.color-2.1.2.min.js')
+    script(data-main="/javascripts/app/main", src='/javascripts/app/libs/require-2.1.15.min.js')
 
 block content
     div#builds.flex-container(data-bind='foreach: builds')
@@ -48,7 +44,7 @@ block content
     div.connection(data-bind='fadeOverlay: isIntercepted')
         div.overlay-background
         div.overlay-icon
-            span(data-bind='visible: infoType() === "connection"')
-                span.fa.fa-5x.fa-plug
             span(data-bind='visible: infoType() === "loading"')
                 span.fa.fa-5x.fa-circle-o-notch.fa-spin
+            span(data-bind='visible: infoType() === "connection"')
+                span.fa.fa-5x.fa-plug

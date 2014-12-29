@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
   app.use(errorhandler());
 }
 

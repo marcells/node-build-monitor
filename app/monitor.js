@@ -26,7 +26,8 @@ var async = require('async'),
 
             if(dateA < dateB) return 1;
             if(dateA > dateB) return -1;
-            if(dateA == dateB) return 0;
+            
+            return 0;
         });
     },
     distinctBuildsByETag = function (newBuilds) {
@@ -68,7 +69,7 @@ var async = require('async'),
             },
             getById = function (builds, id) {
                 return builds.filter(function (build) {
-                    return build.id == id;
+                    return build.id === id;
                 })[0];
             };
 
@@ -76,7 +77,7 @@ var async = require('async'),
         var newBuildIds = newBuilds.map(function (build) { return build.id; });
 
         newBuildIds.forEach(function (newBuildId) {
-            if (currentBuildIds.indexOf(newBuildId) == -1) {
+            if (currentBuildIds.indexOf(newBuildId) === -1) {
                 changes.added.push(getById(newBuilds, newBuildId));
             }
 
@@ -91,7 +92,7 @@ var async = require('async'),
         });
 
         currentBuildIds.forEach(function (currentBuildId) {
-            if (newBuildIds.indexOf(currentBuildId) == -1) {
+            if (newBuildIds.indexOf(currentBuildId) === -1) {
                 changes.removed.push(getById(currentBuilds, currentBuildId));
             }
         });

@@ -42,13 +42,15 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
         }, this);
 
         this.time = ko.forcibleComputed(function () {
-            return this.isRunning() ? 'started ' + moment(this.startedAt()).fromNow()
-                : 'finished ' + moment(this.finishedAt()).fromNow();
+            return this.isRunning() ?
+                'started ' + moment(this.startedAt()).fromNow() :
+                'finished ' + moment(this.finishedAt()).fromNow();
         }, this);
 
         this.duration = ko.forcibleComputed(function () {
-            return this.isRunning() ? 'running for ' + countdown(this.startedAt()).toString()
-                : 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
+            return this.isRunning() ?
+                'running for ' + countdown(this.startedAt()).toString() :
+                'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
         }, this);
     };
 

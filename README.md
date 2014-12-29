@@ -8,7 +8,7 @@
 
 __Here's a demo:__ http://builds.mspi.es
 <br />
-<sup>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sup>
+<sub>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
 
 [![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
 
@@ -28,8 +28,8 @@ Jump to the [configuration documentation](#configuration) and see how the servic
 
 You have two options:
 
-- Run node-build-monitor [manually with node](#run-it-manually-during-development)
-- Run node-build-monitor [with Docker](#run-it-with-docker-in-production)
+- Run node-build-monitor [manually with node](#run-it-manually-during-development) <sub><sup>(preferred during development)</sup></sub>
+- Run node-build-monitor [with Docker](#run-it-with-docker-in-production) <sub><sup>(preferred when you just want to run it)</sup></sub>
 
 ### Configuration
 
@@ -248,9 +248,10 @@ Now open your browser and navigate to [http://localhost:12345](http://localhost:
 ### Run it manually (during development)
 
 1. Pull the repository
-2. Place a file `config.json` in the app folder (see the description of the file in the configuration section above)
-3. Run the build monitor with `node app/app.js`
-4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
+2. Run `npm install`
+3. Place a file `config.json` in the app folder (see the description of the file in the configuration section above)
+4. Run the build monitor with `node app/app.js`
+5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
 
 Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
 

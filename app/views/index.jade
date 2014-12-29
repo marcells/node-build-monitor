@@ -45,7 +45,10 @@ block content
                         span.middle.fa.fa-times-circle(data-bind='visible: hasErrors')
                 .clear
 
-    div.connection(data-bind='fadeOverlay: isConnected')
+    div.connection(data-bind='fadeOverlay: isIntercepted')
         div.overlay-background
         div.overlay-icon
-            span.fa.fa-5x.fa-plug
+            span(data-bind='visible: infoType() === "connection"')
+                span.fa.fa-5x.fa-plug
+            span(data-bind='visible: infoType() === "loading"')
+                span.fa.fa-5x.fa-circle-o-notch.fa-spin

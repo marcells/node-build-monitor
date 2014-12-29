@@ -27,9 +27,9 @@ ko.bindingHandlers.fadeOverlay = {
         var unwrap = ko.unwrap(value);
 
         if(unwrap) {
-            $(element).fadeOut(1500);
-        } else {
             $(element).fadeIn(300);
+        } else {
+            $(element).fadeOut(1500);
         }
     }
 };
@@ -100,14 +100,30 @@ var BuildViewModel = function (build) {
 var AppViewModel = function() {
     var self = this;
 
-    this.isConnected = ko.observable(true);
+    this.isIntercepted = ko.observable();
+    this.infoType = ko.observable();
+
     this.builds = ko.observableArray([]);
+
+    this.isLoadingInitially = true;
+
+    this.setIsConnected = function (value) {
+        self.isIntercepted(!value);
+        self.infoType('connection');
+    };
+
+    this.setIsLoading = function (value) {
+        self.isIntercepted(value);
+        this.infoType('loading');
+    };
 
     this.getBuildById = function (id) {
         return self.builds().filter(function (build) {
             return build.id() === id;
         })[0];
     };
+
+    this.setIsLoading(true);
 };
 
 var app = new AppViewModel();
@@ -125,23 +141,29 @@ $(function() {
 
     var socket = io.connect();
 
-    socket.on('connect', function(){
-        app.isConnected(true);
+    socket.on('connect', function() {
+        if(app.isLoadingInitially) {
+            app.isLoadingInitially = false;
+        } else {
+            app.setIsConnected(true);
+        }
     });
 
-    socket.on('disconnect', function(){
-        app.isConnected(false);
+    socket.on('disconnect', function() {
+        app.setIsConnected(false);
     });
 
     socket.on('buildsLoaded', function (builds) {
-         if (builds) {
-             console.log('buildsLoaded', builds);
+        if (builds) {
+            console.log('buildsLoaded', builds);
 
-             app.builds.removeAll();
+            app.builds.removeAll();
 
-             builds.forEach(function (build) {
+            builds.forEach(function (build) {
                 app.builds.push(new BuildViewModel(build));
-             });
+            });
+
+            app.setIsLoading(false);
         }
     });
 
@@ -176,5 +198,6 @@ $(function() {
         });
 
         console.log('buildsChanged', changes);
+        app.setIsLoading(false);
     });
 });

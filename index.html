@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>node-build-monitor Project Page</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+
+<body>
+	<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="/" class="navbar-brand">
+          <div style="display:inline-block; vertical-align: middle; float: none">
+            <img src="images/icon_header.png" height="40px" style="vertical-align: middle; float: none">
+            <span style="vertical-align: middle; float: none">node-build-monitor</span>
+          </div>
+        </a>
+        
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+
+			<div class="collapse navbar-collapse navbar-right" id="navbar-main">
+				<ul class="nav navbar-nav navbar-right">
+          <li><a href="#live-demo">Live-Demo</a></li>
+					<li><a href="#features">Facts &amp; Features</a></li>
+          <li><a href="#supported-services">Supported services</a></li>
+					<li>
+            <a href="https://github.com/marcells/node-build-monitor" class="btn-primary">
+              <span class="fa fa-github" aria-hidden="true"></span> View on GitHub
+            </a>
+          </li>
+				</ul>
+      </div>
+		</div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-xs-12 col-md-8">
+            <h1>Watch your builds</h1>
+            <p>
+            Always keep an eye on your latest builds and<br />
+            never miss a build status again!
+            </p>
+            <p>
+              <a href="https://github.com/marcells/node-build-monitor" class="btn btn-primary btn-lg">
+                <span class="fa fa-github" aria-hidden="true"></span> 
+                View on GitHub
+              </a>
+              <a href="https://github.com/marcells/node-build-monitor/releases/latest" class="btn btn-default btn-lg">
+                Download latest release
+              </a>
+            </p>
+            <!-- 
+            <br />
+            <p>
+              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+            </p> -->
+          </div>
+
+          <div class="col-md-4 visible-lg visible-md">
+            <img src="images/icon.png" width="100%">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <hr>
+
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="live-demo"></a>
+        <h1>Live-Demo</h1>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="lead">Take a look at a running Build Monitor which is configured to display Travis-CI builds of some public repositories.
+            <p>
+              The Live-Demo will always be up-to-date cause it's automatically deployed when the GitHub repository is updated.
+            </p>
+            
+            <br />
+            <br />
+
+            </p>
+            <p class="text-center">
+              <a href="http://builds.mspi.es" class="btn btn-default btn-lg">View Demo</a>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <a href="http://builds.mspi.es" class="thumbnail">
+              <img src="screenshots/all_valid.png">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="features"></a>
+        <h1>Facts &amp; Features</h1>
+        <p class="lead">
+          It's already good, but it will get awesome!
+        </p>
+        <p>
+          This is the actual state of the <a href="https://github.com/marcells/node-build-monitor">node-build-monitor</a> project:
+          <ul>
+            <li>It's OpenSource!</li>
+            <li>Server is running with <a href="http://nodejs.org">Node.js</a> &amp; Client is running with <a href="http://knockoutjs.com/">Knockout</a></li>
+            <li>Responsive design</li>
+            <li>Support for different build services (see <a href="#supported-services">below</a>)</li>
+            <li>New build services can be created easily</li>
+            <li>Simple deployment of node-build-monitor with Docker (just two commands)</li>
+            <li>Alarm sound when a build fails</li>
+            <li>Use your Raspberry Pi to display the builds</li>
+          </ul>
+        </p>
+
+        <p>
+          Some ideas for the future are:
+          <ul>
+              <li>Support for different templates</li>
+              <li>Browser notifications</li>
+              <li>View build statistics</li>
+              <li>Server-side action triggers depending on the build state</li>
+          </ul>
+        </p>
+
+        <br />
+        <p>
+          You'll get more information in the file <a href="https://github.com/marcells/node-build-monitor/blob/master/README.md">README.md</a> of the node-build-monitor project.
+        </p>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="supported-services"></a>
+        <h1>Supported services</h1>
+        <p class="lead">
+          The major build services are already supported.
+        </p>
+        <p>
+          Currently the Build Monitor has support for the following services. You can mix them as you like and the Build Monitor
+          will automatically display just your latest ones.
+        </p>
+
+        <div class="clearfix">
+          <div class="panel panel-default pull-left" style="margin-right: 10px">
+            <div class="panel-heading">Jenkins</div>
+            <div class="panel-body">
+              <img src="images/logos/jenkins.png" width="200px" />
+            </div>
+          </div>
+
+          <div class="panel panel-default pull-left" style="margin-right: 10px">
+            <div class="panel-heading">Travis-CI</div>
+            <div class="panel-body">
+              <img src="images/logos/travisci.png" style="margin-right: 10px" width="200px"/>
+            </div>
+          </div>
+
+          <div class="panel panel-default pull-left" style="margin-right: 10px">
+            <div class="panel-heading">Visual Studio Online</div>
+            <div class="panel-body">
+              <img src="images/logos/vsonline.jpg" style="margin-right: 10px" width="200px"/>
+            </div>
+          </div>
+
+          <div class="panel panel-default pull-left" style="margin-right: 10px">
+            <div class="panel-heading">Team Foundation Server</div>
+            <div class="panel-body">
+              <img src="images/logos/tfs.png" style="margin-right: 10px" width="200px"/>
+            </div>
+          </div>
+
+          <div class="panel panel-default pull-left" style="margin-right: 10px">
+            <div class="panel-heading">TeamCity</div>
+            <div class="panel-body">
+              <img src="images/logos/teamcity.png" style="margin-right: 10px" width="200px"/>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          <i>Some services are still in preview and not fully tested. If there occur some problems just <a href="https://github.com/marcells/node-build-monitor/fork">fix the bug and make a pull request</a> or <a href="https://github.com/marcells/node-build-monitor/issues">create an issue</a>.</i>
+        </p>
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+  </div>
+
+  <div class="navbar navbar-default navbar-fixed-bottom" style="padding-top: 10px">
+    <div class="container">
+      <div class="navbar-right">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+            </li>
+
+            <li>
+              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+            </li>
+            
+            <li>
+              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="132" height="20"></iframe>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </div>
+</body>
+</html>

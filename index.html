@@ -8,6 +8,8 @@
   <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
@@ -56,6 +58,10 @@
             Always keep an eye on your latest builds and<br />
             never miss a build status again!
             </p>
+            
+            <br />
+            <br />
+
             <p>
               <a href="https://github.com/marcells/node-build-monitor" class="btn btn-primary btn-lg">
                 <span class="fa fa-github" aria-hidden="true"></span> 
@@ -88,7 +94,7 @@
         <h1>Live-Demo</h1>
         <div class="row">
           <div class="col-md-6">
-            <p class="lead">Take a look at a running Build Monitor which is configured to display Travis-CI builds of some public repositories.
+            <p class="lead">Take a look at a running Build Monitor which is configured to display Travis CI builds of some public repositories.
             <p>
               The Live-Demo will always be up-to-date cause it's automatically deployed when the GitHub repository is updated.
             </p>
@@ -126,10 +132,11 @@
             <li>Server is running with <a href="http://nodejs.org">Node.js</a> &amp; Client is running with <a href="http://knockoutjs.com/">Knockout</a></li>
             <li>Responsive design</li>
             <li>Support for different build services (see <a href="#supported-services">below</a>)</li>
-            <li>New build services can be created easily</li>
-            <li>Simple deployment of node-build-monitor with Docker (just two commands)</li>
+            <li>One common UI for all your builds</li>
+            <li>Simple deployment of <a href="https://github.com/marcells/node-build-monitor">node-build-monitor</a> with <a href="https://www.docker.com/">Docker</a> (just two commands)</li>
             <li>Alarm sound when a build fails</li>
-            <li>Use your Raspberry Pi to display the builds</li>
+            <li>Client refreshs itself automatically, when the server version is updated</li>
+            <li>Use your <a href="http://www.raspberrypi.org/">Raspberry Pi</a> to display the builds</li>
           </ul>
         </p>
 
@@ -173,7 +180,7 @@
           </div>
 
           <div class="panel panel-default pull-left" style="margin-right: 10px">
-            <div class="panel-heading">Travis-CI</div>
+            <div class="panel-heading">Travis CI</div>
             <div class="panel-body">
               <img src="images/logos/travisci.png" style="margin-right: 10px" width="200px"/>
             </div>
@@ -206,29 +213,30 @@
         </p>
       </div>
     </div>
-
-    <br />
-    <br />
-    <br />
   </div>
 
-  <div class="navbar navbar-default navbar-fixed-bottom" style="padding-top: 10px">
-    <div class="container">
-      <div class="navbar-right">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            </li>
+  <div style="height: 120px;" class="visible-xs"></div>
+  <div style="height: 40px;" class="visible-sm visible-md visible-lg"></div>
 
-            <li>
-              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            </li>
-            
-            <li>
-              <iframe src="http://ghbtns.com/github-btn.html?user=marcells&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="132" height="20"></iframe>
-            </li>
-          </ul>
-        </div>
+  <div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <div class="navbar-left">
+        <ul class="nav navbar-nav navbar-left">
+          <li><span class="navbar-text">Made by <a href="http://twitter.com/marcells" class="navbar-link">@marcells</a> with &#x2764; and passion | <a href="http://mspi.es" class="navbar-link">http://mspi.es</a></span></li>
+        </ul>
+      </div>
+
+      <div class="navbar-right" style="padding-top: 10px">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <iframe src="http://ghbtns.com/github-btn.html?user=marcells&repo=node-build-monitor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+          </li>
+
+          <li>
+            <iframe src="http://ghbtns.com/github-btn.html?user=marcells&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="132" height="20"></iframe>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </body>

@@ -21,3 +21,12 @@ body {
 }
 
 a.anchor{display: block; position: relative; top: -70px; visibility: hidden;}
+
+.share-bar .fb-share-button > span{
+	vertical-align: baseline !important;
+}
+
+.share-bar .text {
+	vertical-align: top;
+	margin-right: 5px;
+}

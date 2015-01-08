@@ -7,8 +7,8 @@ require.config({
     }
 });
 
-define(['ko', 'bindingHandlers', 'BuildMonitorServer', 'AppViewModel'], function (ko, bindingHandlers, BuildMonitorServer, AppViewModel) {
-    bindingHandlers.register();
+define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], function (ko, knockoutExtensions, BuildMonitorServer, AppViewModel) {
+    knockoutExtensions.register();
 
     var app = new AppViewModel();
 

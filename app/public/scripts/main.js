@@ -1,7 +1,7 @@
 require.config({
     paths: {
         io: '/socket.io/socket.io',
-        ko: 'libs/knockout-3.1.0',
+        ko: 'libs/knockout-3.2.0',
         moment: 'libs/moment.min',
         countdown: 'libs/countdown.min'
     }

@@ -7,6 +7,7 @@ define(['ko', 'BuildViewModel'], function (ko, BuildViewModel) {
         this.isIntercepted = ko.observable();
         this.infoType = ko.observable();
         this.builds = ko.observableArray([]);
+        this.theme = ko.observable('default');
 
         this.setIsConnected = function (value) {
             if(isLoadingInitially) {

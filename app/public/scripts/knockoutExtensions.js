@@ -35,6 +35,30 @@ define(['ko'], function (ko) {
                 }
             }
         };
+
+        var namingConventionLoader = {
+            getConfig: function(name, callback) {
+                var templateConfig = { fromUrl: '/themes/' + name + '.html' };
+                callback({ template: templateConfig });
+            }
+        };
+
+        ko.components.loaders.unshift(namingConventionLoader);
+
+        var templateFromUrlLoader = {
+            loadTemplate: function(name, templateConfig, callback) {
+                if (templateConfig.fromUrl) {
+                    var fullUrl = '/templates/' + templateConfig.fromUrl + '?cacheAge=' + templateConfig.maxCacheAge;
+                    $.get(fullUrl, function(markupString) {
+                        ko.components.defaultLoader.loadTemplate(name, markupString, callback);
+                    });
+                } else {
+                    callback(null);
+                }
+            }
+        };
+
+        ko.components.loaders.unshift(templateFromUrlLoader);
     };
 
     return this;

@@ -256,6 +256,26 @@ Now open your browser and navigate to [http://localhost:12345](http://localhost:
 
 Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
 
+### Theming support
+
+Currently different themes are supported. You can switch the themes by the url parameter `theme`.
+- `default`: Default theme (will be selected, even when the parameter is not in the url))
+- `list`: Preview of a theme which will show the builds as a list
+
+e.g.: [http://localhost:3000?theme=list](http://localhost:3000?theme=list)
+
+#### Creating a new theme
+
+If you want to create a new theme, you simply have to create one template file and one stylesheet in the following paths.
+- Stylesheet: `app/public/stylesheets/themes/[name of theme]/style.css` (you can place dependent css files in this folder)
+- Template: `app/public/templates/themes/[name of theme]/.html`
+
+Please use a unique class prefix like `[name of theme]-theme` for your css, so that we do not run into any conflicts with other themes.
+
+A list with the name `builds` with Knockout.js ViewModels [BuildViewModel](app/public/scripts/BuildViewModel.js) will be bound to the template. [Knockout.js](http://knockoutjs.com/) has a very low learning curve and provides a powerful data-binding mechanism.
+
+Just check out the other themes to get sample code. It's quite easy to create new themes.
+
 ### Additional: Raspberry Pi Configuration
 
 Here are some useful links, how to run the build monitor frontend on a Raspberry Pi.

@@ -1,57 +1,38 @@
-@import url("fonts.css");
-
-html {
-	height: 100%;
-}
-
-body {
-  padding: 0px;
-  margin: 0px;
-  font: 14px 'open_sanscondensed_light', Helvetica, Arial, sans-serif;
-  height: 100%;
-  overflow: hidden;
-}
-
-.clear {
+.default-theme .clear {
     clear: both;
 }
 
-.nowrap {
+.default-theme .nowrap {
     overflow: hidden;
     white-space: nowrap;
 }
 
-.box {
+.default-theme .box {
     border: 1px solid black;
 }
 
-.middle { 
+.default-theme .middle { 
   vertical-align: middle;
 }
 
-.medium-height {
+.default-theme .medium-height {
     line-height: 40px;
     height: 40px;
 }
 
-.reset-height {
+.default-theme .reset-height {
     display: inline-block;
     line-height: normal;
 }
 
-.carbon-background {
-  background-image: url(/images/pattern-b8gl.png);
-  background-repeat: repeat;
-}
-
-.flex-container {
+.default-theme .flex-container {
   padding: 0px;
   margin: 0 auto 0 auto;
   height: 100%;
   width: 100%;
 }
 
-.flex-item {
+.default-theme .flex-item {
   float: left;
   
   width: 33%;
@@ -60,82 +41,82 @@ body {
   color: transparent;
 }
 
-.flex-item-inner {
+.default-theme .flex-item-inner {
 	background: transparent;
   margin: 25px;
 	padding: 25px;
   box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
 }
 
-.flex-item .info-block {
+.default-theme .flex-item .info-block {
     float: left;
     font-size: 15pt;
 }
 
-.flex-item .project {
+.default-theme .flex-item .project {
 	  font-weight: bold;
 }
 
-.flex-item .project-definition-separator {
+.default-theme .flex-item .project-definition-separator {
     border-left: 1px solid;
     padding-left: 10px;
     margin-left: 10px
 }
 
-.flex-item .definition {
+.default-theme .flex-item .definition {
 }
 
-.flex-item .number {
+.default-theme .flex-item .number {
   	font-size: 25pt;
 }
 
-.flex-item .duration-block {
+.default-theme .flex-item .duration-block {
     float: right;
     font-size: 10pt;
 }
 
-.flex-item .duration-icon {
+.default-theme .flex-item .duration-icon {
     font-size: 35px;
     float: left;
     margin-top: 3px;
 }
 
-.flex-item .time {
+.default-theme .flex-item .time {
     margin-left: 10px;
 }
 
-.flex-item .status {
+.default-theme .flex-item .status {
     float: left;
     font-family: 'open_sans_condensedbold';
 	  font-weight: bold;
   	font-size: 25pt;
 }
 
-.flex-item .reason {
+.default-theme .flex-item .reason {
     margin-left: 10px;
   	font-size: 15pt;
 }
 
-.flex-item .reason-icon {
+.default-theme .flex-item .reason-icon {
     font-size: 25px;
 }
 
-.flex-item .reason-block {
+.default-theme .flex-item .reason-block {
     float: right;
 }
 
-.flex-item .for {
+.default-theme .flex-item .for {
     margin-left: 15px;
     font-size: 20px;
 }
 
-.requestedFor-block {
+.default-theme .requestedFor-block {
     font-size: 15pt;
     float: left;
     vertical-align: middle;
 }
 
-.flex-item .warnings {
+.default-theme .flex-item .warnings {
 	  font-weight: bold;
   	font-size: 20pt;
     float: right;
@@ -143,57 +124,37 @@ body {
 }
 
 @media (max-height: 600px) {
-  .prio-vertical-one {
+  .default-theme .prio-vertical-one {
       display: none;
   }
 }
 
 @media (max-height: 760px) {
-  .prio-vertical-two {
+  .default-theme .prio-vertical-two {
       display: none;
   }
 }
 
 @media (max-height: 900px) {
-  .prio-vertical-three {
+  .default-theme .prio-vertical-three {
       display: none;
   }
 }
 
 @media (max-width: 870px) {
-  .prio-horizontal-one {
+  .default-theme .prio-horizontal-one {
       display: none;
   }
 }
 
 @media (max-width: 1000px) {
-  .prio-horizontal-two {
+  .default-theme .prio-horizontal-two {
       display: none;
   }
 }
 
 @media (max-width: 1300px) {
-  .prio-horizontal-three {
+  .default-theme .prio-horizontal-three {
       display: none;
   }
-}
-
-.connection > .overlay-background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background-color: black;
-  opacity: 0.8;
-}
-
-.connection > .overlay-icon {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 45%;
-  left: 0px;
-  color: white;
-  text-align: center;
 }

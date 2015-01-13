@@ -38,7 +38,11 @@ define(['ko'], function (ko) {
 
         var namingConventionLoader = {
             getConfig: function(name, callback) {
-                var templateConfig = { fromUrl: '/themes/' + name + '.html' };
+                var templateConfig = {
+                    templateUrl: '/templates/themes/' + name + '.html',
+                    cssUrl: '/stylesheets/themes/' + name + '/style.css'
+                };
+
                 callback({ template: templateConfig });
             }
         };
@@ -47,10 +51,19 @@ define(['ko'], function (ko) {
 
         var templateFromUrlLoader = {
             loadTemplate: function(name, templateConfig, callback) {
-                if (templateConfig.fromUrl) {
-                    var fullUrl = '/templates/' + templateConfig.fromUrl + '?cacheAge=' + templateConfig.maxCacheAge;
-                    $.get(fullUrl, function(markupString) {
+                function loadCss(filename) {
+                    var linkElement = document.createElement("link");
+                    linkElement.setAttribute("rel", "stylesheet");
+                    linkElement.setAttribute("type", "text/css");
+                    linkElement.setAttribute("href", filename);
+
+                    $("head").append(linkElement);
+                }
+
+                if (templateConfig.templateUrl) {
+                    $.get(templateConfig.templateUrl, function(markupString) {
                         ko.components.defaultLoader.loadTemplate(name, markupString, callback);
+                        loadCss(templateConfig.cssUrl);
                     });
                 } else {
                     callback(null);

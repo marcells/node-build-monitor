@@ -1,0 +1,10 @@
+.list-theme .list-container {
+  font-size: 20pt;
+  margin: 30px;
+  color: white;
+}
+
+.list-theme .list-item {
+  margin-top: 15px;
+  padding: 10px;
+}

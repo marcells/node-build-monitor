@@ -8,3 +8,40 @@
   margin-top: 15px;
   padding: 10px;
 }
+
+.list-theme .clear {
+  clear: both;
+}
+
+@media (min-width: 1400px) {
+  .list-theme .list-item {
+    right: 0;
+    text-align: center;
+  }
+
+  .list-theme .part-1, .list-theme .part-2, .list-theme .part-3 {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-theme .part-1 {
+    text-align: left;
+    float: left;
+    width: 35%;
+  }
+
+  .list-theme .part-2 {
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+    width: 30%;
+  }
+
+  .list-theme .part-3 {
+    text-align: right;
+    float: right;
+    width: 35%;
+  }
+}

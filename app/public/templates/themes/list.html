@@ -1,34 +1,40 @@
 <div class="list-theme">
-  <h1 style="color: red">This theme is currently in preview!</h1>
-
-  <br />
-  <br />
-
   <div class="list-container" data-bind="foreach: builds">
-    <div class="list-item" data-bind="style : { 'background-color': status }">
-      <span data-bind="text: status"></span>
-      <span> | </span>
-      <span data-bind="text: number"></span>
-      <span> | </span>
-      <span data-bind="text: project"></span>
-      <span> | </span>
-      <span data-bind="text: definition"></span>
-      <span> | </span>
-      <span class="middle fa fa-cog"></span>
-      <span data-bind="text: reason"></span>
-      <span> | </span>
-      <span data-bind="text: statusText"></span>
-      <span> | </span>
-      <span class="middle fa fa-user"></span>
-      <span data-bind="text: requestedFor"></span>
-      <span> | </span>
-      <span class="fa fa-clock-o"></span>
-      <span data-bind="text: time"></span>
-      <span> and </span>
-      <span data-bind="text: duration"></span>
-      <span> | </span>
-      <span data-bind="visible: hasWarnings" class="middle fa fa-exclamation-triangle"></span>
-      <span data-bind="visible: hasErrors" class="middle fa fa-times-circle"></span>
+    <div class="list-item" data-bind="{ animateCss: style }">
+      <div class="part-1">
+        <span data-bind="text: number"></span>
+        <span> | </span>
+        <span data-bind="text: project"></span>
+        <span data-bind="visible: definition">
+          <span> | </span>
+          <span data-bind="text: definition"></span>
+        </span>
+        <span> | </span>
+        <span data-bind="text: statusText"></span>
+      </div>
+      <div class="part-2">
+        <span class="fa fa-cog"></span>
+        <span> </span>
+        <span data-bind="text: reason"></span>
+        <span> | </span>
+        <span class="fa fa-user"></span>
+        <span> </span>
+        <span data-bind="text: requestedFor"></span>
+      </div>
+      <div class="part-3">
+        <span class="fa fa-clock-o"></span>
+        <span> </span>
+        <span data-bind="text: time"></span>
+        <span> and </span>
+        <span data-bind="text: duration"></span>
+        <span data-bind="visible: hasWarnings() || hasErrors()">
+          <span> | </span>
+          <span data-bind="visible: hasWarnings" class="fa fa-exclamation-triangle"></span>
+          <span> </span>
+          <span data-bind="visible: hasErrors" class="fa fa-times-circle"></span>
+        </span>
+      </div>
+      <div class="clear"></div>
     </div>
   </div>
 </div>

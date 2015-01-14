@@ -5,9 +5,9 @@
 
 ## node-build-monitor
 
-> A __Build Monitor__ written in __Node.js__, which supports several build services. It can __be easily extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive web frontend__ automatically. And finally, everything is prepared to run as a __Docker__ container.
+> A __Build Monitor__ written in __Node.js__, which supports several build services. It can __be easily extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive and themable web frontend__ automatically. And finally, everything is prepared to run as a __Docker__ container.
 
-__Here's a demo:__ http://builds.mspi.es
+__Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-support))</sup></sub>
 <br />
 <sub>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
 
@@ -258,10 +258,15 @@ Run `grunt` to execute the tests and check the source code with [JSHint](http://
 
 ### Theming support
 
-Currently different themes are supported. You can switch the themes by the url parameter `theme`.
-- `default`: Default theme (will be selected, even when the parameter is not in the url))
-- `list`: Preview of a theme which will show the builds as a list
+Here you can check out the existing themes. Feel free to [add your own](#creating-a-new-theme) and make a pull request. It can be done very easy.
 
+| Theme   | Description                                                                        | Preview                                   |
+|---------|------------------------------------------------------------------------------------|-------------------------------------------|
+| default | Works best on bigger screens with a high resolution                                | [Demo](http://builds.mspi.es)             |
+| list    | Displays the builds as a list. Should also work on devices with a lower resolution | [Demo](http://builds.mspi.es?theme=list)  |
+| lingo   | Describes the build status in form of a hand-written sentence                      | [Demo](http://builds.mspi.es?theme=lingo) |
+
+You can switch the themes by the url parameter `theme`.
 e.g.: [http://localhost:3000?theme=list](http://localhost:3000?theme=list)
 
 #### Creating a new theme
@@ -307,7 +312,7 @@ fi
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Marcell Spies ([@marcells](https://twitter.com/marcells) | http://mspi.es)
+Copyright (c) 2015 Marcell Spies ([@marcells](https://twitter.com/marcells) | http://mspi.es)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

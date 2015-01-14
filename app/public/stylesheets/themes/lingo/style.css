@@ -1,0 +1,13 @@
+@import url("marck-script/css/marck-script.css");
+
+.lingo-theme .list-container {
+  font-family: 'Marck-Script';
+  font-size: 20pt;
+  margin: 30px;
+  color: white;
+}
+
+.lingo-theme .list-item {
+  margin-top: 15px;
+  padding: 10px;
+}

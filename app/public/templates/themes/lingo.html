@@ -1,0 +1,34 @@
+<div class="lingo-theme">
+  <div class="list-container" data-bind="foreach: builds">
+    <div class="list-item" data-bind="{ animateCss: style }">
+      <span>The build </span>
+      <span data-bind="text: number"></span>
+      
+      <span data-bind="visible: definition">
+        <span> of </span>
+        <span data-bind="text: definition"></span>
+        <span> as part </span>
+      </span>
+
+      <span> of project </span>
+      <span data-bind="text: project"></span>
+
+      <span> was triggered as </span>
+      <span data-bind="text: reason"></span>
+
+      <span> by </span>
+      <span data-bind="text: requestedFor"></span><span>, </span>
+
+      <span data-bind="text: time"></span>
+      <span> and </span>
+      <span data-bind="text: duration"></span>
+
+      <span> with the status </span>
+      <span data-bind="text: statusText"></span><span>.</span>
+
+      <span data-bind="visible: hasWarnings() || hasErrors()">
+        <span> and some warnings or errors.</span>
+      </span>
+    </div>
+  </div>
+</div>

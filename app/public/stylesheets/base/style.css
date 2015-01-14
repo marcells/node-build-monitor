@@ -12,6 +12,11 @@ body {
   overflow: hidden;
 }
 
+.full-size {
+  height: 100%;
+  width: 100%;
+}
+
 .carbon-background {
   background-image: url(/images/pattern-b8gl.png);
   background-repeat: repeat;

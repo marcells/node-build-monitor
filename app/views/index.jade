@@ -6,7 +6,7 @@ block scripts
     script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
 
 block content
-    div(data-bind='component: { name: theme, params: { builds: builds } }')
+    div.full-size(data-bind='component: { name: theme, params: { builds: builds } }')
 
     div.connection(data-bind='fadeOverlay: isIntercepted')
         div.overlay-background

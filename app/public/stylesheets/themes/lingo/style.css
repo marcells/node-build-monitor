@@ -11,3 +11,8 @@
   margin-top: 15px;
   padding: 10px;
 }
+
+.lingo-theme .emphasize {
+  color: #f7ffad;
+  /*font-weight: bold;*/
+}

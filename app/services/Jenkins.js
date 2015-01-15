@@ -48,7 +48,7 @@ module.exports = function () {
             if(build.actions) {
                 for (var i = 0; i < build.actions.length; i++) {
                     var action = build.actions[i];
-                    if (action.causes) {
+                    if ((action) && (action.causes)) {
                         for (var j = 0; j < action.causes.length; j++) {
                             var cause = action.causes[j];
                             if(cause && cause.userName) {

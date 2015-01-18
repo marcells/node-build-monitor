@@ -10,17 +10,17 @@ describe('monitor', function () {
         });
     });
 
-    describe('when created', function () {
-        it('should the plugins be empty', function () {
+    describe('a new monitor', function () {
+        it('should not have plugins', function () {
             monitor.plugins.should.be.empty;
         });
 
-        it('should the list of builds be empty', function () {
+        it('should not display any builds', function () {
             monitor.currentBuilds.should.be.empty;
         });
     });
 
-    describe('when watching on plugin', function () {
+    describe('watching a plugin', function () {
         var fake;
 
         beforeEach(function () {
@@ -28,11 +28,11 @@ describe('monitor', function () {
             monitor.watchOn(fake);
         });
 
-        it('should the number of plugins be one', function () {
+        it('should have one plugin', function () {
             monitor.plugins.should.have.lengthOf(1);
         });
 
-        describe('which is running', function () {
+        describe('a running monitor', function () {
             it('should invoke the buildsChanged event', function (done) {
                 monitor.once('buildsChanged', function (changes) {
                     changes.added.should.have.lengthOf(1);

@@ -81,7 +81,7 @@ module.exports = function () {
     self.configure = function (config) {
         self.configuration = config;
 
-        jenkins = jenkinsapi.init(self.configuration.url);
+        jenkins = jenkinsapi.init(self.configuration.url, self.configuration.options || {});
     };
 
     self.check = function (callback) {

@@ -95,7 +95,10 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
   "name": "Jenkins",
   "configuration": {
     "url": "http://jenkins_username:jenkins_password@jenkins-server:8080",
-    "job": "JenkinsJobName"
+    "job": "JenkinsJobName",
+    "options": {
+      "strictSSL": false
+    }
   }
 }
 ```
@@ -104,6 +107,8 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 |--------------|----------------------------------------------------------------------------------------------------------------------------|
 | `url`        | The url to the Jenkins server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
 | `job`        | The name of the Jenkins Job                                                                                                |
+| `options`    | The request options.                                                                                                       |
+|              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values           |
 
 #### TeamCity
 

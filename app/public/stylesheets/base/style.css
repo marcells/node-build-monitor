@@ -22,6 +22,14 @@ body {
   background-repeat: repeat;
 }
 
+.clear {
+  clear: both;
+}
+
+/*******************************
+Overlay
+********************************/
+
 .connection > .overlay-background {
   width: 100%;
   height: 100%;
@@ -40,4 +48,103 @@ body {
   left: 0px;
   color: white;
   text-align: center;
+}
+
+/*******************************
+Options
+********************************/
+
+.options-button {
+  font-size: 40pt;
+  top: 0%;
+  left: 0px;
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+
+.options-button > a {
+  color: black;
+  text-decoration: none;
+}
+
+.options > .background {
+  background-color: white;
+  opacity: 0.9;
+}
+
+.options > .content {
+  color: black;
+  overflow: auto;
+}
+
+.options > .background,
+.options > .content {
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  top: 0%;
+  left: 0px;
+}
+
+.options > .content > .header {
+  font-size: 40pt;
+}
+
+.options > .content > .header a:link,
+.options > .content > .header a:visited,
+.options > .content > .header a:active,
+.options > .content > .header a:hover {
+  font-size: 40pt;
+  text-decoration: none;
+  color: black;
+}
+
+.options > .content > .header a:active,
+.options > .content > .header a:hover {
+  font-size: 40pt;
+  text-decoration: none;
+  color: #303030;
+}
+
+.options > .content > .header > .back {
+  float: right;
+}
+
+.options > .content .selection-box ul {
+}
+
+.options > .content .selection-box ul > li {
+  float: left;
+  display: table;
+  list-style: none;
+  margin: 5px;
+}
+
+.options > .content .selection-box ul > li > a {
+  display: table-cell;
+  min-width: 80px;
+  height: 50px;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  border: 2px solid black;
+}
+
+.options > .content .selection-box ul > li > a:hover {
+  background-color: lightgray;
+  color: black;
+}
+
+.options > .content .selection-box ul > li.selected > a {
+  background-color: #303030;
+  color: white;
 }

@@ -23,7 +23,7 @@ define(['ko'], function (ko) {
             }
         };
 
-        ko.bindingHandlers.fadeOverlay = {
+        ko.bindingHandlers.fade = {
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
                 var unwrap = ko.unwrap(value);

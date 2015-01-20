@@ -1,4 +1,4 @@
-define(['ko', 'BuildViewModel', 'helper'], function (ko, BuildViewModel, helper) {
+define(['ko', 'BuildViewModel', 'OptionsViewModel'], function (ko, BuildViewModel, OptionsViewModel) {
     var AppViewModel = function() {
         var self = this;
 
@@ -7,7 +7,7 @@ define(['ko', 'BuildViewModel', 'helper'], function (ko, BuildViewModel, helper)
         this.isIntercepted = ko.observable();
         this.infoType = ko.observable();
         this.builds = ko.observableArray([]);
-        this.theme = ko.observable(helper.getUrlParameter('theme') || 'default');
+        this.options = new OptionsViewModel(self);
 
         this.setIsConnected = function (value) {
             if(isLoadingInitially) {

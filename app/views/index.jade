@@ -6,12 +6,37 @@ block scripts
     script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
 
 block content
-    div.full-size(data-bind='component: { name: theme, params: { builds: builds } }')
+    div.full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
 
-    div.connection(data-bind='fadeOverlay: isIntercepted')
+    div(data-bind='with: options')
+        div.options-button(data-bind='fade: isMenuVisible')
+            a(href='#', data-bind='click: show')
+                span.fa.fa-bars
+
+        div.options(data-bind='visible: isVisible', style='display: none')
+            div.background
+            div.content
+                div.header
+                    span.title Options
+                    span.back
+                        a(href='#', data-bind='click: hide')
+                            span.fa.fa-arrow-left
+                hr
+
+                section
+                    h1 Theme
+                    span Select your preferred default theme, when you open the monitor without the theme url parameter.
+
+                    .selection-box
+                        ul(data-bind='foreach: themes')
+                            li(data-bind='css: { selected: $parent.theme() === $data }')
+                                a(data-bind='click: $parent.changeTheme')
+                                    span(data-bind='text: $data')
+
+    div.connection(data-bind='fade: isIntercepted')
         div.overlay-background
         div.overlay-icon
             span(data-bind='visible: infoType() === "loading"')
                 span.fa.fa-5x.fa-circle-o-notch.fa-spin
-            span(data-bind='visible: infoType() === "connection"', style="display: none")
+            span(data-bind='visible: infoType() === "connection"', style='display: none')
                 span.fa.fa-5x.fa-plug

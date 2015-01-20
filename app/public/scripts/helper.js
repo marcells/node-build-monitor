@@ -1,5 +1,5 @@
 define(function () {
-    var getUrlParameter = function(parameter) {
+    var getUrlParameter = function (parameter) {
         var pageUrl = window.location.search.substring(1),
             urlParameters = pageUrl.split('&');
 
@@ -11,7 +11,42 @@ define(function () {
         }
     };
 
+    var detectInteraction = function (show, hide) {
+        var isShown = false;
+        var nextTimeout = new Date();
+
+        setInterval(function() {
+            if (isShown && (new Date() - nextTimeout > 2000)) {
+                isShown = false;
+                hide();
+            }
+
+        }, 1000);
+
+        function interactionDetected () {
+            nextTimeout = new Date();
+
+            if(!isShown) {
+                show();
+                isShown = true;
+            }
+        }
+
+        $(window).keydown(function(event) {
+            interactionDetected();
+        });
+
+        $(window).mousemove(function(event) {
+            interactionDetected();
+        });
+
+        $(window).mousedown(function(event) {
+            interactionDetected();
+        });
+    };
+
     return {
-        getUrlParameter: getUrlParameter
+        getUrlParameter: getUrlParameter,
+        detectInteraction: detectInteraction
     };
 });

@@ -9,7 +9,6 @@ body {
   margin: 0px;
   font: 14px 'open_sanscondensed_light', Helvetica, Arial, sans-serif;
   height: 100%;
-  overflow: hidden;
 }
 
 .full-size {
@@ -56,15 +55,16 @@ Options
 
 .options-button {
   font-size: 40pt;
-  top: 0%;
+  top: 0px;
   left: 0px;
   width: 80px;
-  height: 80px;
+  max-height: 80px;
   position: fixed;
   background-color: white;
   text-align: center;
   vertical-align: middle;
   opacity: 0.5;
+  overflow-y: auto;
 }
 
 .options-button > a {
@@ -84,13 +84,14 @@ Options
 
 .options > .background,
 .options > .content {
-  padding-left: 30px;
-  padding-right: 30px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 200px;
   height: 100%;
-  position: fixed;
-  top: 0%;
-  left: 0px;
+  overflow-y: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .options > .content > .header {

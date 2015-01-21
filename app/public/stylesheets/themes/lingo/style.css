@@ -3,7 +3,7 @@
 .lingo-theme .list-container {
   font-family: 'Marck-Script';
   font-size: 20pt;
-  margin: 30px;
+  padding: 30px;
   color: white;
 }
 
@@ -14,5 +14,4 @@
 
 .lingo-theme .emphasize {
   color: #f7ffad;
-  /*font-weight: bold;*/
 }

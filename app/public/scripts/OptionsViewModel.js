@@ -6,8 +6,8 @@ define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
         self.isMenuButtonVisible = ko.observable(false);
         self.theme = ko.observable(helper.getUrlParameter('theme') || cookies.get('theme') || 'default');
         self.themes = ko.observableArray(['default', 'list', 'lingo']);
-        self.browserNotificationEnabled = ko.observable();
-        self.soundEnabled = ko.observable();
+        self.browserNotificationEnabled = ko.observable(false);
+        self.soundEnabled = ko.observable(false);
 
         helper.detectInteraction(
             function() { 

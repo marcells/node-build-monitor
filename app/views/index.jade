@@ -40,11 +40,11 @@ block content
                     .description With enabled browser notifications you can leave the build monitor opened in the background and never miss a failed build.
 
                     label.checkbox
-                        input(type='checkbox', data-bind='value: browserNotificationEnabled')
+                        input(type='checkbox', data-bind='checked: browserNotificationEnabled')
                         span Show browser notification
                     
                     label.checkbox
-                        input(type='checkbox', data-bind='value: soundEnabled')
+                        input(type='checkbox', data-bind='checked: soundEnabled')
                         span Play sound
 
     .connection(data-bind='fade: isIntercepted')

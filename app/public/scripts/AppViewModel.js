@@ -54,8 +54,14 @@ define(['ko', 'BuildViewModel', 'OptionsViewModel'], function (ko, BuildViewMode
                 vm.update(build);
 
                 if (build.status === 'Red') {
-                    var audio = new Audio('/audio/woop.mp3');
-                    audio.play();
+                    if (self.options.soundEnabled()) {
+                        var audio = new Audio('/audio/woop.mp3');
+                        audio.play();
+                    }
+
+                    if (self.options.browserNotificationEnabled()) {
+                        alert(build.number + 'failed!');
+                    }
                 }
             });
 

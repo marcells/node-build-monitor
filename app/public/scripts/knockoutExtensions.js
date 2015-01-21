@@ -24,14 +24,17 @@ define(['ko'], function (ko) {
         };
 
         ko.bindingHandlers.fade = {
-            update: function(element, valueAccessor) {
+            update: function(element, valueAccessor, allBindings) {
                 var value = valueAccessor();
                 var unwrap = ko.unwrap(value);
 
+                var fadeInDuration = allBindings.get('fadeInDuration') || 300;
+                var fadeOutDuration = allBindings.get('fadeOutDuration') || 1500;
+
                 if(unwrap) {
-                    $(element).fadeIn(300);
+                    $(element).fadeIn(fadeInDuration);
                 } else {
-                    $(element).fadeOut(1500);
+                    $(element).fadeOut(fadeOutDuration);
                 }
             }
         };

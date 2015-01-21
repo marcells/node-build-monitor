@@ -2,17 +2,17 @@ define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
     var OptionsViewModel = function (app) {
         var self = this;
 
-        self.isVisible = ko.observable(false);
         self.isMenuVisible = ko.observable(false);
+        self.isMenuButtonVisible = ko.observable(false);
         self.theme = ko.observable(helper.getUrlParameter('theme') || cookies.get('theme') || 'default');
         self.themes = ko.observableArray(['default', 'list', 'lingo']);
 
         helper.detectInteraction(
             function() { 
-                self.isMenuVisible(!self.isVisible());
+                self.isMenuButtonVisible(!self.isMenuVisible());
             },
             function() {
-                self.isMenuVisible(self.isVisible());
+                self.isMenuButtonVisible(self.isMenuVisible());
             });
 
         self.changeTheme = function (theme) {
@@ -21,13 +21,13 @@ define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
         };
 
         self.show = function () {
-            self.isVisible(true);
-            self.isMenuVisible(false);
+            self.isMenuVisible(true);
+            self.isMenuButtonVisible(false);
         };
 
         self.hide = function () {
-            self.isVisible(false);
-            self.isMenuVisible(true);
+            self.isMenuVisible(false);
+            self.isMenuButtonVisible(true);
         };
     };
 

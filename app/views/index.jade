@@ -9,11 +9,11 @@ block content
     div.full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
 
     div(data-bind='with: options')
-        div.options-button(data-bind='fade: isMenuVisible')
+        div.options-button(data-bind='fade: isMenuButtonVisible')
             a(href='#', data-bind='click: show')
                 span.fa.fa-bars
 
-        div.options(data-bind='visible: isVisible', style='display: none')
+        div.options(data-bind='fade: isMenuVisible, fadeOutDuration: 300', style='display: none')
             div.background
             div.content
                 div.header

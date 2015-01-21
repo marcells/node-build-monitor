@@ -6,17 +6,17 @@ block scripts
     script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
 
 block content
-    div.full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
+    .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
 
     div(data-bind='with: options')
-        div.options-button(data-bind='fade: isMenuButtonVisible')
+        .options-button(data-bind='fade: isMenuButtonVisible')
             a(href='#', data-bind='click: show')
                 span.fa.fa-bars
 
-        div.options(data-bind='fade: isMenuVisible, fadeOutDuration: 300', style='display: none')
-            div.background
-            div.content
-                div.header
+        .options(data-bind='fade: isMenuVisible, fadeOutDuration: 300', style='display: none')
+            .background
+            .content
+                .header
                     span.title Options
                     span.back
                         a(href='#', data-bind='click: hide')
@@ -25,7 +25,7 @@ block content
 
                 section
                     h1 Theme
-                    span Select your preferred default theme, when you open the monitor without the theme url parameter.
+                    .description Select your preferred default theme, when you open the monitor without the theme url parameter.
 
                     .selection-box
                         ul(data-bind='foreach: themes')
@@ -33,9 +33,23 @@ block content
                                 a(data-bind='click: $parent.changeTheme')
                                     span(data-bind='text: $data')
 
-    div.connection(data-bind='fade: isIntercepted')
-        div.overlay-background
-        div.overlay-icon
+                .clear
+
+                section
+                    h1 Notifications on failed build
+                    .description With enabled browser notifications you can leave the build monitor opened in the background and never miss a failed build.
+
+                    label.checkbox
+                        input(type='checkbox', data-bind='value: browserNotificationEnabled')
+                        span Show browser notification
+                    
+                    label.checkbox
+                        input(type='checkbox', data-bind='value: soundEnabled')
+                        span Play sound
+
+    .connection(data-bind='fade: isIntercepted')
+        .overlay-background
+        .overlay-icon
             span(data-bind='visible: infoType() === "loading"')
                 span.fa.fa-5x.fa-circle-o-notch.fa-spin
             span(data-bind='visible: infoType() === "connection"', style='display: none')

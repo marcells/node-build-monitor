@@ -33,7 +33,15 @@ define([], function () {
 
     var show = function (build) {
         if (permissionIsGranted()) {
-            var notification = new Notification(build.number + " failed!");
+            var notification = new Notification('Build ' + build.number + ' failed!', {
+                body: 'The build ' + build.number + ' of project ' + build.project + ', which was triggered as ' + build.reason + ' by ' + build.requestedFor + ', failed.',
+                icon: '/images/notification.png'
+            });
+
+            notification.onclick = function() {
+                window.focus();
+                this.cancel();
+            };
         }
     };
 

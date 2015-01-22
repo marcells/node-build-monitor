@@ -1,13 +1,14 @@
-define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
+define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, settings, notification) {
     var OptionsViewModel = function (app) {
         var self = this;
 
         self.isMenuVisible = ko.observable(false);
         self.isMenuButtonVisible = ko.observable(false);
-        self.theme = ko.observable(helper.getUrlParameter('theme') || cookies.get('theme') || 'default');
+        self.theme = ko.observable(helper.getUrlParameter('theme') || settings.theme);
         self.themes = ko.observableArray(['default', 'list', 'lingo']);
-        self.browserNotificationEnabled = ko.observable(false);
-        self.soundEnabled = ko.observable(false);
+        self.browserNotificationSupported = ko.observable(notification.isSupportedAndNotDenied());
+        self.browserNotificationEnabled = ko.observable(notification.isSupportedAndNotDenied() && settings.browserNotificationEnabled);
+        self.soundNotificationEnabled = ko.observable(settings.soundNotificationEnabled);
 
         helper.detectInteraction(
             function() { 
@@ -18,7 +19,7 @@ define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
             });
 
         self.changeTheme = function (theme) {
-            cookies.set('theme', theme);
+            settings.theme = theme;
             self.theme(theme);
         };
 
@@ -31,6 +32,25 @@ define(['ko', 'helper', 'cookies'], function (ko, helper, cookies) {
             self.isMenuVisible(false);
             self.isMenuButtonVisible(true);
         };
+
+        self.browserNotificationEnabled.subscribe(function (enabled) {
+            if (enabled) {
+                notification.ensureGranted(
+                    function () {
+                        settings.browserNotificationEnabled = true;
+                    },
+                    function () { 
+                        self.browserNotificationEnabled(false);
+                        settings.browserNotificationEnabled = false;
+                    });
+            } else {
+                settings.browserNotificationEnabled = false;
+            }
+        });
+
+        self.soundNotificationEnabled.subscribe(function (enabled) {
+            settings.soundNotificationEnabled = enabled;
+        });
     };
 
     return OptionsViewModel;

@@ -1,4 +1,4 @@
-define(['ko', 'BuildViewModel', 'OptionsViewModel'], function (ko, BuildViewModel, OptionsViewModel) {
+define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (ko, notification, BuildViewModel, OptionsViewModel) {
     var AppViewModel = function() {
         var self = this;
 
@@ -54,13 +54,13 @@ define(['ko', 'BuildViewModel', 'OptionsViewModel'], function (ko, BuildViewMode
                 vm.update(build);
 
                 if (build.status === 'Red') {
-                    if (self.options.soundEnabled()) {
+                    if (self.options.soundNotificationEnabled()) {
                         var audio = new Audio('/audio/woop.mp3');
                         audio.play();
                     }
 
                     if (self.options.browserNotificationEnabled()) {
-                        alert(build.number + 'failed!');
+                        notification.show(build);
                     }
                 }
             });

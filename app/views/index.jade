@@ -36,16 +36,21 @@ block content
                 .clear
 
                 section
-                    h1 Notifications on failed build
-                    .description With enabled notifications you can leave the build monitor opened in the background and never miss a failed build again.
+                    h1 Notification on build failure
+                    .description With enabled notifications you can leave the build monitor open in the background and never miss a failed build again.
 
-                    label.checkbox
-                        input(type='checkbox', data-bind='checked: browserNotificationEnabled')
-                        span Show browser notification
-                    
                     label.checkbox
                         input(type='checkbox', data-bind='checked: soundNotificationEnabled')
                         span Play sound
+
+                    label.checkbox(data-bind='visible: browserNotificationSupported')
+                        input(type='checkbox', data-bind='checked: browserNotificationEnabled')
+                        span Show browser notification
+
+                    div(data-bind='visible: !browserNotificationSupported()')
+                        small
+                            | Browser Notifications are not supported in your browser or were disabled by you. 
+                            a(href='http://caniuse.com/#feat=notifications', target='_blank') More Info
 
     .connection(data-bind='fade: isIntercepted')
         .overlay-background

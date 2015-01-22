@@ -98,19 +98,23 @@ Options
   font-size: 40pt;
 }
 
+.options > .content a:link,
+.options > .content a:visited,
+.options > .content a:active,
+.options > .content a:hover {
+  color: black;
+}
+
 .options > .content > .header a:link,
 .options > .content > .header a:visited,
 .options > .content > .header a:active,
 .options > .content > .header a:hover {
-  font-size: 40pt;
   text-decoration: none;
   color: black;
 }
 
 .options > .content > .header a:active,
 .options > .content > .header a:hover {
-  font-size: 40pt;
-  text-decoration: none;
   color: #303030;
 }
 

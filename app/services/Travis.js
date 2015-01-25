@@ -14,9 +14,13 @@ module.exports = function () {
         },
         queryBuilds = function (callback) {
             requestBuilds(function (body) {
-                async.map(body, requestBuild, function (err, results) {
-                    callback(results);
-                });
+                if (!body) {
+                    callback([]);
+                } else {
+                    async.map(body, requestBuild, function (err, results) {
+                        callback(results);
+                    });
+                }
             });
         },
         requestBuild = function (build, callback) {

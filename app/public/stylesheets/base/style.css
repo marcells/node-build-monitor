@@ -88,11 +88,33 @@ Options
   top: 0px;
   left: 0px;
   width: 220px;
-  height: 100%;
   overflow-y: auto;
   padding-left: 30px;
   padding-right: 30px;
 }
+
+.options > .background {
+  height: 100%;
+}
+
+.options > .content {
+  bottom: 30px;
+}
+
+.options > .footer {
+  position: fixed;
+  bottom: 0px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.options > .footer a:link,
+.options > .footer a:visited,
+.options > .footer a:active,
+.options > .footer a:hover {
+  color: black;
+}
+
 
 .options > .content > .header {
   font-size: 40pt;

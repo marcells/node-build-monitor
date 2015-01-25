@@ -20,6 +20,7 @@ define(['io'], function (io) {
             socket.on('settingsChanged', function (settings) {
                 if (!cachedSettings) {
                     cachedSettings = settings;
+                    self.onSettingsLoaded(settings);
                     return;
                 }
 

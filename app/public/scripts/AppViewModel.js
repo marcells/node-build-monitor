@@ -7,6 +7,7 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
         this.isIntercepted = ko.observable();
         this.infoType = ko.observable();
         this.builds = ko.observableArray([]);
+        this.version = ko.observable();
         this.options = new OptionsViewModel(self);
 
         this.setIsConnected = function (value) {

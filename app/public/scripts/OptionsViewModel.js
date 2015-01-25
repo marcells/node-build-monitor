@@ -9,7 +9,8 @@ define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, setti
         self.browserNotificationSupported = ko.observable(notification.isSupportedAndNotDenied());
         self.browserNotificationEnabled = ko.observable(notification.isSupportedAndNotDenied() && settings.browserNotificationEnabled);
         self.soundNotificationEnabled = ko.observable(settings.soundNotificationEnabled);
-
+        self.version = app.version;
+        
         helper.detectInteraction(
             function() { 
                 self.isMenuButtonVisible(!self.isMenuVisible());

@@ -40,6 +40,10 @@ define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], funct
             window.location.reload(true);
         };
 
+        buildMonitorServer.onSettingsLoaded = function (settings) {
+            app.version(settings.version);
+        };
+        
         buildMonitorServer.connect();
 
         setInterval(app.updateBuildTimes, 1000);

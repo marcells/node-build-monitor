@@ -8,54 +8,5 @@ block scripts
 block content
     .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
 
-    div(data-bind='with: options')
-        .options-button(data-bind='fade: isMenuButtonVisible')
-            a(href='#', data-bind='click: show')
-                span.fa.fa-bars
-
-        .options(data-bind='fade: isMenuVisible, fadeOutDuration: 300', style='display: none')
-            .background
-            .content
-                .header
-                    span.title Options
-                    span.back
-                        a(href='#', data-bind='click: hide')
-                            span.fa.fa-arrow-left
-                hr
-
-                section
-                    h1 Theme
-                    .description Select your preferred default theme, when you open the monitor without the theme url parameter.
-
-                    .selection-box
-                        ul(data-bind='foreach: themes')
-                            li(data-bind='css: { selected: $parent.theme() === $data }')
-                                a(data-bind='click: $parent.changeTheme')
-                                    span(data-bind='text: $data')
-
-                .clear
-
-                section
-                    h1 Notification on build failure
-                    .description With enabled notifications you can leave the build monitor open in the background and never miss a failed build again.
-
-                    label.checkbox
-                        input(type='checkbox', data-bind='checked: soundNotificationEnabled')
-                        span Play sound
-
-                    label.checkbox(data-bind='visible: browserNotificationSupported')
-                        input(type='checkbox', data-bind='checked: browserNotificationEnabled')
-                        span Show browser notification
-
-                    div(data-bind='visible: !browserNotificationSupported()')
-                        small
-                            | Browser Notifications are not supported in your browser or were disabled by you. 
-                            a(href='http://caniuse.com/#feat=notifications', target='_blank') More Info
-
-    .connection(data-bind='fade: isIntercepted')
-        .overlay-background
-        .overlay-icon
-            span(data-bind='visible: infoType() === "loading"')
-                span.fa.fa-5x.fa-circle-o-notch.fa-spin
-            span(data-bind='visible: infoType() === "connection"', style='display: none')
-                span.fa.fa-5x.fa-plug
+    include options.jade
+    include overlay.jade

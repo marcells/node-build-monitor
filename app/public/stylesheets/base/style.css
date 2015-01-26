@@ -103,6 +103,7 @@ Options
 
 .options > .footer {
   position: fixed;
+  left: 0px;
   bottom: 0px;
   padding-left: 30px;
   padding-right: 30px;

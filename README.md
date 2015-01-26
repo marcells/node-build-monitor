@@ -137,20 +137,22 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 {
   "name": "Tfs",
   "configuration": {
-    "server": "https://myusername.visualstudio.com",
     "collection": "DefaultCollection",
+    "accountname": "vs_online_accountname",
     "username": "vs_online_username",
     "password": "vs_online_password"
   }
 }
 ```
 
-| Setting      | Description                                                                                                                             |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| `server`     | Your Visual Studio Online account main page                                                                                             |
-| `collection` | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently) |
-| `username`   | Your Visual Studio Online user name                                                                                                     |
-| `password`   | Your Visual Studio Online password                                                                                                      |
+| Setting       | Description                                                                                                                             |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently) |
+| `accountname` | Your Visual Studio Online user name (account)                                                                                           |
+| `username`    | Your Visual Studio Online user name (alternate credentials)                                                                             |
+| `password`    | Your Visual Studio Online password                                                                                                      |
+
+Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 
 #### Team Foundation Server (on-premise) 
 

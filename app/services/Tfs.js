@@ -3,7 +3,7 @@ var request = require('request');
 module.exports = function () {
     var self = this,
         makeUrl = function (url, odata) {
-            var baseUrl = self.configuration.server + '/' + self.configuration.collection + url;
+            var baseUrl = 'https://tfsodata.visualstudio.com/' + self.configuration.collection + url;
 
             if (odata) {
                 baseUrl += '?' + odata;
@@ -17,7 +17,7 @@ module.exports = function () {
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
                 'json' : true,
-                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
+                'auth': { 'user': self.configuration.accountname + '\\' + self.configuration.username, 'pass': self.configuration.password }
                 },
                 function(error, response, body) {
                     callback(body);

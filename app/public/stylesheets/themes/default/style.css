@@ -1,14 +1,14 @@
 .default-theme .clear {
-    clear: both;
+  clear: both;
 }
 
 .default-theme .nowrap {
-    overflow: hidden;
-    white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .default-theme .box {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .default-theme .middle { 
@@ -34,127 +34,148 @@
 
 .default-theme .flex-item {
   float: left;
-  
   width: 33%;
   height: 25%;
-  
   color: transparent;
+  position: relative;
 }
 
 .default-theme .flex-item-inner {
-	background: transparent;
+  background: transparent;
   margin: 25px;
-	padding: 25px;
+  padding: 25px;
   box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
 }
 
+.flex-item .overlay {
+  background-color: transparent;
+  position: absolute;
+  margin: 25px;
+  top: 0px;
+  right: 0px;
+}
+
+.flex-item .overlay a {
+  float: left;
+  color: white;
+  font-size: 20pt;
+  background-color: black;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.8;
+}
+
 .default-theme .flex-item .info-block {
-    float: left;
-    font-size: 15pt;
+  float: left;
+  font-size: 15pt;
 }
 
 .default-theme .flex-item .project {
-	  font-weight: bold;
+  font-weight: bold;
 }
 
 .default-theme .flex-item .project-definition-separator {
-    border-left: 1px solid;
-    padding-left: 10px;
-    margin-left: 10px
+  border-left: 1px solid;
+  padding-left: 10px;
+  margin-left: 10px
 }
 
 .default-theme .flex-item .definition {
 }
 
 .default-theme .flex-item .number {
-  	font-size: 25pt;
+  font-size: 25pt;
 }
 
 .default-theme .flex-item .duration-block {
-    float: right;
-    font-size: 10pt;
+  float: right;
+  font-size: 10pt;
 }
 
 .default-theme .flex-item .duration-icon {
-    font-size: 35px;
-    float: left;
-    margin-top: 3px;
+  font-size: 35px;
+  float: left;
+  margin-top: 3px;
 }
 
 .default-theme .flex-item .time {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .default-theme .flex-item .status {
-    float: left;
-    font-family: 'open_sans_condensedbold';
-	  font-weight: bold;
-  	font-size: 25pt;
+  float: left;
+  font-family: 'open_sans_condensedbold';
+  font-weight: bold;
+  font-size: 25pt;
 }
 
 .default-theme .flex-item .reason {
-    margin-left: 10px;
-  	font-size: 15pt;
+  margin-left: 10px;
+  font-size: 15pt;
 }
 
 .default-theme .flex-item .reason-icon {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 .default-theme .flex-item .reason-block {
-    float: right;
+  float: right;
 }
 
 .default-theme .flex-item .for {
-    margin-left: 15px;
-    font-size: 20px;
+  margin-left: 15px;
+  font-size: 20px;
 }
 
 .default-theme .requestedFor-block {
-    font-size: 15pt;
-    float: left;
-    vertical-align: middle;
+  font-size: 15pt;
+  float: left;
+  vertical-align: middle;
 }
 
 .default-theme .flex-item .warnings {
-	  font-weight: bold;
-  	font-size: 20pt;
-    float: right;
-    vertical-align: middle;
+  font-weight: bold;
+  font-size: 20pt;
+  float: right;
+  vertical-align: middle;
 }
 
 @media (max-height: 600px) {
   .default-theme .prio-vertical-one {
-      display: none;
+    display: none;
   }
 }
 
 @media (max-height: 760px) {
   .default-theme .prio-vertical-two {
-      display: none;
+    display: none;
   }
 }
 
 @media (max-height: 900px) {
   .default-theme .prio-vertical-three {
-      display: none;
+    display: none;
   }
 }
 
 @media (max-width: 870px) {
   .default-theme .prio-horizontal-one {
-      display: none;
+    display: none;
   }
 }
 
 @media (max-width: 1000px) {
   .default-theme .prio-horizontal-two {
-      display: none;
+    display: none;
   }
 }
 
 @media (max-width: 1300px) {
   .default-theme .prio-horizontal-three {
-      display: none;
+    display: none;
   }
 }

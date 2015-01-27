@@ -39,6 +39,31 @@ define(['ko'], function (ko) {
             }
         };
 
+        ko.bindingHandlers.hover = {
+            init: function(element, valueAccessor) {
+                var value = valueAccessor();
+                var timeout;
+
+                $(element).mousemove(function (event) {
+                    value(true);
+
+                    window.clearTimeout(timeout);
+                    timeout = window.setTimeout(function () {
+                        value(false);
+                    }, 2000);
+                });
+
+                $(element).mouseleave(function (event) {
+                    value(false);
+
+                    if (timeout) {
+                        window.clearTimeout(timeout);
+                        timeout = null;
+                    }
+                });
+            }
+        };
+
         var namingConventionLoader = {
             getConfig: function(name, callback) {
                 var templateConfig = {

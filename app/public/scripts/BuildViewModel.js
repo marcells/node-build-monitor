@@ -1,5 +1,7 @@
 define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
     var BuildViewModel = function (build) {
+        this.isMenuVisible = ko.observable(false);
+
         this.id = ko.observable();
         this.isRunning = ko.observable();
         this.project = ko.observable();
@@ -13,6 +15,7 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
         this.requestedFor = ko.observable();
         this.hasWarnings = ko.observable();
         this.hasErrors = ko.observable();
+        this.url = ko.observable();
 
         this.update = function (build) {
             this.id(build.id);
@@ -28,6 +31,7 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
             this.requestedFor(build.requestedFor);
             this.hasWarnings(build.hasWarnings);
             this.hasErrors(build.hasErrors);
+            this.url(build.url);
         };
 
         this.update(build);
@@ -51,6 +55,10 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
             return this.isRunning() ?
                 'running for ' + countdown(this.startedAt()).toString() :
                 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
+        }, this);
+
+        this.isMenuAvailable = ko.computed(function () {
+            return this.url() || false;
         }, this);
     };
 

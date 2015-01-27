@@ -57,7 +57,8 @@ module.exports = function () {
                 statusText: res.state,
                 reason: res.event_type,
                 hasErrors: false,
-                hasWarnings: false
+                hasWarnings: false,
+                url: 'https://travis-ci.org/' + self.configuration.slug + '/builds/' + res.id
             };
         };
 

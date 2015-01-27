@@ -11,9 +11,14 @@ define(function () {
         }
     };
 
-    var detectInteraction = function (show, hide) {
+    var detectGlobalInteraction = function (show, hide) {
+        detectInteraction(window, show, hide);
+    };
+
+    var detectInteraction = function (elementName, show, hide) {
         var isShown = false;
         var nextTimeout = new Date();
+        var element = $(elementName) || $(window);
 
         setInterval(function() {
             if (isShown && (new Date() - nextTimeout > 2000)) {
@@ -32,21 +37,22 @@ define(function () {
             }
         }
 
-        $(window).keydown(function(event) {
+        element.keydown(function (event) {
             interactionDetected();
         });
 
-        $(window).mousemove(function(event) {
+        element.mousemove(function (event) {
             interactionDetected();
         });
 
-        $(window).mousedown(function(event) {
+        element.mousedown(function (event) {
             interactionDetected();
         });
     };
 
     return {
         getUrlParameter: getUrlParameter,
+        detectGlobalInteraction: detectGlobalInteraction,
         detectInteraction: detectInteraction
     };
 });

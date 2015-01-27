@@ -56,7 +56,8 @@ module.exports = function () {
                 status: getStatus(res.buildStatusText),
                 reason: res.buildReasonText,
                 hasErrors: false,
-                hasWarnings: false
+                hasWarnings: false,
+                url: self.configuration.url + '/' + res.teamProjectDefinition + '/_build#buildUri=' + res.uri + '&_a=summary'
             };
         },
         queryBuilds = function (callback) {

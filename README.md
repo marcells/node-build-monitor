@@ -94,7 +94,9 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 {
   "name": "Jenkins",
   "configuration": {
-    "url": "http://jenkins_username:jenkins_password@jenkins-server:8080",
+    "url": "http://jenkins-server:8080",
+    "username": "jenkins_username",
+    "password": "jenkins_password",
     "job": "JenkinsJobName",
     "options": {
       "strictSSL": false

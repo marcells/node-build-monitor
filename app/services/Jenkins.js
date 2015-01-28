@@ -1,5 +1,20 @@
 var jenkinsapi = require('jenkins-api'),
-    async = require('async');
+    async = require('async'),
+    makeRequestConfiguration = function (serviceConfiguration) {
+        var tryApplyAuthHeader = function (requestConfig, key, value) {
+            if (!value) return;
+
+            requestConfig.auth = requestConfig.auth || {};
+            requestConfig.auth[key] = value;
+        }
+
+        var requestConfig = serviceConfiguration.options || {};
+
+        tryApplyAuthHeader(requestConfig, 'user', serviceConfiguration.username);
+        tryApplyAuthHeader(requestConfig, 'pass', serviceConfiguration.password);
+
+        return requestConfig;
+    };
 
 module.exports = function () {
     var self = this,
@@ -74,14 +89,24 @@ module.exports = function () {
                 statusText: getStatusText(res.result),
                 reason: "Build",
                 hasErrors: false,
-                hasWarnings: res.result == 'UNSTABLE'
+                hasWarnings: res.result == 'UNSTABLE',
+                url: self.configuration.url + '/job/' + self.configuration.job + '/' + res.number
             };
         };
 
     self.configure = function (config) {
         self.configuration = config;
 
-        jenkins = jenkinsapi.init(self.configuration.url, self.configuration.options || {});
+        if (self.configuration.url.indexOf('@') > -1) {
+            throw new Error(
+                'Breaking Configuration change:\n' +
+                'To display build details, the url parameter is now published to the client. \n' +
+                'This leads to a security risk, cause your credentials would also be published. \n' +
+                'Please use now the \'username\' and \'password\' options. \n' +
+                'More information on: https://github.com/marcells/node-build-monitor#jenkins \n\n');
+        }
+
+        jenkins = jenkinsapi.init(self.configuration.url, makeRequestConfiguration(self.configuration));
     };
 
     self.check = function (callback) {

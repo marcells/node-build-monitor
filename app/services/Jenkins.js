@@ -6,7 +6,7 @@ var jenkinsapi = require('jenkins-api'),
 
             requestConfig.auth = requestConfig.auth || {};
             requestConfig.auth[key] = value;
-        }
+        };
 
         var requestConfig = serviceConfiguration.options || {};
 

@@ -107,7 +107,9 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 
 | Setting      | Description                                                                                                                |
 |--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `url`        | The url to the Jenkins server. It has to be in the [following format](https://github.com/jansepar/node-jenkins-api#setup). |
+| `url`        | The url to the Jenkins server                                                                                              |
+| `username`   | Your Jenkins user name                                                                                                     |
+| `password`   | Your Jenkins password                                                                                                      |
 | `job`        | The name of the Jenkins Job                                                                                                |
 | `options`    | The request options.                                                                                                       |
 |              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values           |

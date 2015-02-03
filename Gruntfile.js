@@ -3,14 +3,18 @@ module.exports = function(grunt) {
     jshint: {
       files: [ 'Gruntfile.js', 'app/*.js', 'app/services/*.js', 'app/public/scripts/*.js', 'test/**/*.js' ],
       options: {
-        expr: true
+        expr: true,
+        esnext: true
       }
     },
     mochaTest: {
       test: {
         options : {
           reporter: 'spec',
-          require: 'should'
+          require: [
+            'should',
+            '6to5/register'
+            ]
         },
         src: ['test/**/*.js']
       },

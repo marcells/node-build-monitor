@@ -117,11 +117,11 @@ export default class Monitor extends events.EventEmitter {
 
     configure (config) {
         this.configuration = config;
-    };
+    }
 
     watchOn (plugin) {
         this.plugins.push(plugin);
-    };
+    }
 
     run () {
         let allBuilds = [];
@@ -154,5 +154,5 @@ export default class Monitor extends events.EventEmitter {
 
                 setTimeout(() => this.run(), this.configuration.interval);
             });
-    };
-};
+    }
+}

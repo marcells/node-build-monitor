@@ -1,23 +1,20 @@
-var express = require('express'),
-    http = require('http'),
-    path = require('path'),
-    socketio = require('socket.io'),
-    config = require('./config'),
-    favicon = require('serve-favicon'),
-    morgan = require('morgan'),
-    errorhandler = require('errorhandler'),
-    app = express();
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import socketio from 'socket.io';
+import config from './config';
+import favicon from 'serve-favicon';
+import morgan from 'morgan';
+import errorhandler from 'errorhandler';
+
+let app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
 app.use(morgan('combined'));
-app.get('/', function(req, res) {
-    res.render('index', {
-        title: 'Build Monitor'
-    });
-});
+app.get('/', (req, res) => res.render('index', { title: 'Build Monitor' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 if ('development' === app.get('env')) {
@@ -25,15 +22,15 @@ if ('development' === app.get('env')) {
 }
 
 // run express
-var server = http.createServer(app),
+let server = http.createServer(app),
     io = socketio.listen(server);
 
-server.listen(app.get('port'), function() {
-  console.log('node-build-monitor is listening on port ' + app.get('port'));
-});
+server.listen(
+  app.get('port'),
+  () => console.log(`node-build-monitor is listening on port ${app.get('port')}`));
 
 // run socket.io
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', socket => {
   socket.emit('settingsChanged', {
     version: require('../package').version
   });
@@ -42,23 +39,22 @@ io.sockets.on('connection', function (socket) {
 });
 
 // configure monitor
-var Monitor = require('./monitor'),
-    monitor = new Monitor();
+import Monitor from './monitor';
+let monitor = new Monitor();
 
-for (var i = 0; i < config.services.length; i++) {
-    var serviceConfig = config.services[i],
-        service = new (require('./services/' + serviceConfig.name))();
-    
-    service.configure(serviceConfig.configuration);
+for (let serviceConfig of config.services) {
+  let service = new (require('./services/' + serviceConfig.name))();
 
-    monitor.watchOn(service);
+  service.configure(serviceConfig.configuration);
+
+  monitor.watchOn(service);
 }
 
 monitor.configure(config.monitor);
 
-monitor.on('buildsChanged', function (changes) {
-  io.emit('buildsChanged', changes);
-});
+monitor.on(
+  'buildsChanged',
+  changes => io.emit('buildsChanged', changes));
 
 // run monitor
 monitor.run();

@@ -1,6 +1,7 @@
-var async = require('async'),
-    events = require('events'),
-    log = function (text, debug) {
+import async from 'async';
+import events from 'events';
+
+let log = function (text, debug) {
         if(debug) {
             console.log(new Date().toLocaleTimeString(), '|', text);
         }
@@ -102,55 +103,56 @@ var async = require('async'),
         return changes;
     };
 
-module.exports = function () {
-    var self = this;
+export default class Monitor extends events.EventEmitter {
+    constructor() {
+        this.configuration = {
+            interval: 5000,
+            numberOfBuilds: 12,
+            debug: false
+        };
+        
+        this.plugins = [];
+        this.currentBuilds = [];
+    }
 
-    self.configuration = {
-        interval: 5000,
-        numberOfBuilds: 12,
-        debug: false
-    };
-    self.plugins = [];
-    self.currentBuilds = [];
-
-    self.configure = function (config) {
-        self.configuration = config;
-    };
-
-    self.watchOn = function (plugin) {
-        self.plugins.push(plugin);
+    configure (config) {
+        this.configuration = config;
     };
 
-    self.run = function () {
-        var allBuilds = [];
+    watchOn (plugin) {
+        this.plugins.push(plugin);
+    };
 
-        async.each(self.plugins, function (plugin, pluginCallback) {
-            log('Check for builds...', self.configuration.debug);
+    run () {
+        let allBuilds = [];
 
-            plugin.check(function (pluginBuilds) {
-                Array.prototype.push.apply(allBuilds, pluginBuilds);
-                pluginCallback();
+        async.each(
+            this.plugins,
+            (plugin, pluginCallback) => {
+                log('Check for builds...', this.configuration.debug);
+
+                plugin.check(function (pluginBuilds) {
+                    Array.prototype.push.apply(allBuilds, pluginBuilds);
+                    pluginCallback();
+                });
+            },
+            error => {
+                log(allBuilds.length + ' builds found....', this.configuration.debug);
+                
+                generateAndApplyETags(allBuilds);
+                distinctBuildsByETag(allBuilds);
+                sortBuilds(allBuilds);
+                onlyTake(this.configuration.numberOfBuilds, allBuilds);
+
+                if(changed(this.currentBuilds, allBuilds)) {
+                    log('builds changed', this.configuration.debug);
+
+                    this.emit('buildsChanged', detectChanges(this.currentBuilds, allBuilds));
+
+                    this.currentBuilds = allBuilds;
+                }
+
+                setTimeout(() => this.run(), this.configuration.interval);
             });
-        },
-        function (error) {
-            log(allBuilds.length + ' builds found....', self.configuration.debug);
-            
-            generateAndApplyETags(allBuilds);
-            distinctBuildsByETag(allBuilds);
-            sortBuilds(allBuilds);
-            onlyTake(self.configuration.numberOfBuilds, allBuilds);
-
-            if(changed(self.currentBuilds, allBuilds)) {
-                log('builds changed', self.configuration.debug);
-
-                self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
-
-                self.currentBuilds = allBuilds;
-            }
-
-            setTimeout(self.run, self.configuration.interval);
-        });
     };
 };
-
-module.exports.prototype = new events.EventEmitter();

@@ -144,7 +144,7 @@ export default class Monitor extends events.EventEmitter {
         (plugin, pluginCallback) => {
           log('Check for builds...', this.configuration.debug);
 
-          plugin.check(function (pluginBuilds) {
+          plugin.check(pluginBuilds => {
             builds.add(pluginBuilds);
             pluginCallback();
           });

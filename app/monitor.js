@@ -1,107 +1,113 @@
 import async from 'async';
 import events from 'events';
 
-let log = function (text, debug) {
-        if(debug) {
-            console.log(new Date().toLocaleTimeString(), '|', text);
-        }
-    },
-    generateAndApplyETags = function (newBuilds) {
-        for (var i = 0; i < newBuilds.length; i++) {
-            var build = newBuilds[i];
+function log (text, debug) {
+    if(debug) {
+        console.log(new Date().toLocaleTimeString(), '|', text);
+    }
+}
 
-            build.etag = require('crypto')
-                .createHash('md5')
-                .update(JSON.stringify(build))
-                .digest('hex');
+function generateAndApplyETags(newBuilds) {
+    for (var i = 0; i < newBuilds.length; i++) {
+        var build = newBuilds[i];
+
+        build.etag = require('crypto')
+            .createHash('md5')
+            .update(JSON.stringify(build))
+            .digest('hex');
+    }
+}
+
+function sortBuilds (newBuilds) {
+    var takeDate = function (build) {
+        return build.isRunning ? build.startedAt : build.finishedAt;
+    };
+
+    newBuilds.sort(function (a, b) {
+        var dateA = takeDate(a);
+        var dateB = takeDate(b);
+
+        if(dateA < dateB) return 1;
+        if(dateA > dateB) return -1;
+
+        return 0;
+    });
+}
+
+function distinctBuildsByETag (newBuilds) {
+    var unique = {};
+
+    for (var i = newBuilds.length - 1; i >= 0; i--) {
+        var build = newBuilds[i];
+
+        if (unique[build.etag]) {
+            newBuilds.splice(i, 1);
         }
-    },
-    sortBuilds = function (newBuilds) {
-        var takeDate = function (build) {
-            return build.isRunning ? build.startedAt : build.finishedAt;
+
+        unique[build.etag] = true;
+    }
+}
+
+function onlyTake (numberOfBuilds, newBuilds) {
+    return newBuilds.splice(numberOfBuilds);
+}
+
+function changed (currentBuilds, newBuilds) {
+    var newbuildsHash = newBuilds
+        .map(function (value) {
+            return value.etag;
+        })
+        .join('|');
+
+    var currentBuildsHash = currentBuilds
+        .map(function (value) {
+            return value.etag;
+        })
+        .join('|');
+
+    return newbuildsHash !== currentBuildsHash;
+}
+
+function detectChanges (currentBuilds, newBuilds) {
+    var changes = {
+            added: [],
+            removed: [],
+            updated: []
+        },
+        getById = function (builds, id) {
+            return builds.filter(function (build) {
+                return build.id === id;
+            })[0];
         };
 
-        newBuilds.sort(function (a, b) {
-            var dateA = takeDate(a);
-            var dateB = takeDate(b);
+    var currentBuildIds = currentBuilds.map(function (build) { return build.id; });
+    var newBuildIds = newBuilds.map(function (build) { return build.id; });
 
-            if(dateA < dateB) return 1;
-            if(dateA > dateB) return -1;
-            
-            return 0;
-        });
-    },
-    distinctBuildsByETag = function (newBuilds) {
-        var unique = {};
-        
-        for (var i = newBuilds.length - 1; i >= 0; i--) {
-            var build = newBuilds[i];
-
-            if (unique[build.etag]) {
-                newBuilds.splice(i, 1);
-            }
-
-            unique[build.etag] = true;
+    newBuildIds.forEach(function (newBuildId) {
+        if (currentBuildIds.indexOf(newBuildId) === -1) {
+            changes.added.push(getById(newBuilds, newBuildId));
         }
-    },
-    onlyTake = function (numberOfBuilds, newBuilds) {
-        newBuilds.splice(numberOfBuilds);
-    },
-    changed = function (currentBuilds, newBuilds) {
-        var newbuildsHash = newBuilds
-            .map(function (value) {
-                return value.etag;
-            })
-            .join('|');
 
-        var currentBuildsHash = currentBuilds
-            .map(function (value) {
-                return value.etag;
-            })
-            .join('|');
+        if (currentBuildIds.indexOf(newBuildId) >= 0) {
+            var currentBuild = getById(currentBuilds, newBuildId);
+            var newBuild = getById(newBuilds, newBuildId);
 
-        return newbuildsHash !== currentBuildsHash;
-    },
-    detectChanges = function (currentBuilds, newBuilds) {
-        var changes = {
-                added: [],
-                removed: [],
-                updated: []
-            },
-            getById = function (builds, id) {
-                return builds.filter(function (build) {
-                    return build.id === id;
-                })[0];
-            };
-
-        var currentBuildIds = currentBuilds.map(function (build) { return build.id; });
-        var newBuildIds = newBuilds.map(function (build) { return build.id; });
-
-        newBuildIds.forEach(function (newBuildId) {
-            if (currentBuildIds.indexOf(newBuildId) === -1) {
-                changes.added.push(getById(newBuilds, newBuildId));
+            if (currentBuild.etag !== newBuild.etag) {
+                changes.updated.push(getById(newBuilds, newBuildId));
             }
+        }
+    });
 
-            if (currentBuildIds.indexOf(newBuildId) >= 0) {
-                var currentBuild = getById(currentBuilds, newBuildId);
-                var newBuild = getById(newBuilds, newBuildId);
+    currentBuildIds.forEach(function (currentBuildId) {
+        if (newBuildIds.indexOf(currentBuildId) === -1) {
+            changes.removed.push(getById(currentBuilds, currentBuildId));
+        }
+    });
 
-                if (currentBuild.etag !== newBuild.etag) {
-                    changes.updated.push(getById(newBuilds, newBuildId));
-                }
-            }
-        });
+    changes.order = newBuildIds;
 
-        currentBuildIds.forEach(function (currentBuildId) {
-            if (newBuildIds.indexOf(currentBuildId) === -1) {
-                changes.removed.push(getById(currentBuilds, currentBuildId));
-            }
-        });
-
-        changes.order = newBuildIds;
-
-        return changes;
-    };
+    return changes;
+}
 
 export default class Monitor extends events.EventEmitter {
     constructor() {
@@ -110,7 +116,7 @@ export default class Monitor extends events.EventEmitter {
             numberOfBuilds: 12,
             debug: false
         };
-        
+
         this.plugins = [];
         this.currentBuilds = [];
     }
@@ -138,7 +144,7 @@ export default class Monitor extends events.EventEmitter {
             },
             error => {
                 log(allBuilds.length + ' builds found....', this.configuration.debug);
-                
+
                 generateAndApplyETags(allBuilds);
                 distinctBuildsByETag(allBuilds);
                 sortBuilds(allBuilds);

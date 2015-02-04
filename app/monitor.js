@@ -2,163 +2,171 @@ import async from 'async';
 import events from 'events';
 
 function log (text, debug) {
-    if(debug) {
-        console.log(new Date().toLocaleTimeString(), '|', text);
-    }
+  if(debug) {
+    console.log(new Date().toLocaleTimeString(), '|', text);
+  }
 }
 
-function generateAndApplyETags(newBuilds) {
-    for (var i = 0; i < newBuilds.length; i++) {
-        var build = newBuilds[i];
+class Builds {
+  constructor () {
+    this.builds = [];
+  }
 
-        build.etag = require('crypto')
-            .createHash('md5')
-            .update(JSON.stringify(build))
-            .digest('hex');
-    }
-}
+  add (newBuilds) {
+    Array.prototype.push.apply(this.builds, newBuilds);
+    return this;
+  }
 
-function sortBuilds (newBuilds) {
-    var takeDate = function (build) {
-        return build.isRunning ? build.startedAt : build.finishedAt;
-    };
-
-    newBuilds.sort(function (a, b) {
-        var dateA = takeDate(a);
-        var dateB = takeDate(b);
-
-        if(dateA < dateB) return 1;
-        if(dateA > dateB) return -1;
-
-        return 0;
+  generateAndApplyETags () {
+    this.builds.forEach(build => {
+      build.etag = require('crypto')
+        .createHash('md5')
+        .update(JSON.stringify(build))
+        .digest('hex');
     });
-}
 
-function distinctBuildsByETag (newBuilds) {
-    var unique = {};
+    return this;
+  }
 
-    for (var i = newBuilds.length - 1; i >= 0; i--) {
-        var build = newBuilds[i];
+  sortBuilds () {
+    let takeDate = build => build.isRunning ? build.startedAt : build.finishedAt;
 
-        if (unique[build.etag]) {
-            newBuilds.splice(i, 1);
-        }
+    this.builds.sort((a, b) => {
+      let dateA = takeDate(a);
+      let dateB = takeDate(b);
 
-        unique[build.etag] = true;
+      if(dateA < dateB) return 1;
+      if(dateA > dateB) return -1;
+
+      return 0;
+    });
+
+    return this;
+  }
+
+  distinctBuildsByETag () {
+    let unique = {};
+
+    for (let i = this.builds.length - 1; i >= 0; i--) {
+      let build = this.builds[i];
+
+      if (unique[build.etag]) {
+        this.builds.splice(i, 1);
+      }
+
+      unique[build.etag] = true;
     }
-}
 
-function onlyTake (numberOfBuilds, newBuilds) {
-    return newBuilds.splice(numberOfBuilds);
-}
+    return this;
+  }
 
-function changed (currentBuilds, newBuilds) {
-    var newbuildsHash = newBuilds
-        .map(function (value) {
-            return value.etag;
-        })
+  onlyTake (numberOfBuilds) {
+    this.builds.splice(numberOfBuilds);
+    return this;
+  }
+
+  changed (currentBuilds) {
+    let newbuildsHash = this.builds
+        .map(value => value.etag)
         .join('|');
 
-    var currentBuildsHash = currentBuilds
-        .map(function (value) {
-            return value.etag;
-        })
+    let currentBuildsHash = currentBuilds
+        .map(value => value.etag)
         .join('|');
 
     return newbuildsHash !== currentBuildsHash;
-}
+  }
 
-function detectChanges (currentBuilds, newBuilds) {
-    var changes = {
-            added: [],
-            removed: [],
-            updated: []
-        },
-        getById = function (builds, id) {
-            return builds.filter(function (build) {
-                return build.id === id;
-            })[0];
+  detectChanges (currentBuilds) {
+    let changes = {
+          added: [],
+          removed: [],
+          updated: []
         };
+    let getById = (builds, id) =>
+        (builds.filter(build => build.id === id)[0]);
 
-    var currentBuildIds = currentBuilds.map(function (build) { return build.id; });
-    var newBuildIds = newBuilds.map(function (build) { return build.id; });
+    let currentBuildIds = currentBuilds.map(build => build.id);
+    let newBuildIds = this.builds.map(build => build.id);
 
-    newBuildIds.forEach(function (newBuildId) {
-        if (currentBuildIds.indexOf(newBuildId) === -1) {
-            changes.added.push(getById(newBuilds, newBuildId));
+    newBuildIds.forEach(newBuildId => {
+      if (currentBuildIds.indexOf(newBuildId) === -1) {
+        changes.added.push(getById(this.builds, newBuildId));
+      }
+
+      if (currentBuildIds.indexOf(newBuildId) >= 0) {
+        let currentBuild = getById(currentBuilds, newBuildId);
+        let newBuild = getById(this.builds, newBuildId);
+
+        if (currentBuild.etag !== newBuild.etag) {
+            changes.updated.push(getById(this.builds, newBuildId));
         }
-
-        if (currentBuildIds.indexOf(newBuildId) >= 0) {
-            var currentBuild = getById(currentBuilds, newBuildId);
-            var newBuild = getById(newBuilds, newBuildId);
-
-            if (currentBuild.etag !== newBuild.etag) {
-                changes.updated.push(getById(newBuilds, newBuildId));
-            }
-        }
+      }
     });
 
-    currentBuildIds.forEach(function (currentBuildId) {
-        if (newBuildIds.indexOf(currentBuildId) === -1) {
-            changes.removed.push(getById(currentBuilds, currentBuildId));
-        }
+    currentBuildIds.forEach(currentBuildId => {
+      if (newBuildIds.indexOf(currentBuildId) === -1) {
+        changes.removed.push(getById(currentBuilds, currentBuildId));
+      }
     });
 
     changes.order = newBuildIds;
 
     return changes;
+  }
 }
 
 export default class Monitor extends events.EventEmitter {
     constructor() {
-        this.configuration = {
-            interval: 5000,
-            numberOfBuilds: 12,
-            debug: false
-        };
+      this.configuration = {
+        interval: 5000,
+        numberOfBuilds: 12,
+        debug: false
+      };
 
-        this.plugins = [];
-        this.currentBuilds = [];
+      this.plugins = [];
+      this.currentBuilds = [];
     }
 
     configure (config) {
-        this.configuration = config;
+      this.configuration = config;
     }
 
     watchOn (plugin) {
-        this.plugins.push(plugin);
+      this.plugins.push(plugin);
     }
 
     run () {
-        let allBuilds = [];
+      let builds = new Builds();
 
-        async.each(
-            this.plugins,
-            (plugin, pluginCallback) => {
-                log('Check for builds...', this.configuration.debug);
+      async.each(
+        this.plugins,
+        (plugin, pluginCallback) => {
+          log('Check for builds...', this.configuration.debug);
 
-                plugin.check(function (pluginBuilds) {
-                    Array.prototype.push.apply(allBuilds, pluginBuilds);
-                    pluginCallback();
-                });
-            },
-            error => {
-                log(allBuilds.length + ' builds found....', this.configuration.debug);
+          plugin.check(function (pluginBuilds) {
+            builds.add(pluginBuilds);
+            pluginCallback();
+          });
+        },
+        error => {
+          log(builds.builds.length + ' builds found....', this.configuration.debug);
 
-                generateAndApplyETags(allBuilds);
-                distinctBuildsByETag(allBuilds);
-                sortBuilds(allBuilds);
-                onlyTake(this.configuration.numberOfBuilds, allBuilds);
+          builds
+            .generateAndApplyETags()
+            .distinctBuildsByETag()
+            .sortBuilds()
+            .onlyTake(this.configuration.numberOfBuilds);
 
-                if(changed(this.currentBuilds, allBuilds)) {
-                    log('builds changed', this.configuration.debug);
+          if(builds.changed(this.currentBuilds)) {
+              log('builds changed', this.configuration.debug);
 
-                    this.emit('buildsChanged', detectChanges(this.currentBuilds, allBuilds));
+              this.emit('buildsChanged', builds.detectChanges(this.currentBuilds));
 
-                    this.currentBuilds = allBuilds;
-                }
+              this.currentBuilds = builds.builds;
+          }
 
-                setTimeout(() => this.run(), this.configuration.interval);
-            });
+          setTimeout(() => this.run(), this.configuration.interval);
+        });
     }
 }

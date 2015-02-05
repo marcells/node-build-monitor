@@ -65,4 +65,4 @@ export default function() {
   this.check = function(callback) {
     queryBuilds(callback);
   };
-};
+}

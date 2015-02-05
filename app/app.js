@@ -14,7 +14,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
 app.use(morgan('combined'));
-app.get('/', (req, res) => res.render('index', { title: 'Build Monitor' }));
+app.get('/', (req, res) => res.render('index', {
+  title: 'Build Monitor'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 if ('development' === app.get('env')) {
@@ -23,11 +25,10 @@ if ('development' === app.get('env')) {
 
 // run express
 let server = http.createServer(app),
-    io = socketio.listen(server);
+  io = socketio.listen(server);
 
 server.listen(
-  app.get('port'),
-  () => console.log(`node-build-monitor is listening on port ${app.get('port')}`));
+  app.get('port'), () => console.log(`node-build-monitor is listening on port ${app.get('port')}`));
 
 // run socket.io
 io.sockets.on('connection', socket => {
@@ -43,7 +44,7 @@ import Monitor from './monitor';
 let monitor = new Monitor();
 
 for (let serviceConfig of config.services) {
-  let service = new (require('./services/' + serviceConfig.name))();
+  let service = new(require('./services/' + serviceConfig.name))();
 
   service.configure(serviceConfig.configuration);
 
@@ -56,5 +57,4 @@ monitor.on(
   'buildsChanged',
   changes => io.emit('buildsChanged', changes));
 
-// run monitor
 monitor.run();

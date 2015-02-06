@@ -28,7 +28,7 @@ class Builds {
     return this;
   }
 
-  sortBuilds() {
+  orderByDateDescending() {
     let takeDate = build => build.isRunning ? build.startedAt : build.finishedAt;
 
     this.builds.sort((a, b) => {
@@ -44,7 +44,7 @@ class Builds {
     return this;
   }
 
-  distinctBuildsByETag() {
+  distinctByETag() {
     let unique = {};
 
     for (let i = this.builds.length - 1; i >= 0; i--) {
@@ -153,8 +153,8 @@ export default class Monitor extends events.EventEmitter {
 
         builds
           .generateAndApplyETags()
-          .distinctBuildsByETag()
-          .sortBuilds()
+          .distinctByETag()
+          .orderByDateDescending()
           .onlyTake(this.configuration.numberOfBuilds);
 
         if (builds.changed(this.currentBuilds)) {

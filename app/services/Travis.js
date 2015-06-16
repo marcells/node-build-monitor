@@ -4,8 +4,8 @@ var request = require('request'),
 module.exports = function () {
     var self = this,
         requestBuilds = function (callback) {
-            request({ 
-                'url': 'https://api.travis-ci.org/repos/' + self.configuration.slug + '/builds',
+            request({
+                'url': 'https://api.' + self.configuration.url + '/repos/' + self.configuration.slug + '/builds?access_token=' + self.configuration.token,
                 'json' : true
                 },
                 function(error, response, body) {
@@ -24,8 +24,8 @@ module.exports = function () {
             });
         },
         requestBuild = function (build, callback) {
-            request({ 
-                'url': 'https://api.travis-ci.org/repos/' + self.configuration.slug + '/builds/' + build.id,
+            request({
+                'url': 'https://api.' + self.configuration.url + '/repos/' + self.configuration.slug + '/builds/' + build.id + '?access_token=' + self.configuration.token,
                 'json' : true
                 },
                 function(error, response, body) {
@@ -41,7 +41,7 @@ module.exports = function () {
             if (state === 'canceled') return "Gray";
             if (result === null || result === 1) return "Red";
             if (result === 0) return "Green";
-            
+
             return null;
         },
         simplifyBuild = function (res) {
@@ -58,12 +58,15 @@ module.exports = function () {
                 reason: res.event_type,
                 hasErrors: false,
                 hasWarnings: false,
-                url: 'https://travis-ci.org/' + self.configuration.slug + '/builds/' + res.id
+                url: 'https://' + self.configuration.url + '/' + self.configuration.slug + '/builds/' + res.id
             };
         };
 
     self.configure = function (config) {
         self.configuration = config;
+
+        self.configuration.url = self.configuration.url || 'travis-ci.org';
+        self.configuration.token = self.configuration.token || '';
     };
 
     self.check = function (callback) {

@@ -82,9 +82,11 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 }
 ```
 
-| Setting      | Description                                                                |
-|--------------|----------------------------------------------------------------------------|
-| `slug`       | The name of the build (usually your GitHub user name and the project name) |
+| Setting      | Description                                                                                         |
+|--------------|-----------------------------------------------------------------------------------------------------|
+| `slug`       | The name of the build (usually your GitHub user name and the project name)                          |
+| `url`        | The Travis CI server [travis-ci.org | travis-ci.com (defaults to travis-ci.org)                     |
+| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)         |
 
 #### Jenkins
 
@@ -158,7 +160,7 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 
 Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 
-#### Team Foundation Server (on-premise) 
+#### Team Foundation Server (on-premise)
 
 Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](https://github.com/marcells/tfs-proxy) bridge.
 

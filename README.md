@@ -85,7 +85,7 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 | Setting      | Description                                                                                         |
 |--------------|-----------------------------------------------------------------------------------------------------|
 | `slug`       | The name of the build (usually your GitHub user name and the project name)                          |
-| `url`        | The Travis CI server (travis-ci.org | travis-ci.com). Defaults to travis-ci.org.                    |
+| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.                    |
 | `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)         |
 
 #### Jenkins

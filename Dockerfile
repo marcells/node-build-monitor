@@ -1,4 +1,4 @@
-FROM dockerfile/nodejs
+FROM node
 
 RUN npm install -g forever
 

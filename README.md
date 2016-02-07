@@ -182,6 +182,36 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 | `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)                                                            |
 | `username`    | User with permission to query build details                                                                                                                                                          |
 | `password`    | Your Visual Studio Online password                                                                                                                                                                   |
+#### GitLab (on-premise, beta)
+
+Supports an on-premise [GitLab](https://gitlab.com) Community Edition with
+built-in CI server.
+
+```json
+{
+  "name": "GitLab",
+  "configuration": {
+    "url": "http://gitlab.example.com:8080",
+    "token": "secret_user_token",
+    "intervals": {
+      "disabled": 3600000,
+      "empty": 60000,
+      "default": 60000
+    },
+    "debug": true
+  }
+}
+```
+
+| Setting       | Description                                                                                                                                                                                          |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `url`         | On-premise GitLab server http(s) address sring                                                                                                                                                       |
+| `token`       | Secret token string for the existing user to be used to authenticate against GitLab REST API                                                                                                         |
+| `intervals`   | How often (in integer of milliseconds) ...                                                                                                                                                           |
+| `.disabled`   | ... to poll all GitLab projects, including projects with builds disabled, for new builds                                                                                                             |
+| `.empty`      | ... to poll GitLab projects with builds enabled, but still without any builds yet, for new builds                                                                                                    |
+| `.default`    | ... to poll GitLab projects with existing builds                                                                                                                                                     |
+| `debug`       | Boolean to run GitLab plugin in verbose mode                                                                                                                                                         |
 
 ### Run it with Docker (in production)
 

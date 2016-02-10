@@ -31,6 +31,7 @@
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
+    "start": "node app/app.js",
     "ci": "grunt ci"
   },
   "engines": {

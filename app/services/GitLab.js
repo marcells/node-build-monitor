@@ -219,11 +219,20 @@ module.exports = function () {
                             });
                         } else {
                             log('Error', body);
+                            process.nextTick(function() {
+                                callback([]);
+                            });
+                            process.nextTick(function() {
+                                pass(null, []);
+                            });
                         }
                     });
                 });
             } else {
                 log('Error', body);
+                process.nextTick(function() {
+                    callback([]);
+                });
             }
         });
     }
@@ -363,6 +372,9 @@ module.exports = function () {
             async.filter(projects, function (project, include) {
                 if (typeof self.cache.projects[project.id] === 'undefined') {
                     include(true);
+                } else if (self.cache.projects[project.id]
+                                     .builds_enabled === false) {
+                   include(true);
                 } else {
                     include(false);
                 }

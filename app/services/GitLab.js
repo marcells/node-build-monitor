@@ -331,36 +331,44 @@ module.exports = function () {
 
     function updateProject(project, callback) {
         log('Updating project:', project.name_with_namespace);
-        if (typeof project.builds === 'undefined') {
-            project.builds = {};
-        }
-        if (project.builds_enabled === true) {
-            fetchProjectBuilds(project, function(results) {
-                var i, build, builds = {};
-                for (i = 0; i < results.length; i = i + 1) {
-                    build = results[i];
-                    builds[build.monitor.id] = build;
-                }
-                if (Object.keys(builds).length) {
-                    project.builds = builds;
-                }
-                project.expires = getProjectExpiration(project);
-                self.cache.projects[project.id] = project;
-                if (typeof callback === 'function') {
-                    process.nextTick(function() {
-                        callback(project);
-                    });
-                }
-            });
+        if (self.config.slugs.indexOf('*/*') > -1 || self.config.slugs.indexOf(project.path_with_namespace) > -1) {
+          if (typeof project.builds === 'undefined') {
+              project.builds = {};
+          }
+          if (project.builds_enabled === true) {
+              fetchProjectBuilds(project, function(results) {
+                  var i, build, builds = {};
+                  for (i = 0; i < results.length; i = i + 1) {
+                      build = results[i];
+                      builds[build.monitor.id] = build;
+                  }
+                  if (Object.keys(builds).length) {
+                      project.builds = builds;
+                  }
+                  project.expires = getProjectExpiration(project);
+                  self.cache.projects[project.id] = project;
+                  if (typeof callback === 'function') {
+                      process.nextTick(function() {
+                          callback(project);
+                      });
+                  }
+              });
+          } else {
+              project.builds = {};
+              project.expires = getProjectExpiration(project);
+              self.cache.projects[project.id] = project;
+              if (typeof callback === 'function') {
+                  process.nextTick(function() {
+                      callback(project);
+                  });
+              }
+          }
         } else {
-            project.builds = {};
-            project.expires = getProjectExpiration(project);
-            self.cache.projects[project.id] = project;
-            if (typeof callback === 'function') {
-                process.nextTick(function() {
-                    callback(project);
-                });
-            }
+          if (typeof callback === 'function') {
+              process.nextTick(function() {
+                  callback(project);
+              });
+          }
         }
     }
 
@@ -464,6 +472,9 @@ module.exports = function () {
         }
         if (typeof self.config.intervals.default === 'undefined') {
             self.config.intervals.default = minute;
+        }
+        if (typeof self.config.slugs === 'undefined') {
+            self.config.intervals.slugs = ['*/*'];
         }
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
             self.config.token = process.env.GITLAB_TOKEN;

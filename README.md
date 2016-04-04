@@ -333,7 +333,7 @@ Just check out the other themes to get sample code. It's quite easy to create ne
 
 Here are some useful links, how to run the build monitor frontend on a Raspberry Pi.
 
-- [Boot to browser](http://www.niteoweb.com/blog/raspberry-pi-boot-to-browser)
+- [Boot to browser](http://blog.niteoweb.com/raspberry-pi-boot-to-browser/)
 - [Automatically turn the monitor off in the evening](http://glframebuffer.wordpress.com/2013/08/28/raspberrypi-how-to-turn-off-hdmi-from-raspberry-pi/)
 
 This sample script can be used in a cronjob to automatically send your screen to sleep mode in the evening and wake it up in the morning.

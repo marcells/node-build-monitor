@@ -474,7 +474,7 @@ module.exports = function () {
             self.config.intervals.default = minute;
         }
         if (typeof self.config.slugs === 'undefined') {
-            self.config.intervals.slugs = ['*/*'];
+            self.config.slugs = ['*/*'];
         }
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
             self.config.token = process.env.GITLAB_TOKEN;

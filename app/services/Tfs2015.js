@@ -69,7 +69,8 @@ module.exports = function () {
                 status: getStatus(res.status, res.result),
                 reason: res.reason,
                 hasErrors: !isNullOrWhiteSpace(res.Errors),
-                hasWarnings: !isNullOrWhiteSpace(res.Warnings)
+                hasWarnings: !isNullOrWhiteSpace(res.Warnings),
+                url: res._links.web.href
             };
         },
         queryBuilds = function (callback) {

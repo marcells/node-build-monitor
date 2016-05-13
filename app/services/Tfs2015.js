@@ -24,12 +24,7 @@ module.exports = function () {
             });
         },
         parseDate = function (dateAsString) {
-          if(dateAsString != null)
-              console.log(new Date(dateAsString));
-
-            return dateAsString
-              ? new Date(dateAsString)
-              : null;
+            return dateAsString ? new Date(dateAsString) : null;
         },
         forEachResult = function (body, callback) {
             for (var i = 0; i < body.value.length; i++) {

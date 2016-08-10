@@ -7,6 +7,10 @@
     {
       "name": "Marcell Spies",
       "email": "marcells@gmx.de"
+    },
+    {
+      "name": "Ken Toley",
+      "email": "kenneth.toley@dictionary.com"
     }
   ],
   "dependencies": {
@@ -26,13 +30,15 @@
     "grunt-contrib-jshint": "0.12.0",
     "grunt-contrib-watch": "0.6.1",
     "should": "8.2.2",
-    "grunt-mocha-test": "0.12.7"
+    "grunt-mocha-test": "0.12.7",
+    "mocha": "^2.4.5"
+
   },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
     "start": "node app/app.js",
-    "ci": "grunt ci"
+    "ci": "./node_modules/.bin/mocha"
   },
   "engines": {
     "node": ">= 0.8.0"

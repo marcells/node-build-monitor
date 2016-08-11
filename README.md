@@ -20,7 +20,9 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
 - [Visual Studio Online](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-online))</sup></sub>
 - [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-on-premise))</sup></sub>
-- GitLab (on-premise, beta)
+- [Team Foundation Server 2015 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-2015-on-premise))</sup></sub>
+- [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
+- [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -83,11 +85,11 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 }
 ```
 
-| Setting      | Description                                                                                         |
-|--------------|-----------------------------------------------------------------------------------------------------|
-| `slug`       | The name of the build (usually your GitHub user name and the project name)                          |
-| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.                    |
-| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)         |
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `slug`       | The name of the build (usually your GitHub user name and the project name)
+| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.
+| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)
 
 #### Jenkins
 
@@ -108,14 +110,14 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 }
 ```
 
-| Setting      | Description                                                                                                                |
-|--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `url`        | The url to the Jenkins server                                                                                              |
-| `username`   | Your Jenkins user name                                                                                                     |
-| `password`   | Your Jenkins password                                                                                                      |
-| `job`        | The name of the Jenkins Job                                                                                                |
-| `options`    | The request options.                                                                                                       |
-|              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values           |
+| Setting      | Description
+|--------------|------------------------------------------------------------------------------------------------------------------
+| `url`        | The url to the Jenkins server
+| `username`   | Your Jenkins user name
+| `password`   | Your Jenkins password
+| `job`        | The name of the Jenkins Job
+| `options`    | The request options.
+|              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values
 
 #### TeamCity
 
@@ -131,10 +133,10 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 }
 ```
 
-| Setting                 | Description                                                                                                     |
-|-------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).                        |
-| `buildConfigurationId`  | The id of the TeamCity build configuration                                                                      |
+| Setting                 | Description
+|-------------------------|-----------------------------------------------------------------------------------------
+| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
+| `buildConfigurationId`  | The id of the TeamCity build configuration
 
 #### Visual Studio Online
 
@@ -152,12 +154,12 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 }
 ```
 
-| Setting       | Description                                                                                                                             |
-|---------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently) |
-| `accountname` | Your Visual Studio Online user name (account)                                                                                           |
-| `username`    | Your Visual Studio Online user name (alternate credentials)                                                                             |
-| `password`    | Your Visual Studio Online password                                                                                                      |
+| Setting       | Description
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
+| `accountname` | Your Visual Studio Online user name (account)
+| `username`    | Your Visual Studio Online user name (alternate credentials)
+| `password`    | Your Visual Studio Online password
 
 Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 
@@ -177,13 +179,34 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 }
 ```
 
-| Setting       | Description                                                                                                                                                                                          |
-|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section). |
-| `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)                                                            |
-| `username`    | User with permission to query build details                                                                                                                                                          |
-| `password`    | Your Visual Studio Online password    
-                                                                                                                                                               |
+| Setting       | Description
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section).
+| `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)
+| `username`    | User with permission to query build details
+| `password`    | The password for the user
+
+#### Team Foundation Server 2015 (on-premise)
+
+Supports an on-premise Microsoft Team Foundation Server 2015 (and later).
+
+```json
+{
+  "name": "Tfs2015",
+  "configuration": {
+    "url": "http://tfs-server:8080/tfs/DefaultCollection/TeamProject",
+    "username": "domain\\buildadmin",
+    "password": "buildadmin_password"
+  }
+}
+```
+
+| Setting       | Description
+|---------------|-------------------------------------------------------------------------------------
+| `url`         | The full Team Collection Url, including the TeamProject, which builds are displayed
+| `username`    | User with permission to query build details
+| `password`    | The password for the user
+
 #### GitLab (on-premise, beta)
 
 Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise Edition with built-in CI server. Also supports [hosted gitlab](https://gitlab.com).
@@ -207,16 +230,16 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 }
 ```
 
-| Setting       | Description                                                                                                                                                                                          |
-|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `url`         | GitLab server http(s) address string                                                                                                                                                       |
-| `token`       | Secret token string for the existing user to be used to authenticate against GitLab REST API                                                                                                         |
-| `intervals`   | How often (in integer of milliseconds) ...                                                                                                                                                           |
-| `.disabled`   | ... to poll all GitLab projects, including projects with builds disabled, for new builds                                                                                                             |
-| `.empty`      | ... to poll GitLab projects with builds enabled, but still without any builds yet, for new builds                                                                                                    |
-| `.default`    | ... to poll GitLab projects with existing builds                                                                                                                                                     |
-| `debug`       | Boolean to run GitLab plugin in verbose mode                                                                                                                                                         |
+| Setting       | Description
+|---------------|-------------------------------------------------------------------------------------------------------------
+| `url`         | GitLab server http(s) address string
+| `token`       | Secret token string for the existing user to be used to authenticate against GitLab REST API
 | `slugs`       | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to
+| `intervals`   | How often (in integer of milliseconds) ...
+| `.disabled`   | ... to poll all GitLab projects, including projects with builds disabled, for new builds
+| `.empty`      | ... to poll GitLab projects with builds enabled, but still without any builds yet, for new builds
+| `.default`    | ... to poll GitLab projects with existing builds
+| `debug`       | Boolean to run GitLab plugin in verbose mode
 
 #### BuddyBuild
 
@@ -236,15 +259,14 @@ Supports [BuddyBuild](https://buddybuild.com/) build service
 }
 ```
 
-| Setting       | Description                                                                                                                                                                                          |
-|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Setting          | Description
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | `project_name`   | Label of the project name, normally IOS or Android.
-| `app_id`         | BuddyBuild Application ID                                                                                                                                                                         |
-| `url`            | BuddyBuild Build Query url                                                                                                                                                                        |
-| `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API (if `BUILDBUDDY_ACCESS_TOKEN` environment variable is set, this setting is overwritten)            |
-| `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.                                                                                                           |
-| `branch`         | Name of the branch                                                                                                                                                                                |
-
+| `app_id`         | BuddyBuild Application ID
+| `url`            | BuddyBuild Build Query url
+| `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API (if `BUILDBUDDY_ACCESS_TOKEN` environment variable is set, this setting is overwritten)
+| `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.
+| `branch`         | Name of the branch
 
 ### Run it with Docker (in production)
 

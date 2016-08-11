@@ -16,23 +16,7 @@
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
-    },
-    {
-      "name": "BuddyBuild",
-      "configuration": {
-        "project_name": "Android",
-        "app_id": "Your-App-BuildID",
-        "url": "https://api.buddybuild.com/v1/apps",
-        "access_token": "Your-Token",
-        "build_id": "",
-        "branch": "develop",
-        "intervals": {
-          "disabled": 3600000,
-          "empty": 60000,
-          "default": 6000
-        },
-        "debug": true
-      }
     }
+
   ]
 }

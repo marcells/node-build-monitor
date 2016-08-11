@@ -20,6 +20,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
 - [Visual Studio Online](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-online))</sup></sub>
 - [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-on-premise))</sup></sub>
+- GitLab (on-premise, beta)
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -181,11 +182,11 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 | `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section). |
 | `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)                                                            |
 | `username`    | User with permission to query build details                                                                                                                                                          |
-| `password`    | Your Visual Studio Online password                                                                                                                                                                   |
+| `password`    | Your Visual Studio Online password    
+                                                                                                                                                               |
 #### GitLab (on-premise, beta)
 
-Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise Edition with
-built-in CI server. Also supports [hosted gitlab](https://gitlab.com).
+Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise Edition with built-in CI server. Also supports [hosted gitlab](https://gitlab.com).
 
 ```json
 {
@@ -217,32 +218,33 @@ built-in CI server. Also supports [hosted gitlab](https://gitlab.com).
 | `debug`       | Boolean to run GitLab plugin in verbose mode                                                                                                                                                         |
 | `slugs`       | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to
 
-#### BuddyBuild 
-Mobile CI
-The service will take env_var for the Access Token
+#### BuddyBuild
+
+Supports [BuddyBuild](https://buddybuild.com/) build service
 
 ```json
 {
-      "name": "BuddyBuild",
-      "configuration": {
-        "project_name": "Android",
-        "app_id": "Your-App-ID",
-        "url": "https://api.buddybuild.com/v1/apps",
-        "access_token": "Your-Access-Token",
-        "build_id": "",
-        "branch": "develop"
-      }
-    }
+  "name": "BuddyBuild",
+  "configuration": {
+    "project_name": "Android",
+    "app_id": "Your-App-ID",
+    "url": "https://api.buddybuild.com/v1/apps",
+    "access_token": "Your-Access-Token",
+    "build_id": "",
+    "branch": "develop"
+  }
+}
 ```
 
 | Setting       | Description                                                                                                                                                                                          |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `url`            | BuddyBuild Build Query url                                                                                                                                                       |
-| `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API                                                                                                         |
-| `branch`         | Name of the branch                                                                                                                                                                                                |
-| `app_id`         | BuddyBuild Application ID                                                                                                                                                                                               |
-| `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.                                                                     |
 | `project_name`   | Label of the project name, normally IOS or Android.
+| `app_id`         | BuddyBuild Application ID                                                                                                                                                                         |
+| `url`            | BuddyBuild Build Query url                                                                                                                                                                        |
+| `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API (if `BUILDBUDDY_ACCESS_TOKEN` environment variable is set, this setting is overwritten)            |
+| `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.                                                                                                           |
+| `branch`         | Name of the branch                                                                                                                                                                                |
+
 
 ### Run it with Docker (in production)
 

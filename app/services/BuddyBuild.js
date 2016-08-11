@@ -2,7 +2,6 @@ var request = require('request'),
     async = require('async');
 
 module.exports = function () {
-
     var self = this,
         getRequestHeaders = function () { // build request header
             if (typeof process.env.BUILDBUDDY_ACCESS_TOKEN !== 'undefined') {
@@ -10,8 +9,8 @@ module.exports = function () {
             }
             return {
                 'ACCESS-TOKEN': self.configuration.access_token,
-                'Authorization': 'Bearer ' + self.configuration.access_token
-                , 'accept-encoding': 'application/json'
+                'Authorization': 'Bearer ' + self.configuration.access_token,
+                'accept-encoding': 'application/json'
             };
         },
         makeUrl = function (app_id, build_id, branch, baseUrl) { //assemble url with designated branch id
@@ -55,26 +54,18 @@ module.exports = function () {
             switch (statusText) {
                 case "success":
                     return "Green";
-                    break;
                 case "failed":
                     return "Red";
-                    break;
                 case "running":
                     return "Blue";
-                    break;
                 case "stopped":
                     return "Red";
-                    break;
                 case "queued":
                     return "Blue";
-                    break;
                 case "canceled":
                     return "#FFA500";
-                    break;
                 default:
                     return "Gray";
-                    break;
-
             }
 
         },
@@ -122,14 +113,13 @@ module.exports = function () {
         };
 
     self.configure = function (config) {
-
         self.configuration = config;
     };
 
     self.check = function (callback) {
         queryBuilds(callback);
     };
-    //test methods
+
     self.makeURL = function (app_id, build_id, branch, url) {
         return makeUrl(app_id, build_id, branch, url);
     };
@@ -138,9 +128,9 @@ module.exports = function () {
         self.configuration.access_token = access_token;
         return getRequestHeaders();
     };
+
     self.getStatus = function (statusText) {
         "use strict";
         return getStatus(statusText);
-    }
-
+    };
 };

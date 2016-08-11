@@ -1,4 +1,3 @@
-
 describe('BuddyBuild Service Test', function () {
     var BB; // class instance
 
@@ -7,7 +6,7 @@ describe('BuddyBuild Service Test', function () {
     }
 
     beforeEach(function () {
-        BB = new ( require('../app/services/BuddyBuild'))();
+        BB = new ( require('../../app/services/BuddyBuild'))();
         BB.configure({
             interval: 1,
             numberOfBuilds: 3
@@ -45,12 +44,11 @@ describe('BuddyBuild Service Test', function () {
         it('should return default color Gray', function(){
             var result = BB.getStatus('default');
             assert(result == 'Gray', "Expecting Gray Got: " + result);
-        })
+        });
     });
 
     describe('makeUrl', function () {
         it('should return valid url to the latest build of the specified branch', function () {
-           console.log('token:' + process.env.BUILDBUDDY_ACCESS_TOKEN);
             var url = "https://buildbuddy.com/APPID/build/latest?branch=develop";
             var sampleParam = BB.makeURL('APPID', '', 'develop', "https://buildbuddy.com");
             assert(url === sampleParam, "Expecting Format: " + url + " Received: " + sampleParam);
@@ -63,4 +61,3 @@ describe('BuddyBuild Service Test', function () {
         });
     });
 });
-

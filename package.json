@@ -31,14 +31,14 @@
     "grunt-contrib-watch": "0.6.1",
     "should": "8.2.2",
     "grunt-mocha-test": "0.12.7",
-    "mocha": "^2.4.5"
+    "mocha": "2.4.5"
 
   },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
     "start": "node app/app.js",
-    "ci": "./node_modules/.bin/mocha"
+    "ci": "grunt ci"
   },
   "engines": {
     "node": ">= 0.8.0"

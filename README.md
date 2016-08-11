@@ -216,7 +216,33 @@ built-in CI server. Also supports [hosted gitlab](https://gitlab.com).
 | `.default`    | ... to poll GitLab projects with existing builds                                                                                                                                                     |
 | `debug`       | Boolean to run GitLab plugin in verbose mode                                                                                                                                                         |
 | `slugs`       | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to
-|
+
+#### BuddyBuild 
+Mobile CI
+The service will take env_var for the Access Token
+
+```json
+{
+      "name": "BuddyBuild",
+      "configuration": {
+        "project_name": "Android",
+        "app_id": "Your-App-ID",
+        "url": "https://api.buddybuild.com/v1/apps",
+        "access_token": "Your-Access-Token",
+        "build_id": "",
+        "branch": "develop"
+      }
+    }
+```
+
+| Setting       | Description                                                                                                                                                                                          |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `url`            | BuddyBuild Build Query url                                                                                                                                                       |
+| `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API                                                                                                         |
+| `branch`         | Name of the branch                                                                                                                                                                                                |
+| `app_id`         | BuddyBuild Application ID                                                                                                                                                                                               |
+| `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.                                                                     |
+| `project_name`   | Label of the project name, normally IOS or Android.
 
 ### Run it with Docker (in production)
 

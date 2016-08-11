@@ -1,0 +1,19 @@
+image: node:latest
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - node_modules/
+
+before_script:
+  - echo "run test"
+
+stages:
+  - test
+
+test_mocha:
+  stage: test
+  script:
+  - npm install
+  - npm run ci
+

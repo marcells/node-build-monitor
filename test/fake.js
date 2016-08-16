@@ -7,7 +7,7 @@ module.exports = function () {
     self.builds = [];
 
 	self.check = function (callback) {
-        callback(clone(self.builds));
+        callback(null, clone(self.builds));
     };
 
     self.add = function () {

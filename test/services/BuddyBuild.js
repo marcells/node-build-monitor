@@ -1,4 +1,4 @@
-describe('BuddyBuild Service Test', function () {
+describe('BuddyBuild service', function () {
     var BB; // class instance
 
     function assert(expr, msg) {

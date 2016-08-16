@@ -23,7 +23,7 @@ module.exports = function () {
             return self.configuration.url + url;
         },
         makeRequest = function (url, callback) {
-            request({ 
+            request({
                 'url': url,
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
@@ -43,19 +43,29 @@ module.exports = function () {
                 requestRunningBuilds,
                 requestCanceledBuilds
             ], function (error, data) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
                 var merged = selectMany(data, function (x) { return x.build || []; });
                 callback(error, merged);
             });
         },
         requestBuild = function (build, callback) {
             makeRequest(getBuildDetailsUrl(build.href), function(error, data) {
-                callback(null, simplifyBuild(data));
+                if (error) {
+                  callback(error);
+                  return;
+                }
+                
+                callback(error, simplifyBuild(data));
             });
         },
         queryBuilds = function (callback) {
             requestBuilds(function (error, body) {
                 async.map(body, requestBuild, function (error, results) {
-                    callback(results);
+                    callback(error, results);
                 });
             });
         },

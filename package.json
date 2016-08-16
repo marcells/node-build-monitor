@@ -31,7 +31,8 @@
     "grunt-contrib-watch": "0.6.1",
     "should": "8.2.2",
     "grunt-mocha-test": "0.12.7",
-    "mocha": "2.4.5"
+    "mocha": "2.4.5",
+    "nock": "8.0.0"
 
   },
   "keywords": [],

@@ -14,13 +14,11 @@ module.exports = function () {
             };
         },
         makeUrl = function (app_id, build_id, branch, baseUrl) { //assemble url with designated branch id
-
             if (build_id) { // to query one build provide a build_id
                 baseUrl += '/' + build_id;
             } else if (app_id) { // to get lastest build provide app_id but no build_id
                 baseUrl += "/" + app_id + "/build/latest?branch=" + branch;
             }
-
 
             return baseUrl;
         },
@@ -31,8 +29,17 @@ module.exports = function () {
                     json: true
                 },
                 function (error, response, body) {
-                    console.log(body);
-                    callback(body);
+                    if (error) {
+                      callback(error);
+                      return;
+                    }
+
+                    if (response.statusCode === 500) {
+                      callback(new Error(response.statusMessage));
+                      return;
+                    }
+
+                    callback(error, body);
                 });
         },
         parseDate = function (dateAsString) {
@@ -67,14 +74,11 @@ module.exports = function () {
                 default:
                     return "Gray";
             }
-
         },
         parseLink = function (appId, buildId) { // point to the build
-
             return 'https://dashboard.buddybuild.com/apps/' + appId + '/build/' + buildId;
         },
         simplifyBuild = function (res) {
-
             return {
                 id: res._id,
                 platform: self.configuration.project_name,
@@ -95,21 +99,20 @@ module.exports = function () {
             };
         },
         queryBuilds = function (callback) { // query the build
-            var builds = [];
-
-            makeRequest(makeUrl(self.configuration.app_id, self.configuration.build_id, self.configuration.branch, self.configuration.url), function (body) {
-
-                async.map(forEachResult(body, function (res) {
-
-                    builds.push(simplifyBuild(res));
-                }));
-                {
-                    callback(builds);
+            makeRequest(makeUrl(self.configuration.app_id, self.configuration.build_id, self.configuration.branch, self.configuration.url), function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
                 }
 
+                var builds = [];
+
+                forEachResult(body, function (res) {
+                    builds.push(simplifyBuild(res));
+                });
+
+                callback(error, builds);
             });
-
-
         };
 
     self.configure = function (config) {

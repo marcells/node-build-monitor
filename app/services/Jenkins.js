@@ -21,18 +21,33 @@ module.exports = function () {
         jenkins,
         requestBuilds = function (callback) {
             jenkins.job_info(self.configuration.job, function(error, data) {
-                callback(data.builds);
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                callback(error, data.builds);
             });
         },
         requestBuild = function (build, callback) {
             jenkins.build_info(self.configuration.job, build.number, function(error, data) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
                 callback(error, simplifyBuild(data));
             });
         },
         queryBuilds = function (callback) {
-            requestBuilds(function (body) {
+            requestBuilds(function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
                 async.map(body, requestBuild, function (error, results) {
-                    callback(results);
+                    callback(error, results);
                 });
             });
         },

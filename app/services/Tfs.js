@@ -12,7 +12,7 @@ module.exports = function () {
             return baseUrl;
         },
         makeRequest = function (url, callback) {
-            request({ 
+            request({
                 'url': url,
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
@@ -20,7 +20,7 @@ module.exports = function () {
                 'auth': { 'user': self.configuration.accountname + '\\' + self.configuration.username, 'pass': self.configuration.password }
                 },
                 function(error, response, body) {
-                    callback(body);
+                    callback(error, body);
             });
         },
         parseDate = function (dateAsString) {
@@ -65,13 +65,24 @@ module.exports = function () {
             };
         },
         queryBuilds = function (callback) {
-            var builds = [];
-            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (body) {
+            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                if (body.error) {
+                  callback(new Error(body.error.message.value));
+                  return;
+                }
+
+                var builds = [];
+
                 forEachResult(body, function (res) {
                     builds.push(simplifyBuild(res));
                 });
 
-                callback(builds);
+                callback(error, builds);
             });
         };
 

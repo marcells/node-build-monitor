@@ -26,13 +26,13 @@ var async = require('async'),
 
             if(dateA < dateB) return 1;
             if(dateA > dateB) return -1;
-            
+
             return 0;
         });
     },
     distinctBuildsByETag = function (newBuilds) {
         var unique = {};
-        
+
         for (var i = newBuilds.length - 1; i >= 0; i--) {
             var build = newBuilds[i];
 
@@ -47,7 +47,7 @@ var async = require('async'),
         newBuilds.splice(numberOfBuilds);
     },
     changed = function (currentBuilds, newBuilds) {
-        var newbuildsHash = newBuilds
+        var newBuildsHash = newBuilds
             .map(function (value) {
                 return value.etag;
             })
@@ -59,7 +59,7 @@ var async = require('async'),
             })
             .join('|');
 
-        return newbuildsHash !== currentBuildsHash;
+        return newBuildsHash !== currentBuildsHash;
     },
     detectChanges = function (currentBuilds, newBuilds) {
         var changes = {
@@ -124,17 +124,32 @@ module.exports = function () {
     self.run = function () {
         var allBuilds = [];
 
-        async.each(self.plugins, function (plugin, pluginCallback) {
+        async.each(self.plugins, function (plugin, callback) {
             log('Check for builds...', self.configuration.debug);
 
-            plugin.check(function (pluginBuilds) {
+            plugin.check(function (error, pluginBuilds) {
+                if (error) {
+                  console.log('**********************************************************************');
+                  console.log('An error occured when fetching builds for the following configuration:');
+                  console.log('----------------------------------------------------------------------');
+                  console.log(plugin.configuration);
+                  console.log();
+                  console.log('----------------------------------------------------------------------');
+                  console.error(error);
+                  console.log('**********************************************************************');
+                  console.log();
+                  console.log();
+                  callback();
+                  return;
+                }
+
                 Array.prototype.push.apply(allBuilds, pluginBuilds);
-                pluginCallback();
+                callback();
             });
         },
         function (error) {
             log(allBuilds.length + ' builds found....', self.configuration.debug);
-            
+
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
             sortBuilds(allBuilds);

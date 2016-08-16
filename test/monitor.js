@@ -47,7 +47,7 @@ describe('monitor', function () {
             it('should invoke the buildsChanged event and contain an etag', function (done) {
                 monitor.once('buildsChanged', function (changes) {
                     changes.added[0].should.have.ownProperty('etag');
-                    
+
                     done();
                 });
 

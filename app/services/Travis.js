@@ -9,18 +9,7 @@ module.exports = function () {
                 'json' : true
                 },
                 function(error, response, body) {
-                    callback(body);
-            });
-        },
-        queryBuilds = function (callback) {
-            requestBuilds(function (body) {
-                if (!body) {
-                    callback([]);
-                } else {
-                    async.map(body, requestBuild, function (err, results) {
-                        callback(results);
-                    });
-                }
+                    callback(error, body);
             });
         },
         requestBuild = function (build, callback) {
@@ -29,7 +18,24 @@ module.exports = function () {
                 'json' : true
                 },
                 function(error, response, body) {
-                    callback(error, simplifyBuild(body));
+                  if (error) {
+                    callback(error);
+                    return;
+                  }
+
+                  callback(error, simplifyBuild(body));
+                });
+        },
+        queryBuilds = function (callback) {
+            requestBuilds(function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                async.map(body, requestBuild, function (error, results) {
+                    callback(error, results);
+                });
             });
         },
         parseDate = function (dateAsString) {

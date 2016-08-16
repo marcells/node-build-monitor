@@ -6,9 +6,12 @@
   },
   "services": [
     {
-      "name": "Travis",
+      "name": "Jenkins",
       "configuration": {
-        "slug": "marcells/bloggy"
+        "url": "http://dev.jazzteam.org:8080/",
+        "username": "x2sdemo",
+        "password": "x2sdemo",
+        "job": "xml2selenium-bestpractices"
       }
     },
     {
@@ -16,7 +19,66 @@
       "configuration": {
         "slug": "marcells/node-build-monitor"
       }
+    },
+    {
+      "name": "TeamCity",
+      "configuration": {
+        "url": "http://teamcity_username:teamcity_password@teamcity-server:8111",
+        "buildConfigurationId": "TeamCityProject_TeamCityBuildConfiguration"
+      }
+    },
+    {
+      "name": "Tfs",
+      "configuration": {
+        "collection": "DefaultCollection",
+        "accountname": "vs_online_accountname",
+        "username": "vs_online_username",
+        "password": "vs_online_password"
+      }
+    },
+    {
+      "name": "TfsProxy",
+      "configuration": {
+        "tfsProxyUrl": "http://tfs-proxy:4567/builds",
+        "url": "http://tfs-server:8080/tfs/DefaultCollection",
+        "username": "domain\\buildadmin",
+        "password": "buildadmin_password"
+      }
+    },
+    {
+      "name": "Tfs2015",
+      "configuration": {
+        "url": "http://tfs-server:8080/tfs/DefaultCollection/TeamProject",
+        "username": "domain\\buildadmin",
+        "password": "buildadmin_password"
+      }
+    },
+    {
+      "name": "GitLab",
+      "configuration": {
+        "url": "http://gitlab.example.com:8080",
+        "token": "secret_user_token",
+        "slugs": [
+          "gitlab-org/gitlab-ci-multi-runner"
+        ],
+        "intervals": {
+          "disabled": 3600000,
+          "empty": 60000,
+          "default": 60000
+        },
+        "debug": true
+      }
+    },
+    {
+      "name": "BuddyBuild",
+      "configuration": {
+        "project_name": "Android",
+        "app_id": "Your-App-ID",
+        "url": "https://api.buddybuild.com/v1/apps",
+        "access_token": "Your-Access-Token",
+        "build_id": "",
+        "branch": "develop"
+      }
     }
-
   ]
 }

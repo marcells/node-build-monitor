@@ -10,10 +10,10 @@ module.exports = function () {
                 '/builds';
         },
         makeRequest = function (callback) {
-            request({ 
+            request({
                 'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
                 'rejectUnauthorized': false,
-                'headers': { 
+                'headers': {
                     'Accept': 'application/json',
                     'url': self.configuration.url,
                     'username': self.configuration.username,
@@ -22,7 +22,7 @@ module.exports = function () {
                 'json' : true
                 },
                 function(error, response, body) {
-                    callback(body);
+                    callback(error, body);
             });
         },
         parseDate = function (dateAsString) {
@@ -61,13 +61,19 @@ module.exports = function () {
             };
         },
         queryBuilds = function (callback) {
-            var builds = [];
-            makeRequest(function (body) {
+            makeRequest(function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                var builds = [];
+
                 forEachResult(body, function (res) {
                     builds.push(simplifyBuild(res));
                 });
 
-                callback(builds);
+                callback(error, builds);
             });
         };
 

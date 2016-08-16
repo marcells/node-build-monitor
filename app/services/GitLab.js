@@ -453,7 +453,7 @@ module.exports = function () {
                 });
             }, function(err, builds) {
                 process.nextTick(function() {
-                    callback(builds);
+                    callback(err, builds);
                 });
             });
         });

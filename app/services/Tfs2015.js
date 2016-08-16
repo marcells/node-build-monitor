@@ -20,7 +20,7 @@ module.exports = function () {
                 'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
                 },
                 function(error, response, body) {
-                    callback(body);
+                    callback(error, body);
             });
         },
         parseDate = function (dateAsString) {
@@ -74,13 +74,19 @@ module.exports = function () {
             };
         },
         queryBuilds = function (callback) {
-            var builds = [];
-            makeRequest(makeUrl('/Builds', '$top=30'), function (body) {
+            makeRequest(makeUrl('/Builds', '$top=30'), function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                var builds = [];
+
                 forEachResult(body, function (res) {
                     builds.push(simplifyBuild(res));
                 });
 
-                callback(builds);
+                callback(error, builds);
             });
         };
 

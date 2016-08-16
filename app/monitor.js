@@ -133,8 +133,8 @@ module.exports = function () {
                   console.log('An error occured when fetching builds for the following configuration:');
                   console.log('----------------------------------------------------------------------');
                   console.log(plugin.configuration);
-                  console.log();
                   console.log('----------------------------------------------------------------------');
+                  console.log();
                   console.error(error);
                   console.log('**********************************************************************');
                   console.log();

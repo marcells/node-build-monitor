@@ -39,7 +39,8 @@
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
     "start": "node app/app.js",
-    "ci": "grunt ci"
+    "ci": "grunt ci",
+    "test": "grunt mochaTest:test"
   },
   "engines": {
     "node": ">= 0.8.0"

@@ -482,7 +482,7 @@ module.exports = function () {
         if (typeof self.config.caPath !== 'undefined') {
             request = request.defaults({
                 agentOptions: {
-                    ca: require('fs').readFileSync(self.config.caPath)
+                    ca: require('fs').readFileSync(self.config.caPath).toString().split("\n\n")
                 }
             });
         }

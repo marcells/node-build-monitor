@@ -27,7 +27,7 @@ describe('GitLab service', function () {
         });
 
         it('should set the default CA in the request module', function () {
-            var expectedCert = require('fs').readFileSync(this.caPath);
+            var expectedCert = require('fs').readFileSync(this.caPath).toString().split("\n\n");
 
             gitlab.configure({
                 caPath: this.caPath

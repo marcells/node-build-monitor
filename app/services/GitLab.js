@@ -479,6 +479,13 @@ module.exports = function () {
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
             self.config.token = process.env.GITLAB_TOKEN;
         }
+        if (typeof self.config.caPath !== 'undefined') {
+            request = request.defaults({
+                agentOptions: {
+                    ca: require('fs').readFileSync(self.config.caPath)
+                }
+            });
+        }
         for (var key in self.config) {
           if (key !== 'token') {
             log(key + ':', self.config[key]);

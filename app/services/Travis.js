@@ -73,6 +73,14 @@ module.exports = function () {
 
         self.configuration.url = self.configuration.url || 'travis-ci.org';
         self.configuration.token = self.configuration.token || '';
+
+        if (typeof self.configuration.caPath !== 'undefined') {
+            request = request.defaults({
+                agentOptions: {
+                    ca: require('fs').readFileSync(self.configuration.caPath).toString().split("\n\n")
+                }
+            });
+        }
     };
 
     self.check = function (callback) {

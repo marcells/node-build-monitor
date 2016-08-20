@@ -54,7 +54,7 @@ describe('Jenkins service', function () {
               nock = scenario_3.setup();
           });
 
-          xit('should handle the jenkins-api error', function (done) {
+          it('should handle the jenkins-api error', function (done) {
               service.check(function(error, builds) {
                   builds.should.eql([ undefined ]);
                   error.should.eql(new SyntaxError('Unexpected token I in JSON at position 0'));

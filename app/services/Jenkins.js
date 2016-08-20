@@ -1,4 +1,4 @@
-var jenkinsapi = require('jenkins-api'),
+var request = require('request'),
     async = require('async'),
     makeRequestConfiguration = function (serviceConfiguration) {
         var tryApplyAuthHeader = function (requestConfig, key, value) {
@@ -14,13 +14,32 @@ var jenkinsapi = require('jenkins-api'),
         tryApplyAuthHeader(requestConfig, 'pass', serviceConfiguration.password);
 
         return requestConfig;
+    },
+    makeRequest = function (requestWithDefaults, url, callback) {
+        requestWithDefaults({
+            'url': url,
+            'headers': { 'Accept': 'application/json' }
+            },
+            function(error, response, body) {
+              if (error || response.statusCode !== 200) {
+                callback(error || true);
+                return;
+              }
+
+              try {
+                var json = JSON.parse(body);
+                callback(error, json);
+              } catch (e) {
+                callback (e);
+              }
+        });
     };
 
 module.exports = function () {
     var self = this,
-        jenkins,
+      requestWithDefaults,
         requestBuilds = function (callback) {
-            jenkins.job_info(self.configuration.job, function(error, data) {
+            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + self.configuration.job + '/api/json', function(error, data) {
                 if (error) {
                   callback(error);
                   return;
@@ -30,7 +49,7 @@ module.exports = function () {
             });
         },
         requestBuild = function (build, callback) {
-            jenkins.build_info(self.configuration.job, build.number, function(error, data) {
+            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + self.configuration.job + '/' + build.number + '/api/json', function(error, data) {
                 if (error) {
                   callback(error);
                   return;
@@ -121,7 +140,7 @@ module.exports = function () {
                 'More information on: https://github.com/marcells/node-build-monitor#jenkins \n\n');
         }
 
-        jenkins = jenkinsapi.init(self.configuration.url, makeRequestConfiguration(self.configuration));
+        requestWithDefaults = request.defaults(makeRequestConfiguration(self.configuration));
     };
 
     self.check = function (callback) {

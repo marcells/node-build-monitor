@@ -16,7 +16,7 @@ describe('Travis service', function () {
             // Set path to dummy CA cert
             this.caPath = path.resolve(__dirname, 'data', 'ca.pem');
 
-            // Stub out request module in GitLab module
+            // Stub out request module in Travis module
             requestStub = {
                 defaults: sinon.stub()
             };

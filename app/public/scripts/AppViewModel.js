@@ -32,7 +32,7 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
             } else {
               self.faviconImageUrl('/images/favicon.png');
             }
-        }
+        };
 
         var getBuildById = function (id) {
             return self.builds().filter(function (build) {
@@ -47,25 +47,25 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
 
             var regex = new RegExp(self.options.notificationFilterValue());
 
-            return regex.test(build.id)
-              || regex.test(build.project)
-              || regex.test(build.definition)
-              || regex.test(build.number)
-              || regex.test(build.requestedFor)
-              || regex.test(build.statusText)
-              || regex.test(build.reason);
+            return regex.test(build.id) ||
+                regex.test(build.project) ||
+                regex.test(build.definition) ||
+                regex.test(build.number) ||
+                regex.test(build.requestedFor) ||
+                regex.test(build.statusText) ||
+                regex.test(build.reason);
         };
 
         var anyBuildMatchesToNotifcationFilter = function (builds) {
 
-            if (builds.length == 0) {
+            if (builds.length === 0) {
               return false;
             }
 
             return builds.some( function (build) {
                 return matchesToNotificationFilter(build);
             });
-        }
+        };
 
         this.loadBuilds = function (builds) {
             self.builds.removeAll();
@@ -76,9 +76,9 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
         };
 
         this.updateCurrentBuildsWithChanges = function (changes)  {
-            if (anyBuildMatchesToNotifcationFilter(changes.removed)
-              || anyBuildMatchesToNotifcationFilter(changes.added)
-              || anyBuildMatchesToNotifcationFilter(changes.updated)) {
+            if (anyBuildMatchesToNotifcationFilter(changes.removed) ||
+                anyBuildMatchesToNotifcationFilter(changes.added) ||
+                anyBuildMatchesToNotifcationFilter(changes.updated)) {
                 self.setHasUnreadBuilds(true);
             }
 

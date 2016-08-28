@@ -23,5 +23,17 @@ define(['cookies'], function (cookies) {
         enumerable: true
     });
 
+    Object.defineProperty(settings, 'notificationFilterEnabled', {
+        get: function() { return parseBool(cookies.get('notificationFilterEnabled')) || false; },
+        set: function(value) { cookies.set('notificationFilterEnabled', value); },
+        enumerable: true
+    });
+
+    Object.defineProperty(settings, 'notificationFilterValue', {
+        get: function() { return cookies.get('notificationFilterValue') || ''; },
+        set: function(value) { cookies.set('notificationFilterValue', value); },
+        enumerable: true
+    });
+
     return settings;
 });

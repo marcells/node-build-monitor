@@ -41,6 +41,19 @@ div(data-bind='with: options')
                     small
                         | Browser Notifications are not supported in your browser or were disabled by you. 
                         a(href='http://caniuse.com/#feat=notifications', target='_blank') More Info
+                        
+            section
+                h1 Notification filter
+                .description You only will get notified by your set up notifications, if the notification filter regular expression matches a build parameter.
+
+                label.checkbox
+                    input(type='checkbox', data-bind='checked: notificationFilterEnabled')
+                    span Notification filter
+                    
+                input(type='text', data-bind='value: notificationFilterValue, enable: notificationFilterEnabled')
+                span
+                small
+                    a(href='https://regex101.com/#javascript', target='_blank') More Info
 
         span.footer
             span node-build-monitor 

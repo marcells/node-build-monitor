@@ -40,6 +40,33 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
             })[0];
         };
 
+        var matchesToNotificationFilter = function (build) {
+            if (!self.options.notificationFilterEnabled()) {
+                return true;
+            }
+
+            var regex = new RegExp(self.options.notificationFilterValue());
+
+            return regex.test(build.id)
+              || regex.test(build.project)
+              || regex.test(build.definition)
+              || regex.test(build.number)
+              || regex.test(build.requestedFor)
+              || regex.test(build.statusText)
+              || regex.test(build.reason);
+        };
+
+        var anyBuildMatchesToNotifcationFilter = function (builds) {
+
+            if (builds.length == 0) {
+              return false;
+            }
+
+            return builds.some( function (build) {
+                return matchesToNotificationFilter(build);
+            });
+        }
+
         this.loadBuilds = function (builds) {
             self.builds.removeAll();
 
@@ -49,9 +76,9 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
         };
 
         this.updateCurrentBuildsWithChanges = function (changes)  {
-            if (changes.removed.length > 0
-              || changes.added.length > 0
-              || changes.updated.length > 0) {
+            if (anyBuildMatchesToNotifcationFilter(changes.removed)
+              || anyBuildMatchesToNotifcationFilter(changes.added)
+              || anyBuildMatchesToNotifcationFilter(changes.updated)) {
                 self.setHasUnreadBuilds(true);
             }
 
@@ -69,7 +96,7 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
                 var vm = getBuildById(build.id);
                 vm.update(build);
 
-                if (build.status === 'Red') {
+                if (build.status === 'Red' && matchesToNotificationFilter(build)) {
                     if (self.options.soundNotificationEnabled()) {
                         var audio = new Audio('/audio/woop.mp3');
                         audio.play();

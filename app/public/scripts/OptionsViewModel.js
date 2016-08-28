@@ -9,10 +9,12 @@ define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, setti
         self.browserNotificationSupported = ko.observable(notification.isSupportedAndNotDenied());
         self.browserNotificationEnabled = ko.observable(notification.isSupportedAndNotDenied() && settings.browserNotificationEnabled);
         self.soundNotificationEnabled = ko.observable(settings.soundNotificationEnabled);
+        self.notificationFilterEnabled = ko.observable(settings.notificationFilterEnabled);
+        self.notificationFilterValue = ko.observable(settings.notificationFilterValue);
         self.version = app.version;
-        
+
         helper.detectGlobalInteraction(
-            function() { 
+            function() {
                 self.isMenuButtonVisible(!self.isMenuVisible());
             },
             function() {
@@ -40,7 +42,7 @@ define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, setti
                     function () {
                         settings.browserNotificationEnabled = true;
                     },
-                    function () { 
+                    function () {
                         self.browserNotificationEnabled(false);
                         settings.browserNotificationEnabled = false;
                     });
@@ -51,6 +53,14 @@ define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, setti
 
         self.soundNotificationEnabled.subscribe(function (enabled) {
             settings.soundNotificationEnabled = enabled;
+        });
+
+        self.notificationFilterEnabled.subscribe(function (enabled) {
+            settings.notificationFilterEnabled = enabled;
+        });
+
+        self.notificationFilterValue.subscribe(function (value) {
+            settings.notificationFilterValue = value;
         });
     };
 

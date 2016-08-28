@@ -6,6 +6,7 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
 
         this.isIntercepted = ko.observable();
         this.infoType = ko.observable();
+        this.faviconImageUrl = ko.observable('/images/favicon-unread.png');
         this.builds = ko.observableArray([]);
         this.version = ko.observable();
         this.options = new OptionsViewModel(self);
@@ -25,6 +26,14 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
             self.infoType('loading');
         };
 
+        this.setHasUnreadBuilds = function (value) {
+            if (value) {
+              self.faviconImageUrl('/images/favicon-unread.png');
+            } else {
+              self.faviconImageUrl('/images/favicon.png');
+            }
+        }
+
         var getBuildById = function (id) {
             return self.builds().filter(function (build) {
                 return build.id() === id;
@@ -40,6 +49,12 @@ define(['ko', 'notification', 'BuildViewModel', 'OptionsViewModel'], function (k
         };
 
         this.updateCurrentBuildsWithChanges = function (changes)  {
+            if (changes.removed.length > 0
+              || changes.added.length > 0
+              || changes.updated.length > 0) {
+                self.setHasUnreadBuilds(true);
+            }
+
             changes.removed.forEach(function (build) {
                 self.builds.remove(function (item) {
                     return item.id() === build.id;

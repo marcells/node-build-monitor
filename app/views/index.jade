@@ -6,7 +6,7 @@ block scripts
     script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
 
 block content
-    .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }')
+    .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }, changeFavicon: faviconImageUrl')
 
     include options.jade
     include overlay.jade

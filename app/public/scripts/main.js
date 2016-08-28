@@ -13,6 +13,14 @@ define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], funct
 
     var app = new AppViewModel();
 
+    $(window).focus(function(e) {
+        app.setHasUnreadBuilds(false);
+    });
+
+    $(window).mousemove(function(e) {
+        app.setHasUnreadBuilds(false);
+    });
+
     $(function() {
         ko.applyBindings(app);
 
@@ -43,7 +51,7 @@ define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], funct
         buildMonitorServer.onSettingsLoaded = function (settings) {
             app.version(settings.version);
         };
-        
+
         buildMonitorServer.connect();
 
         setInterval(app.updateBuildTimes, 1000);

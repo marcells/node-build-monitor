@@ -1,38 +1,38 @@
-.grid4x3 .clear {
+.lowres .clear {
   clear: both;
 }
 
-.grid4x3 .nowrap {
+.lowres .nowrap {
   overflow: hidden;
   white-space: nowrap;
 }
 
-.grid4x3 .box {
+.lowres .box {
   border: 1px solid black;
 }
 
-.grid4x3 .middle { 
+.lowres .middle { 
   vertical-align: middle;
 }
 
-.grid4x3 .medium-height {
+.lowres .medium-height {
     line-height: 40px;
     height: 40px;
 }
 
-.grid4x3 .reset-height {
+.lowres .reset-height {
     display: inline-block;
     line-height: normal;
 }
 
-.grid4x3 .flex-container {
+.lowres .flex-container {
   padding: 0px;
   margin: 0 auto 0 auto;
   height: 100%;
   width: 100%;
 }
 
-.grid4x3 .flex-item {
+.lowres .flex-item {
   float: left;
   width: 25%;
   height: 33%;
@@ -40,7 +40,7 @@
   position: relative;
 }
 
-.grid4x3 .flex-item-inner {
+.lowres .flex-item-inner {
   background: transparent;
   margin: 25px;
   padding: 25px;
@@ -69,75 +69,75 @@
   opacity: 0.8;
 }
 
-.grid4x3 .flex-item .info-block {
+.lowres .flex-item .info-block {
   float: left;
   font-size: 15pt;
 }
 
-.grid4x3 .flex-item .project {
+.lowres .flex-item .project {
   font-weight: bold;
 }
 
-.grid4x3 .flex-item .project-definition-separator {
+.lowres .flex-item .project-definition-separator {
   border-left: 1px solid;
   padding-left: 10px;
   margin-left: 10px
 }
 
-.grid4x3 .flex-item .definition {
+.lowres .flex-item .definition {
 }
 
-.grid4x3 .flex-item .number {
+.lowres .flex-item .number {
   font-size: 25pt;
 }
 
-.grid4x3 .flex-item .duration-block {
+.lowres .flex-item .duration-block {
   float: right;
   font-size: 10pt;
 }
 
-.grid4x3 .flex-item .duration-icon {
+.lowres .flex-item .duration-icon {
   font-size: 35px;
   float: left;
   margin-top: 3px;
 }
 
-.grid4x3 .flex-item .time {
+.lowres .flex-item .time {
   margin-left: 10px;
 }
 
-.grid4x3 .flex-item .status {
+.lowres .flex-item .status {
   float: left;
   font-family: 'open_sans_condensedbold';
   font-weight: bold;
   font-size: 25pt;
 }
 
-.grid4x3 .flex-item .reason {
+.lowres .flex-item .reason {
   margin-left: 10px;
   font-size: 15pt;
 }
 
-.grid4x3 .flex-item .reason-icon {
+.lowres .flex-item .reason-icon {
   font-size: 25px;
 }
 
-.grid4x3 .flex-item .reason-block {
+.lowres .flex-item .reason-block {
   float: right;
 }
 
-.grid4x3 .flex-item .for {
+.lowres .flex-item .for {
   margin-left: 15px;
   font-size: 20px;
 }
 
-.grid4x3 .requestedFor-block {
+.lowres .requestedFor-block {
   font-size: 15pt;
   float: left;
   vertical-align: middle;
 }
 
-.grid4x3 .flex-item .warnings {
+.lowres .flex-item .warnings {
   font-weight: bold;
   font-size: 20pt;
   float: right;
@@ -145,31 +145,31 @@
 }
 
 @media (max-height: 600px) {
-  .grid4x3 .prio-vertical-two {
+  .lowres .prio-vertical-two {
     display: none;
   }
 }
 
 @media (max-height: 760px) {
-  .grid4x3 .prio-vertical-three {
+  .lowres .prio-vertical-three {
     display: none;
   }
 }
 
 @media (max-width: 870px) {
-  .grid4x3 .prio-horizontal-one {
+  .lowres .prio-horizontal-one {
     display: none;
   }
 }
 
 @media (max-width: 1000px) {
-  .grid4x3 .prio-horizontal-two {
+  .lowres .prio-horizontal-two {
     display: none;
   }
 }
 
 @media (max-width: 1300px) {
-  .grid4x3 .prio-horizontal-three {
+  .lowres .prio-horizontal-three {
     display: none;
   }
 }

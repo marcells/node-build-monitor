@@ -16,10 +16,7 @@
         </div>
         <div class="clear"></div>
         <div class="medium-height nowrap prio-vertical-one">
-          <span class="middle requestedFor-block">
-            <span class="middle fa fa-user"></span>
-            <span data-bind="text: requestedFor" class="middle for"></span>
-          </span>
+          <span data-bind="text: statusText" class="middle status"></span>
           <span class="middle duration-block reset-height prio-horizontal-three">
             <span class="duration-icon fa fa-clock-o"></span>
             <span data-bind="text: time" class="middle time"></span>
@@ -27,9 +24,12 @@
             <span data-bind="text: duration" class="middle time"></span>
           </span>
         </div>
-        <div class="clear"></div>		
+        <div class="clear"></div>
         <div class="medium-height nowrap prio-vertical-three">
-		  <span data-bind="text: statusText" class="middle status"></span>          
+          <span class="middle requestedFor-block">
+            <span class="middle fa fa-user"></span>
+            <span data-bind="text: requestedFor" class="middle for"></span>
+          </span>
           <span class="middle warnings prio-horizontal-one">
             <span data-bind="visible: hasWarnings" class="middle fa fa-exclamation-triangle"></span>
             <span data-bind="visible: hasErrors" class="middle fa fa-times-circle"></span>

@@ -1,0 +1,175 @@
+.lowres .clear {
+  clear: both;
+}
+
+.lowres .nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.lowres .box {
+  border: 1px solid black;
+}
+
+.lowres .middle { 
+  vertical-align: middle;
+}
+
+.lowres .medium-height {
+    line-height: 40px;
+    height: 40px;
+}
+
+.lowres .reset-height {
+    display: inline-block;
+    line-height: normal;
+}
+
+.lowres .flex-container {
+  padding: 0px;
+  margin: 0 auto 0 auto;
+  height: 100%;
+  width: 100%;
+}
+
+.lowres .flex-item {
+  float: left;
+  width: 25%;
+  height: 33%;
+  color: transparent;
+  position: relative;
+}
+
+.lowres .flex-item-inner {
+  background: transparent;
+  margin: 25px;
+  padding: 25px;
+  box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
+}
+
+.flex-item .overlay {
+  background-color: transparent;
+  position: absolute;
+  margin: 25px;
+  top: 0px;
+  right: 0px;
+}
+
+.flex-item .overlay a {
+  float: left;
+  color: white;
+  font-size: 20pt;
+  background-color: black;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.8;
+}
+
+.lowres .flex-item .info-block {
+  float: left;
+  font-size: 15pt;
+}
+
+.lowres .flex-item .project {
+  font-weight: bold;
+}
+
+.lowres .flex-item .project-definition-separator {
+  border-left: 1px solid;
+  padding-left: 10px;
+  margin-left: 10px
+}
+
+.lowres .flex-item .definition {
+}
+
+.lowres .flex-item .number {
+  font-size: 25pt;
+}
+
+.lowres .flex-item .duration-block {
+  float: right;
+  font-size: 10pt;
+}
+
+.lowres .flex-item .duration-icon {
+  font-size: 35px;
+  float: left;
+  margin-top: 3px;
+}
+
+.lowres .flex-item .time {
+  margin-left: 10px;
+}
+
+.lowres .flex-item .status {
+  float: left;
+  font-family: 'open_sans_condensedbold';
+  font-weight: bold;
+  font-size: 25pt;
+}
+
+.lowres .flex-item .reason {
+  margin-left: 10px;
+  font-size: 15pt;
+}
+
+.lowres .flex-item .reason-icon {
+  font-size: 25px;
+}
+
+.lowres .flex-item .reason-block {
+  float: right;
+}
+
+.lowres .flex-item .for {
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+.lowres .requestedFor-block {
+  font-size: 15pt;
+  float: left;
+  vertical-align: middle;
+}
+
+.lowres .flex-item .warnings {
+  font-weight: bold;
+  font-size: 20pt;
+  float: right;
+  vertical-align: middle;
+}
+
+@media (max-height: 600px) {
+  .lowres .prio-vertical-two {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .lowres .prio-vertical-three {
+    display: none;
+  }
+}
+
+@media (max-width: 870px) {
+  .lowres .prio-horizontal-one {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .lowres .prio-horizontal-two {
+    display: none;
+  }
+}
+
+@media (max-width: 1300px) {
+  .lowres .prio-horizontal-three {
+    display: none;
+  }
+}

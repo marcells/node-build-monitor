@@ -5,7 +5,7 @@ define(['ko', 'helper', 'settings', 'notification'], function (ko, helper, setti
         self.isMenuVisible = ko.observable(false);
         self.isMenuButtonVisible = ko.observable(false);
         self.theme = ko.observable(helper.getUrlParameter('theme') || settings.theme);
-        self.themes = ko.observableArray(['default', 'list', 'lingo']);
+        self.themes = ko.observableArray(['default', 'list', 'lingo', 'lowres']);
         self.browserNotificationSupported = ko.observable(notification.isSupportedAndNotDenied());
         self.browserNotificationEnabled = ko.observable(notification.isSupportedAndNotDenied() && settings.browserNotificationEnabled);
         self.soundNotificationEnabled = ko.observable(settings.soundNotificationEnabled);

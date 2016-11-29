@@ -157,9 +157,16 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 | Setting       | Description
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------
 | `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
-| `accountname` | Your Visual Studio Online user name (account)
-| `username`    | Your Visual Studio Online user name (alternate credentials)
-| `password`    | Your Visual Studio Online password
+| `accountname` | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
+| `username`    | Your Visual Studio Online user name (alternate credentials *User name (secondary)*) see info below
+| `password`    | Your Visual Studio Online password (alternate credentials *Password*) see info below
+
+To create the alternate credentials, please do the following steps:
+1. Login to your account
+2. Hover over your avatar (top right)
+3. Click on *Security*
+4. Click on *Alternate authentication credentials*
+5. Create and save the credentials
 
 Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 

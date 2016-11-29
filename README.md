@@ -162,11 +162,12 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 | `password`    | Your Visual Studio Online password (alternate credentials *Password*) see info below
 
 To create the alternate credentials, please do the following steps:
-1. Login to your account
-2. Hover over your avatar (top right)
-3. Click on *Security*
-4. Click on *Alternate authentication credentials*
-5. Create and save the credentials
+
+  1. Login to your account
+  2. Hover over your avatar (top right)
+  3. Click on *Security*
+  4. Click on *Alternate authentication credentials*
+  5. Create and save the credentials
 
 Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 

@@ -44,6 +44,8 @@ The build monitor is configured in the file `config.json` in the app directory.
   "monitor": {
     "interval": 30000,
     "numberOfBuilds": 12,
+    "latestBuildOnly": false,
+    "sortOrder": "date",
     "debug": true
   },
   "services": [
@@ -64,9 +66,14 @@ The build monitor is configured in the file `config.json` in the app directory.
 ```
 
 In the `monitor` section you can set up some general settings:
-- the update interval (in milliseconds)
-- the number of builds, which will be read and displayed in the web frontend
-- enable or disable some debug output on the console
+
+| Setting           | Description
+|-------------------|---------------------------------------------------------------------------------------------------------------------
+| `interval`        | The update interval (in milliseconds)
+| `numberOfBuilds`  | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
+| `latestBuildOnly` | Will only retrieve single latest build from each service configuration
+| `sortOrder`       | The sort order for buils, options : `project`, `date`
+| `debug`           | Enable or disable some debug output on the console
 
 The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
 - the `name` setting refers to the used service
@@ -298,6 +305,8 @@ Place a file `config.json` next to the `Dockerfile` and configure the services:
   "monitor": {
     "interval": 30000,
     "numberOfBuilds": 12,
+    "latestBuildOnly": false,
+    "sortOrder": "date",
     "debug": true
   },
   "services": [

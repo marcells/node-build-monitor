@@ -15,20 +15,30 @@ var async = require('async'),
                 .digest('hex');
         }
     },
-    sortBuilds = function (newBuilds) {
-        var takeDate = function (build) {
-            return build.isRunning ? build.startedAt : build.finishedAt;
-        };
+    sortBuilds = function (newBuilds, sortOrder) {
+        if(sortOrder == "project") {
+            newBuilds.sort(function (a, b) {
+                if(a.project > b.project) return 1;
+                if(a.project < b.project) return -1;
+ 
+                return 0;
+            });
+        }
+        else {
+            var takeDate = function (build) {
+                return build.isRunning ? build.startedAt : build.finishedAt;
+            };
 
-        newBuilds.sort(function (a, b) {
-            var dateA = takeDate(a);
-            var dateB = takeDate(b);
+            newBuilds.sort(function (a, b) {
+                var dateA = takeDate(a);
+                var dateB = takeDate(b);
 
-            if(dateA < dateB) return 1;
-            if(dateA > dateB) return -1;
+                if(dateA < dateB) return 1;
+                if(dateA > dateB) return -1;
 
-            return 0;
-        });
+                return 0;
+            });
+        }
     },
     distinctBuildsByETag = function (newBuilds) {
         var unique = {};
@@ -143,7 +153,12 @@ module.exports = function () {
                   return;
                 }
 
-                Array.prototype.push.apply(allBuilds, pluginBuilds);
+                if(self.configuration.latestBuildOnly) {
+                    Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
+                }
+                else {
+                    Array.prototype.push.apply(allBuilds, pluginBuilds);
+                }
                 callback();
             });
         },
@@ -152,8 +167,11 @@ module.exports = function () {
 
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
-            sortBuilds(allBuilds);
-            onlyTake(self.configuration.numberOfBuilds, allBuilds);
+            sortBuilds(allBuilds, self.configuration.sortOrder);
+
+            if(!self.configuration.latestBuildOnly) {
+              onlyTake(self.configuration.numberOfBuilds, allBuilds);
+            }
 
             if(changed(self.currentBuilds, allBuilds)) {
                 log('builds changed', self.configuration.debug);

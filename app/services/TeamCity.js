@@ -124,7 +124,8 @@ module.exports = function () {
                 status: getStatus(res),
                 reason: res.triggered.type,
                 hasErrors: false,
-                hasWarnings: false
+                hasWarnings: false,
+                url: self.configuration.url.replace(/(https?):\/\/([\w]*:[\w]*@)/, '$1://') + '/viewLog.html?buildId=' + res.id + '&buildTypeId=' + res.buildTypeId
             };
         };
 

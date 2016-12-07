@@ -1,0 +1,186 @@
+.stoplight .clear {
+  clear: both;
+}
+
+.stoplight .nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.stoplight .box {
+  border: 1px solid black;
+}
+
+.stoplight .middle { 
+  vertical-align: middle;
+}
+
+.stoplight .medium-height {
+    line-height: 40px;
+    height: 40px;
+}
+
+.stoplight .reset-height {
+    display: inline-block;
+    line-height: normal;
+}
+
+.stoplight .flex-container {
+  padding: 0px;
+  margin: 0 auto 0 auto;
+  height: 100%;
+  width: 100%;
+}
+
+.stoplight .flex-item {
+  float: left;
+  width: 33%;
+  color: transparent;
+  position: relative;
+}
+
+.stoplight .flex-item-inner {
+  background: transparent;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
+  text-align: center;
+}
+
+.flex-item .overlay {
+  background-color: transparent;
+  position: absolute;
+  margin: 20px;
+  top: 0px;
+  right: 0px;
+}
+
+.flex-item .overlay a {
+  float: left;
+  color: white;
+  font-size: 20pt;
+  background-color: black;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.8;
+}
+
+.stoplight .flex-item .info-block {
+  float: left;
+  font-size: 15pt;
+}
+
+.stoplight .flex-item .project {
+  color: #DDDDDD;
+  font-size: 16pt;
+  font-weight: normal;
+}
+
+.stoplight .flex-item .project-definition-separator {
+  border-left: 1px solid;
+  padding-left: 10px;
+  margin-left: 10px
+}
+
+.stoplight .flex-item .definition {
+  color: #FFFFFF;
+  font-family: 'open_sans_condensedbold';
+  font-size: 22pt;
+  line-height: 34pt;
+}
+
+.stoplight .flex-item .number {
+  color: #DDDDDD;
+  font-size: 16pt;
+  line-height: 28pt;
+}
+
+.stoplight .flex-item .duration-block {
+  color: #999999;
+  float: right;
+  font-size: 10pt;
+}
+
+.stoplight .flex-item .duration-icon {
+  display: none;
+}
+
+.stoplight .flex-item .time {
+  color: #AAAAAA;
+  margin-left: 10px;
+}
+
+.stoplight .flex-item .status {
+  color: #DDDDDD;
+  float: left;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14pt;
+}
+
+.stoplight .flex-item .reason {
+  display: none;
+}
+
+.stoplight .flex-item .reason-icon {
+  font-size: 25px;
+}
+
+.stoplight .flex-item .reason-block {
+  float: right;
+}
+
+.stoplight .flex-item .for {
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+.stoplight .requestedFor-block {
+  font-size: 15pt;
+  float: left;
+  vertical-align: middle;
+}
+
+.stoplight .flex-item .warnings {
+  font-weight: bold;
+  font-size: 20pt;
+  float: right;
+  vertical-align: middle;
+}
+
+.stoplight .prio-vertical-one {
+  margin-top: 15px;
+}
+
+@media (max-height: 600px) {
+  .stoplight .prio-vertical-one {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .stoplight .prio-vertical-two {
+    display: none;
+  }
+}
+
+@media (max-height: 900px) {
+  .stoplight .prio-vertical-three {
+    display: none;
+  }
+}
+
+@media (max-width: 870px) {
+  .stoplight .prio-horizontal-one {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .stoplight .prio-horizontal-two {
+    display: none;
+  }
+}

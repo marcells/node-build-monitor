@@ -2,6 +2,8 @@
   "monitor": {
     "interval": 300000,
     "numberOfBuilds": 12,
+    "latestBuildOnly": false,
+    "sortOrder": "date",
     "debug": false
   },
   "services": [

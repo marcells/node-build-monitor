@@ -73,7 +73,9 @@ module.exports = function () {
         parseDate = function (dateAsString) {
             return new Date(dateAsString);
         },
-        getStatus = function (result) {
+        getStatus = function (build) {
+	    if (build.building) return "Blue";
+	    var result = build.result;
             if (result === 'FAILURE') return "Red";
             if (result === 'SUCCESS') return "Green";
             if (result === 'UNSTABLE') return "Green";
@@ -82,8 +84,10 @@ module.exports = function () {
             if (result === null) return "Blue";
 
             return null;
-        },
-        getStatusText = function (result) {
+	},
+        getStatusText = function (build) {
+	    if (build.building) return "Running";
+	    var result = build.result;
             if (result === 'FAILURE') return "Failure";
             if (result === 'SUCCESS') return "Success";
             if (result === 'UNSTABLE') return "Unstable";
@@ -119,8 +123,8 @@ module.exports = function () {
                 startedAt: parseDate(res.timestamp),
                 finishedAt: parseDate(res.timestamp + res.duration),
                 requestedFor: getRequestedFor(res),
-                status: getStatus(res.result),
-                statusText: getStatusText(res.result),
+                status: getStatus(res),
+                statusText: getStatusText(res),
                 reason: "Build",
                 hasErrors: false,
                 hasWarnings: res.result == 'UNSTABLE',

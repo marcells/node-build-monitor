@@ -1,4 +1,4 @@
-extends layout
+extends layout.pug
 
 block scripts
     script(src='/scripts/libs/jquery-2.1.0.min.js')
@@ -8,5 +8,5 @@ block scripts
 block content
     .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }, changeFavicon: faviconImageUrl')
 
-    include options.jade
-    include overlay.jade
+    include options.pug
+    include overlay.pug

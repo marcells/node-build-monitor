@@ -58,7 +58,7 @@ module.exports = function () {
                   callback(error);
                   return;
                 }
-                
+
                 callback(error, simplifyBuild(data));
             });
         },
@@ -70,7 +70,7 @@ module.exports = function () {
             });
         },
         parseStartDate = function (build) {
-            return moment(build.startDate, 'YYYYMMDDTHHmmss+Z').toDate();
+            return moment(build.startDate, TEAMCITY_DATE_FORMAT).toDate();
         },
         parseFinishDate = function (build) {
             if (build.finishDate) {

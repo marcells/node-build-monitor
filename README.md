@@ -19,8 +19,8 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
 - [Visual Studio Online](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-online))</sup></sub>
-- [Team Foundation Server (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-on-premise))</sup></sub>
-- [Team Foundation Server 2015 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-2015-on-premise))</sup></sub>
+- [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
+- [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-2015-2017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 
@@ -178,7 +178,7 @@ To create the alternate credentials, please do the following steps:
 
 Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
 
-#### Team Foundation Server (on-premise)
+#### Team Foundation Server 2013 and lower (on-premise)
 
 Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](https://github.com/marcells/tfs-proxy) bridge.
 
@@ -201,9 +201,9 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 | `username`    | User with permission to query build details
 | `password`    | The password for the user
 
-#### Team Foundation Server 2015 (on-premise)
+#### Team Foundation Server 2015/2017 (on-premise)
 
-Supports an on-premise Microsoft Team Foundation Server 2015 (and later).
+Supports an on-premise Microsoft Team Foundation Server 2015/2017 (and later).
 
 ```json
 {
@@ -220,7 +220,11 @@ Supports an on-premise Microsoft Team Foundation Server 2015 (and later).
 |---------------|-------------------------------------------------------------------------------------
 | `url`         | The full Team Collection Url, including the TeamProject, which builds are displayed
 | `username`    | User with permission to query build details
-| `password`    | The password for the user
+| `password`    | The password for the user (if using TFS 2017 see notes below)
+
+_Important_: For TFS 2017 you have to [create a personal access token](https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate). It only needs
+the permission to read builds. Please use your username and the generated token as the password.
+
 
 #### GitLab (on-premise, beta)
 
@@ -427,7 +431,7 @@ fi
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Marcell Spies ([@marcells](https://twitter.com/marcells) | http://mspi.es)
+Copyright (c) 2017 Marcell Spies ([@marcells](https://twitter.com/marcells) | http://mspi.es)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

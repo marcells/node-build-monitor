@@ -90,24 +90,12 @@ module.exports = function () {
 
     //noinspection JSUnusedLocalSymbols
     function getBuildStartedAt (project, build) {
-        if (typeof build.started_at === 'string') {
-            return new Date(build.started_at);
-        } else if (build.status === 'pending') {
-            return now();
-        } else {
-            return undefined;
-        }
+        return new Date(build.started_at);
     }
 
     //noinspection JSUnusedLocalSymbols
     function getBuildFinishedAt (project, build) {
-        if (build.status === 'failed') {
-            return now();  // sort failed builds on top
-        } else if (typeof build.finished_at === 'string') {
-            return new Date(build.finished_at);
-        } else {
-            return undefined;
-        }
+        return new Date(build.finished_at);
     }
 
     //noinspection JSUnusedLocalSymbols
@@ -265,64 +253,56 @@ module.exports = function () {
     }
 
     function reduceBuilds(builds, callback) {
-        var seen = {};
-        async.filter(builds, function(build, include) {
-            var key = build.monitor.id;
-            if (typeof seen[key] === 'undefined') {
-                seen[key] = build;
-                process.nextTick(function() {
-                    include(true);
-                });
-            } else if (seen[key].monitor.startedAt <
-                       build.monitor.startedAt) {
-                seen[key] = build;
-                process.nextTick(function() {
-                    include(true);
-                });
-            } else {
-                process.nextTick(function() {
-                    include(false);
-                });
-            }
-        }, function(results) {
-            var latest = null;
-            async.filter(results, function(build, include) {
+        const seen = {};
+        let latest = null;
+
+        results = builds
+            .filter(build => {
+                const key = build.monitor.id;
+                if (typeof seen[key] === 'undefined') {
+                    seen[key] = build;
+                    return true;
+                }
+                else if (seen[key].monitor.startedAt < build.monitor.startedAt) {
+                    seen[key] = build;
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .filter(build => {
                 if (!latest || build.monitor.startedAt > latest) {
                     latest = build.monitor.startedAt;
-                    include(true);
+                    return true;
                 } else {
-                    include(build.monitor.isRunning ||
-                            build.status === 'failing');
-                }
-            }, function(results) {
-                if (typeof callback === 'function') {
-                    process.nextTick(function() {
-                        callback(results);
-                    });
+                    return build.monitor.isRunning || build.status === 'failing';
                 }
             });
-        });
 
+        if (typeof callback === 'function') {
+            process.nextTick(function() {
+                callback(results);
+            });
+        }
     }
 
     function fetchProjectBuilds(project, callback) {
         requestFirstPage(function (page, per_page) {
             return getProjectBuildsApiUrl(project, page, per_page);
         }, function (results) {
-            async.mapSeries(results, function(build, pass) {
-                build.monitor = getBuildMonitorBuild(project, build);
-                build.expires = getBuildExpiration(build);
-                pass(null, build);
-            }, function(err, results) {
-                process.nextTick(function() {
-                    reduceBuilds(results, function(results) {
-                        if (results.length) {
-                            log(project.name_with_namespace + ' | ' +
-                                results.length + ' current builds.');
-                        }
-                        process.nextTick(function() {
-                            callback(results);
-                        });
+            results.forEach((build, index) => {
+                results.find(item => item.id === build.id).monitor = getBuildMonitorBuild(project, build);
+                results.find(item => item.id === build.id).expires = getBuildExpiration(build);
+            });
+
+            process.nextTick(function() {
+                reduceBuilds(results, function(results) {
+                    if (results.length) {
+                        log(project.name_with_namespace + ' | ' +
+                            results.length + ' current builds.');
+                    }
+                    process.nextTick(function() {
+                        callback(results);
                     });
                 });
             });
@@ -377,29 +357,18 @@ module.exports = function () {
 
         log('Fetching new projects...');
         requestAllPages(getProjectsApiUrl, function (projects) {
-            async.filter(projects, function (project, include) {
-                if (typeof self.cache.projects[project.id] === 'undefined') {
-                    include(true);
-                } else if (self.cache.projects[project.id]
-                                     .builds_enabled === false) {
-                   include(true);
-                } else {
-                    include(false);
-                }
-            }, function (results) {
-                async.mapSeries(results, function (project, pass) {
-                    updateProject(project, function(project) {
-                        pass(null, project);
-                    });
-                }, function (err, results) {
-                    log('Found', results.length + ' new projects.');
-                    if (typeof callback === 'function') {
-                        process.nextTick(function() {
-                            callback(results);
-                        });
-                    }
+             projects
+                .filter(project => project.builds_enabled)
+                .forEach(project => {
+                    updateProject(project);
                 });
-            });
+
+            log('Found', projects.length + ' new projects.');
+            if (typeof callback === 'function') {
+                process.nextTick(function() {
+                    callback(projects);
+                });
+            }
         });
     }
 

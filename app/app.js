@@ -5,12 +5,13 @@ var express = require('express'),
     config = require('./config'),
     morgan = require('morgan'),
     errorhandler = require('errorhandler'),
+    version = require('../package').version,
     app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(morgan('combined'));
+app.use(morgan('combined', { skip: (req, res) => res.statusCode < 400 }));
 app.get('/', function(req, res) {
     res.render('index', {
         title: 'Build Monitor'
@@ -27,13 +28,13 @@ var server = http.createServer(app),
     io = socketio.listen(server);
 
 server.listen(app.get('port'), function() {
-  console.log('node-build-monitor is listening on port ' + app.get('port'));
+  console.log('node-build-monitor ' + version + ' is listening on port ' + app.get('port'));
 });
 
 // run socket.io
 io.sockets.on('connection', function (socket) {
   socket.emit('settingsChanged', {
-    version: require('../package').version
+    version: version
   });
 
   socket.emit('buildsLoaded', monitor.currentBuilds);

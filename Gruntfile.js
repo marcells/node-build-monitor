@@ -3,7 +3,8 @@ module.exports = function(grunt) {
     jshint: {
       files: [ 'Gruntfile.js', 'app/*.js', 'app/services/*.js', 'app/public/scripts/*.js', 'test/**/*.js', '!test/**/scenario_*.js' ],
       options: {
-        expr: true
+        expr: true,
+        esversion: 6
       }
     },
     mochaTest: {

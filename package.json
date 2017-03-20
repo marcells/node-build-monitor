@@ -44,7 +44,7 @@
     "test": "grunt mochaTest:test"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 6.10.0"
   },
   "license": "MIT"
 }

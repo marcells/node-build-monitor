@@ -24,7 +24,9 @@
     "socket.io": "1.7.3"
   },
   "devDependencies": {
+    "chai": "3.5.0",
     "grunt": "1.0.1",
+    "grunt-bump": "^0.8.0",
     "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-watch": "1.0.0",
     "grunt-mocha-test": "0.13.2",
@@ -32,7 +34,6 @@
     "nock": "9.0.9",
     "rewire": "2.5.2",
     "should": "11.2.1",
-    "chai": "3.5.0",
     "sinon": "1.17.7",
     "sinon-chai": "2.8.0"
   },

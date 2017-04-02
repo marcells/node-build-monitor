@@ -78,7 +78,7 @@ module.exports = function () {
 	    var result = build.result;
             if (result === 'FAILURE') return "Red";
             if (result === 'SUCCESS') return "Green";
-            if (result === 'UNSTABLE') return "Green";
+            if (result === 'UNSTABLE') return "#ffa500";
             if (result === 'NOT_BUILT') return "Blue";
             if (result === 'ABORTED') return "Gray";
             if (result === null) return "Blue";

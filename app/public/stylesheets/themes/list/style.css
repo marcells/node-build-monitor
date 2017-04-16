@@ -1,3 +1,7 @@
+.list-theme a {
+  color: #ffffff;
+  text-decoration: none;
+}
 .list-theme .list-container {
   font-size: 20pt;
   padding: 30px;

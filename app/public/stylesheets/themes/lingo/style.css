@@ -15,3 +15,8 @@
 .lingo-theme .emphasize {
   color: #f7ffad;
 }
+
+.lingo-theme a {
+  color: #f7ffad;
+  text-decoration: none;
+}

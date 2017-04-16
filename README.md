@@ -24,6 +24,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
+- [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -287,6 +288,31 @@ Supports [BuddyBuild](https://buddybuild.com/) build service
 | `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API (if `BUILDBUDDY_ACCESS_TOKEN` environment variable is set, this setting is overwritten)
 | `build_id`       | Leave empty to get the latest build. Provide the build ID to query that specific build.
 | `branch`         | Name of the branch
+
+#### Bamboo
+
+Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
+
+```json
+{
+  "name": "Bamboo",
+  "configuration": {
+    "url": "http://yourbamboo.com",
+    "slug": "Plan-Key",
+    "auth_login": "user",
+    "auth_password": "pass"
+  }
+}
+```
+
+| Setting          | Description
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| `url`            | URL of the Bamboo host
+| `slug`           | Plan-Key
+| `url`            | BuddyBuild Build Query url
+| `auth_login`     | HTTP-Basic-Auth Username (optional)
+| `build_id`       | HTTP-Basic-Auth Password (optional)
+
 
 ### Run it with Docker (in production)
 

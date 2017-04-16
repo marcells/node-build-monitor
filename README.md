@@ -311,7 +311,7 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 | `slug`           | Plan-Key
 | `url`            | BuddyBuild Build Query url
 | `auth_login`     | HTTP-Basic-Auth Username (optional)
-| `build_id`       | HTTP-Basic-Auth Password (optional)
+| `auth_password`  | HTTP-Basic-Auth Password (optional)
 
 
 ### Run it with Docker (in production)

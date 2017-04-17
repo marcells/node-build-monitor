@@ -60,7 +60,7 @@ module.exports = function () {
             isRunning: res.state === 'started',
             startedAt: res.buildStartedTime,
             finishedAt: res.buildCompletedTime,
-            requestedFor: 'WFP2',
+            requestedFor: null,
             status: getStatus(res.state),
             statusText: res.state,
             reason: res.buildReason,

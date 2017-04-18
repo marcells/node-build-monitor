@@ -1,6 +1,8 @@
 var request = require('request'),
     async = require('async'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    striptags = require('striptags');
+
 
 
 module.exports = function () {
@@ -26,11 +28,10 @@ module.exports = function () {
         request({ uri: planUri, qs: urlParams }, function(error, response, body) {
             try {
                 var bodyJson = JSON.parse(body);
+                callback(error, bodyJson.results.result);
             } catch (parseError) {
                 callback(parseError, null);
-                return;
             }
-            callback(error, bodyJson.results.result);
         });
     },
     requestBuild = function (build, callback) {
@@ -45,11 +46,10 @@ module.exports = function () {
             }
             try {
                 var bodyJson = JSON.parse(body);
+                callback(error, simplifyBuild(bodyJson));
             } catch (parseError) {
                 callback(parseError, null);
-                return;
             }
-            callback(error, simplifyBuild(bodyJson));
         });
     },
     simplifyBuild = function (res) {
@@ -60,14 +60,26 @@ module.exports = function () {
             isRunning: res.state === 'started',
             startedAt: res.buildStartedTime,
             finishedAt: res.buildCompletedTime,
-            requestedFor: null,
+            requestedFor: getAuthors(res.buildReason),
             status: getStatus(res.state),
             statusText: res.state,
-            reason: res.buildReason,
+            reason: striptags(res.buildReason),
             hasErrors: !res.successful,
-            hasErrors: !res.successful,
+            hasWarnings: !res.successful,
             url: self.configuration.url + '/browse/' + res.buildResultKey
         };
+    },
+    getAuthors = function(reason) {
+        var urlRegex = /<a[^>]*>([\s\S]*?)<\/a>/g;
+        var links = reason.match(urlRegex);
+        if (links !== null) {
+            return links.map(
+                function(url) {
+                    return striptags(url);
+                }
+            ).join(', ');
+        }
+        return 'System';
     },
     getStatus = function(state) {
         if (state === 'started') return "Blue";

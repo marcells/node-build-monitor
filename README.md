@@ -298,9 +298,9 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
   "name": "Bamboo",
   "configuration": {
     "url": "http://yourbamboo.com",
-    "slug": "Plan-Key",
-    "auth_login": "user",
-    "auth_password": "pass"
+    "planKey": "Plan-Key",
+    "username": "user",
+    "password": "pass"
   }
 }
 ```
@@ -308,9 +308,9 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 | Setting          | Description
 |------------------|------------------------------------
 | `url`            | URL of the Bamboo host
-| `slug`           | Plan-Key
-| `auth_login`     | HTTP-Basic-Auth Username (optional)
-| `auth_password`  | HTTP-Basic-Auth Password (optional)
+| `planKey`        | Plan-Key
+| `username`       | HTTP-Basic-Auth Username (optional)
+| `password`       | HTTP-Basic-Auth Password (optional)
 
 ### Run it with Docker (in production)
 

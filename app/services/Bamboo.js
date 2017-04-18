@@ -1,4 +1,4 @@
-var request = require('request'),
+planKeyvar request = require('request'),
     async = require('async'),
     _ = require('underscore'),
     striptags = require('striptags');
@@ -20,7 +20,7 @@ module.exports = function () {
         });
     },
     requestBuilds = function (callback) {
-        var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.slug + ".json";
+        var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.planKey + ".json";
         var urlParams = {
             "os_authType": "basic"
         };
@@ -35,7 +35,7 @@ module.exports = function () {
         });
     },
     requestBuild = function (build, callback) {
-        var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.slug + "/" + build.number + ".json";
+        var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.planKey + "/" + build.number + ".json";
         var urlParams = {
             "os_authType": "basic"
         };
@@ -97,12 +97,12 @@ module.exports = function () {
     self.configure = function (config) {
         self.configuration = config;
 
-        if (config.auth_login && config.auth_password) {
+        if (config.username && config.password) {
             var protocol = config.url.match(/(^|\s)(https?:\/\/)/i);
             if (_.isArray(protocol)) {
                 protocol = _.first(protocol);
                 var url = config.url.substr(protocol.length);
-                host = protocol + config.auth_login + ":" + config.auth_password + "@" + url;
+                host = protocol + config.username + ":" + config.password + "@" + url;
             }
         }
         self.configuration.url = host || config.url;

@@ -313,7 +313,6 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 | `auth_login`     | HTTP-Basic-Auth Username (optional)
 | `auth_password`  | HTTP-Basic-Auth Password (optional)
 
-
 ### Run it with Docker (in production)
 
 You can try out or install the build monitor with [Docker](https://www.docker.com/) easily.

@@ -1,9 +1,7 @@
-planKeyvar request = require('request'),
+var request = require('request'),
     async = require('async'),
     _ = require('underscore'),
     striptags = require('striptags');
-
-
 
 module.exports = function () {
     var self = this,

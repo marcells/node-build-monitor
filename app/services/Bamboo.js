@@ -1,6 +1,5 @@
 var request = require('request'),
     async = require('async'),
-    _ = require('underscore'),
     striptags = require('striptags');
 
 module.exports = function () {
@@ -97,8 +96,8 @@ module.exports = function () {
 
         if (config.username && config.password) {
             var protocol = config.url.match(/(^|\s)(https?:\/\/)/i);
-            if (_.isArray(protocol)) {
-                protocol = _.first(protocol);
+            if (Array.isArray(protocol)) {
+                protocol = protocol[0];
                 var url = config.url.substr(protocol.length);
                 host = protocol + config.username + ":" + config.password + "@" + url;
             }

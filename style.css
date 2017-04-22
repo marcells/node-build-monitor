@@ -34,3 +34,24 @@ a.anchor{display: block; position: relative; top: -70px; visibility: hidden;}
 	vertical-align: top;
 	margin-right: 5px;
 }
+
+.service-image-box {
+	margin-right: 10px;
+}
+
+.service-image-box .panel-body {
+	display: flex;
+}
+
+.service-image-box a {
+	margin: auto;
+}
+
+.service-image-box img {
+	width: 200px;
+	margin-right: 10px;
+}
+
+.service-image-box-small .panel-body {
+	height: 145px;
+}

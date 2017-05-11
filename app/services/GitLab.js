@@ -311,7 +311,7 @@ module.exports = function () {
 
     function updateProject(project, callback) {
         log('Updating project:', project.name_with_namespace);
-        if (self.config.slugs.indexOf('*/*') > -1 || self.config.slugs.indexOf(project.path_with_namespace) > -1) {
+        if (self.config.slugs.indexOf('*/*') > -1 || self.config.slugs.indexOf(project.namespace.name + "/*")  > -1 || self.config.slugs.indexOf(project.path_with_namespace) > -1) {
           if (typeof project.builds === 'undefined') {
               project.builds = {};
           }

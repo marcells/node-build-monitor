@@ -34,7 +34,7 @@ Jump to the [configuration documentation](#configuration) and see how the servic
 
 You have three options:
 
-- Run node-build-monitor [by downloading the standalone version](#run-the-standalone-version) <sub><sup>(easiest way to run it)</sup></sub>
+- Run node-build-monitor [by downloading the standalone version](#run-the-standalone-version-easiest-way) <sub><sup>(easiest way to run it)</sup></sub>
 - Run node-build-monitor [manually with node](#run-it-manually-during-development) <sub><sup>(preferred during development)</sup></sub>
 - Run node-build-monitor [with Docker](#run-it-with-docker-in-production) <sub><sup>(preferred in production)</sup></sub>
 

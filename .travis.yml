@@ -1,6 +1,20 @@
 language: node_js
 node_js:
-  - "6"
-script: "npm run-script ci"
+- '6'
+script: npm run-script ci
 before_script:
-  - npm install -g grunt-cli
+- npm install -g grunt-cli
+- npm install -g pkg
+
+before_deploy:
+  - npm run-script pkg
+deploy:
+  provider: releases
+  api_key:
+    secure: eF8lW5MUWQlU3atb6AgZ8a+y03pXtp6v829WqoUI6ODyKdYlTnlUqPYRfOXaSX8OmW1gyHS+38z9U7C0Q0b3jC5R4Sm0JfmbnhD6nO9MvD6pt3MijzIuhZxXT0f13BIVl7Gt/gA6nUvuH7yXuVaFeQyucuGmfnNiOz+ih46UfSw=
+  file_glob: true
+  file: ./release/*
+  skip_cleanup: true
+  on:
+    repo: marcells/node-build-monitor
+    tags: true

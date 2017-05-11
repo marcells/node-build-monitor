@@ -2,11 +2,32 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     socketio = require('socket.io'),
-    config = require('./config'),
+    fs = require('fs'),
     morgan = require('morgan'),
     errorhandler = require('errorhandler'),
     version = require('../package').version,
     app = express();
+
+function getConfig() {
+  const defaultConfigFileName = 'config.json';
+  const userConfigFileName = 'node-build-monitor-config.json';
+  const possibleFileNames = [
+    path.join(require('os').homedir(), userConfigFileName),
+    ...(process.pkg !== undefined ? [ path.join(path.dirname(process.execPath), defaultConfigFileName) ] : []),
+    path.join(__dirname, defaultConfigFileName)
+  ];
+
+  const availableFileNames = possibleFileNames.filter(possibleFileName => fs.existsSync(possibleFileName));
+
+  if (availableFileNames.length === 0) {
+    const humanReadableFileList = possibleFileNames.map((value, index) => `    ${index + 1}. ${value}`).join('\n');
+    throw new Error(`Please provide a configuration file at one of the following locations: \n${humanReadableFileList}`);
+  }
+
+  return JSON.parse(fs.readFileSync(availableFileNames[0], 'utf8'));
+}
+
+var config = getConfig();
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));

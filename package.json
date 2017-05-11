@@ -43,10 +43,15 @@
   "scripts": {
     "start": "node app/app.js",
     "ci": "grunt ci",
-    "test": "grunt mochaTest:test"
+    "test": "grunt mochaTest:test",
+    "pkg": "pkg -c ./package.json --out-dir ./release ./app/app.js"
   },
   "engines": {
     "node": ">= 6.10.0"
+  },
+  "pkg": {
+    "scripts": ["app/services/**/*.js", "node_modules/pug/register.js", "node_modules/pug/lib/**/*.js"],
+    "assets": ["app/public/**/*", "app/views/**/*", "app/config.json"]
   },
   "license": "MIT"
 }

@@ -49,14 +49,20 @@ describe('BuddyBuild service', function () {
 
     describe('makeUrl', function () {
         it('should return valid url to the latest build of the specified branch', function () {
-            var url = "https://buildbuddy.com/APPID/build/latest?branch=develop";
-            var sampleParam = BB.makeURL('APPID', '', 'develop', "https://buildbuddy.com");
+            var url = "https://buddybuild.com/APPID/build/latest?branch=develop";
+            var sampleParam = BB.makeURL('APPID', '', 'develop', "https://buddybuild.com");
             assert(url === sampleParam, "Expecting Format: " + url + " Received: " + sampleParam);
         });
 
         it('should return valid url to specified build', function () {
-            var url = "https://buildbuddy.com/BUILDID";
-            var sampleParam = BB.makeURL('', 'BUILDID', '', "https://buildbuddy.com");
+            var url = "https://buddybuild.com/BUILDID";
+            var sampleParam = BB.makeURL('', 'BUILDID', '', "https://buddybuild.com");
+            assert(url === sampleParam, "Expecting Format: " + url + " Received: " + sampleParam);
+        });
+
+        it('should return valid url to all given token when app_is is not given', function () {
+            var url = "https://api.buddybuild.com/v1/apps";
+            var sampleParam = BB.makeURL('', '', '', "https://api.buddybuild.com/v1/apps");
             assert(url === sampleParam, "Expecting Format: " + url + " Received: " + sampleParam);
         });
     });

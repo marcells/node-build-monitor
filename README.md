@@ -286,7 +286,7 @@ Supports [BuddyBuild](https://buddybuild.com/) build service
 
 | Setting          | Description
 |------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| `project_name`   | Label of the project name, normally IOS or Android. Required only if you app_id is provided.
+| `project_name`   | Label of the project name, normally IOS or Android. Required only, if your app_id is provided.
 | `app_id`         | BuddyBuild Application ID. Leave empty to get all the builds for your user token.
 | `url`            | BuddyBuild Build Query url
 | `access_token`   | Secret token string for the existing user to be used to authenticate against BuddyBuild REST API (if `BUILDBUDDY_ACCESS_TOKEN` environment variable is set, this setting is overwritten)

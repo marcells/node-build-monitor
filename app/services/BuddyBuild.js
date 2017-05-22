@@ -129,7 +129,7 @@ module.exports = function () {
               }
               resolve(simplifyBuild(app, body));
             });
-          })
+          });
         },
         queryAllAppBuilds = function (callback) { // query the build
           makeRequest(makeUrl(null, null, self.configuration.branch, self.configuration.url), function (error, body) {
@@ -138,7 +138,7 @@ module.exports = function () {
               return;
             }
             var asyncBuildsQuery = body.map(function (app) {
-              return queryBuildsAsync(app)
+              return queryBuildsAsync(app);
             });
 
             Promise.all(asyncBuildsQuery).then(function (builds) {

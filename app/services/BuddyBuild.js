@@ -50,6 +50,12 @@ module.exports = function () {
             callback(body);
 
         },
+        forEachApp = function (body, callback) {
+          for (var i = 0; i < body.length; i++) {
+            callback(body[i]);
+          }
+
+        },
         isNullOrWhiteSpace = function (string) {
             if (!string) {
                 return true;
@@ -78,11 +84,11 @@ module.exports = function () {
         parseLink = function (appId, buildId) { // point to the build
             return 'https://dashboard.buddybuild.com/apps/' + appId + '/build/' + buildId;
         },
-        simplifyBuild = function (res) {
+        simplifyBuild = function (app, res) {
             return {
                 id: res._id,
-                platform: self.configuration.project_name,
-                project: self.configuration.project_name + ': ' + res.commit_info.branch,
+                platform: app ? app.platform : self.configuration.project_name,
+                project: app ? app.app_name : self.configuration.project_name + ': ' + res.commit_info.branch,
                 number: 'Build: ' + res.build_number,
                 isRunning: res.BuildFinished,
                 startedAt: parseDate(res.started_at),
@@ -108,11 +114,37 @@ module.exports = function () {
                 var builds = [];
 
                 forEachResult(body, function (res) {
-                    builds.push(simplifyBuild(res));
+                    builds.push(simplifyBuild(null, res));
                 });
 
                 callback(error, builds);
             });
+        },
+        queryBuildsAsync = function (app) { // query the build
+          return new Promise(function (resolve, reject) {
+            makeRequest(makeUrl(app._id, null, self.configuration.branch, self.configuration.url), function (error, body) {
+              if (error) {
+                reject(error);
+                return;
+              }
+              resolve(simplifyBuild(app, body));
+            });
+          });
+        },
+        queryAllAppBuilds = function (callback) { // query the build
+          makeRequest(makeUrl(null, null, self.configuration.branch, self.configuration.url), function (error, body) {
+            if (error) {
+              callback(error);
+              return;
+            }
+            var asyncBuildsQuery = body.map(function (app) {
+              return queryBuildsAsync(app);
+            });
+
+            Promise.all(asyncBuildsQuery).then(function (builds) {
+              callback(error, builds);
+            });
+          });
         };
 
     self.configure = function (config) {
@@ -120,7 +152,13 @@ module.exports = function () {
     };
 
     self.check = function (callback) {
-        queryBuilds(callback);
+        if (self.configuration.app_id) {
+          console.log('Fetching builds for app : ' + self.configuration.app_id);
+          queryBuilds(callback);
+        } else {
+          console.log('app_id not specified, fetching builds for all apps ...');
+          queryAllAppBuilds(callback);
+        }
     };
 
     self.makeURL = function (app_id, build_id, branch, url) {

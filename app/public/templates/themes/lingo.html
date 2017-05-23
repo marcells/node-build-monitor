@@ -19,10 +19,11 @@
       <span> by </span>
       <span class="emphasize" data-bind="text: requestedFor"></span><span>, </span>
 
+      <!-- ko if: time -->
       <span data-bind="text: time"></span>
       <span> and </span>
       <span data-bind="text: duration"></span>
-
+      <!-- /ko -->
       <span> with the status </span>
       <span class="emphasize" data-bind="text: statusText"></span><span>.</span>
 

@@ -18,7 +18,9 @@
         <div class="medium-height nowrap prio-vertical-one">
           <span data-bind="text: statusText" class="middle status"></span>
           <span class="middle duration-block reset-height prio-horizontal-three">
+            <!-- ko if: time -->
             <span class="duration-icon fa fa-clock-o"></span>
+            <!-- /ko -->
             <span data-bind="text: time" class="middle time"></span>
             <br />
             <span data-bind="text: duration" class="middle time"></span>

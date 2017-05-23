@@ -46,15 +46,31 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
         }, this);
 
         this.time = ko.forcibleComputed(function () {
-            return this.isRunning() ?
-                'started ' + moment(this.startedAt()).fromNow() :
-                'finished ' + moment(this.finishedAt()).fromNow();
+            if (this.isRunning()) {
+                return 'started ' + moment(this.startedAt()).fromNow();
+            }
+
+            var beginningOfTime = new Date(0).toISOString();
+
+            if (this.startedAt().toISOString() === beginningOfTime) {
+                return '';
+            }
+
+            return 'finished ' + moment(this.finishedAt()).fromNow();
         }, this);
 
         this.duration = ko.forcibleComputed(function () {
-            return this.isRunning() ?
-                'running for ' + countdown(this.startedAt()).toString() :
-                'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
+            if (this.isRunning()) {
+                return 'running for ' + countdown(this.startedAt()).toString();
+            }
+
+            var beginningOfTime = new Date(0).toISOString();
+
+            if (this.finishedAt().toISOString() === beginningOfTime) {
+                return '';
+            }
+
+            return 'ran for ' + countdown(this.startedAt(), this.finishedAt()).toString();
         }, this);
 
         this.isMenuAvailable = ko.computed(function () {

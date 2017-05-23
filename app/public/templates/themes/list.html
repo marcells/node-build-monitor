@@ -22,11 +22,13 @@
         <span data-bind="text: requestedFor"></span>
       </div>
       <div class="part-3">
+        <!-- ko if: time -->
         <span class="fa fa-clock-o"></span>
         <span> </span>
         <span data-bind="text: time"></span>
         <span> and </span>
         <span data-bind="text: duration"></span>
+        <!-- /ko -->
         <span data-bind="visible: hasWarnings() || hasErrors()">
           <span> | </span>
           <span data-bind="visible: hasWarnings" class="fa fa-exclamation-triangle"></span>

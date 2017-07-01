@@ -38,6 +38,11 @@ app.get('/', function(req, res) {
         title: 'Build Monitor'
     });
 });
+app.get('/health', function(req, res) {
+    res.render('health', {
+        title: 'Build Monitor Health'
+    });
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 if ('development' === app.get('env')) {

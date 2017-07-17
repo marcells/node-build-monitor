@@ -2,3 +2,4 @@ node_modules/
 *.sublime-workspace
 log.txt
 .idea/
+/package-lock.json

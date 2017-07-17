@@ -28,17 +28,17 @@ module.exports = function () {
     }
 
     function getProjectExpiration(project) {
-        if (project.builds_enabled !== true) {
+        if (project.jobs_enabled !== true) {
             return getDefaultExpiration();
-        } else if (!Object.keys(project.builds).length) {
+        } else if (!Object.keys(project.jobs).length) {
             return now() + self.config.intervals.empty;
         } else {
             return now() + self.config.intervals.default;
         }
     }
 
-    function getBuildExpiration(build) {
-        if (build.status !== 'running') {
+    function getBuildExpiration(job) {
+        if (job.status !== 'running') {
             return getDefaultExpiration();
         } else {
             return now();
@@ -53,23 +53,23 @@ module.exports = function () {
 
     function getProjectsApiUrl (page, per_page) {
         var base = self.config.url + '/',
-            query = '?page=' + page + '&per_page=' + per_page;
-        return base + 'api/v3/projects' + query;
+            query = '?page=' + page + '&per_page=' + per_page + self.config.additional_query;
+        return base + 'api/v4/projects' + query;
     }
 
     function getProjectBuildsApiUrl (project, page, per_page) {
         var base = self.config.url + '/',
             query = '?page=' + page + '&per_page=' + per_page;
-        return base + 'api/v3/projects/' + project.id + '/builds' + query;
+        return base + 'api/v4/projects/' + project.id + '/jobs' + query;
     }
 
-    function getBuildApiUrl (project, build) {
+    function getBuildApiUrl (project, job) {
         var base = self.config.url + '/';
-        return base + 'api/v3/projects/' + project.id + '/builds/' + build.id;
+        return base + 'api/v4/projects/' + project.id + '/jobs/' + job.id;
     }
 
-    function getBuildId (project, build) {
-        return project.id + '-' + build.ref + '-' + build.stage;
+    function getBuildId (project, job) {
+        return project.id + '-' + job.ref + '-' + job.stage;
     }
 
     //noinspection JSUnusedLocalSymbols
@@ -78,34 +78,34 @@ module.exports = function () {
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildProject (project, build) {
-        return build.ref;
+    function getBuildProject (project, job) {
+        return job.ref;
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildIsRunning (project, build) {
-        return (build.status === 'running' ||
-                build.status === 'pending');
+    function getBuildIsRunning (project, job) {
+        return (job.status === 'running' ||
+                job.status === 'pending');
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildStartedAt (project, build) {
-        return new Date(build.started_at);
+    function getBuildStartedAt (project, job) {
+        return new Date(job.started_at);
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildFinishedAt (project, build) {
-        return new Date(build.finished_at);
+    function getBuildFinishedAt (project, job) {
+        return new Date(job.finished_at);
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildRequestedFor (project, build) {
-        return build.commit && build.commit.author_name;
+    function getBuildRequestedFor (project, job) {
+        return job.commit && job.commit.author_name;
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildStatus (project, build) {
-        switch (build.status) {
+    function getBuildStatus (project, job) {
+        switch (job.status) {
             case 'pending':
                 return '#ffa500';
             case 'running':
@@ -120,36 +120,36 @@ module.exports = function () {
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildStatusText (project, build) {
-        return build.stage + ' ' + build.status;
+    function getBuildStatusText (project, job) {
+        return job.stage + ' ' + job.status;
     }
 
     //noinspection JSUnusedLocalSymbols
-    function getBuildReason (project, build) {
-        return build.commit && build.commit.message;
+    function getBuildReason (project, job) {
+        return job.commit && job.commit.title;
 
     }
 
-    function getBuildUrl (project, build) {
+    function getBuildUrl (project, job) {
         var base = self.config.url + '/';
-        return base + project.path_with_namespace + '/builds/' + build.id;
+        return base + project.path_with_namespace + '/-/jobs/' + job.id;
     }
 
-    function getBuildMonitorBuild (project, build) {
+    function getBuildMonitorBuild (project, job) {
         return {
-            id: getBuildId(project, build),
-            number: getBuildNumber(project, build),
-            project: getBuildProject(project, build),
-            isRunning: getBuildIsRunning(project, build),
-            startedAt: getBuildStartedAt(project, build),
-            finishedAt: getBuildFinishedAt(project, build),
-            requestedFor: getBuildRequestedFor(project, build),
-            status: getBuildStatus(project, build),
-            statusText: getBuildStatusText(project, build),
-            reason: getBuildReason(project, build),
+            id: getBuildId(project, job),
+            number: getBuildNumber(project, job),
+            project: getBuildProject(project, job),
+            isRunning: getBuildIsRunning(project, job),
+            startedAt: getBuildStartedAt(project, job),
+            finishedAt: getBuildFinishedAt(project, job),
+            requestedFor: getBuildRequestedFor(project, job),
+            status: getBuildStatus(project, job),
+            statusText: getBuildStatusText(project, job),
+            reason: getBuildReason(project, job),
             hasErrors: false,
             hasWarnings: false,
-            url: getBuildUrl(project, build)
+            url: getBuildUrl(project, job)
         };
     }
 
@@ -235,7 +235,7 @@ module.exports = function () {
             if (!err && response.statusCode == 200) {
                 body.monitor = getBuildMonitorBuild(project, body);
                 body.expires = getBuildExpiration(body);
-                project.builds[body.monitor.id] = body;
+                project.jobs[body.monitor.id] = body;
                 if (typeof callback === 'function') {
                     process.nextTick(function() {
                         callback(body);
@@ -312,10 +312,10 @@ module.exports = function () {
     function updateProject(project, callback) {
         log('Updating project:', project.name_with_namespace);
         if (self.config.slugs.indexOf('*/*') > -1 || self.config.slugs.indexOf(project.namespace.name + "/*")  > -1 || self.config.slugs.indexOf(project.path_with_namespace) > -1) {
-          if (typeof project.builds === 'undefined') {
-              project.builds = {};
+          if (typeof project.jobs === 'undefined') {
+              project.jobs = {};
           }
-          if (project.builds_enabled === true) {
+          if (project.jobs_enabled === true) {
               fetchProjectBuilds(project, function(results) {
                   var i, build, builds = {};
                   for (i = 0; i < results.length; i = i + 1) {
@@ -323,7 +323,7 @@ module.exports = function () {
                       builds[build.monitor.id] = build;
                   }
                   if (Object.keys(builds).length) {
-                      project.builds = builds;
+                      project.jobs = builds;
                   }
                   project.expires = getProjectExpiration(project);
                   self.cache.projects[project.id] = project;
@@ -334,7 +334,7 @@ module.exports = function () {
                   }
               });
           } else {
-              project.builds = {};
+              project.jobs = {};
               project.expires = getProjectExpiration(project);
               self.cache.projects[project.id] = project;
               if (typeof callback === 'function') {
@@ -358,7 +358,7 @@ module.exports = function () {
         log('Fetching new projects...');
         requestAllPages(getProjectsApiUrl, function (projects) {
              projects
-                .filter(project => project.builds_enabled)
+                .filter(project => project.jobs_enabled)
                 .forEach(project => {
                     updateProject(project);
                 });
@@ -391,9 +391,9 @@ module.exports = function () {
             }
 
             // Iterate through already cached builds for the project
-            async.mapSeries(Object.keys(project.builds),
+            async.mapSeries(Object.keys(project.jobs),
                             function(key, pass) {
-                var build = project.builds[key];
+                var build = project.jobs[key];
 
                 // Trigger fetch for build with expired cache
                 if (now() > build.expires) {
@@ -408,7 +408,7 @@ module.exports = function () {
                 });
             }, function(err, results) {
 
-                // Pass along all project builds
+                // Pass along all project.jobs
                 process.nextTick(function() {
                     pass(null, results);
                 });
@@ -444,6 +444,9 @@ module.exports = function () {
         }
         if (typeof self.config.slugs === 'undefined') {
             self.config.slugs = ['*/*'];
+        }
+        if (typeof self.config.additional_query === 'undefined') {
+          self.config.additional_query = "";
         }
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
             self.config.token = process.env.GITLAB_TOKEN;

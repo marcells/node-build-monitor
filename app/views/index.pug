@@ -5,7 +5,6 @@ block scripts
 block content
     | My build group list comes here! But only if more than one build group is set up! Compatibility!
     ul
-      li
-        a(href='monitor/0') Monitor 0
-      li
-        a(href='monitor/1') Monitor 1
+      each config, index in configs
+        li
+          a(href=`monitor/${index}`) Monitor #{index}

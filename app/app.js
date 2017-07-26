@@ -36,7 +36,8 @@ app.use(morgan('combined', { skip: (req, res) => res.statusCode < 400 }));
 
 app.get('/', function(req, res) {
     res.render('index', {
-        title: 'Build Monitor'
+        title: 'Build Monitor Groups',
+        configs: configs
     });
 });
 app.get('/health', function(req, res) {

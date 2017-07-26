@@ -1,10 +1,11 @@
-//- extends layout.pug
+extends layout.pug
 
 block scripts
 
 block content
-    | My build group list comes here! But only if more than one build group is set up! Compatibility!
-    ul
-      each config, index in configs
-        li
-          a(href=`monitor/${index}`) Monitor #{index}
+    .fullsize
+        h1(style='color:white') Build group list comes here! But only if more than one build group is set up! Compatibility!
+        ul
+          each config, index in configs
+            li(style='color: white').
+              #[a(href=`monitor/${index}` style='color: white') Monitor #{index}] [#[a(href=`monitor/${index}` target='blank' style='color: white') New Window]]

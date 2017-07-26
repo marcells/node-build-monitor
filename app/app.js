@@ -59,7 +59,6 @@ server.listen(app.get('port'), function() {
   console.log('node-build-monitor ' + version + ' is listening on port ' + app.get('port'));
 });
 
-// run socket.io
 var Monitor = require('./monitor');
 
 for (var configId = 0; configId < configs.length; configId++) {

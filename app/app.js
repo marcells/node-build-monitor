@@ -62,46 +62,49 @@ server.listen(app.get('port'), function() {
 var Monitor = require('./monitor');
 
 for (var configId = 0; configId < configs.length; configId++) {
-    console.log('Create /monitor' + configId);
+    createAndRunMonitor(configId, configs[configId]);
+}
 
-    let config = configs[configId];
-    let namespace = '/monitor-' + configId;
-    let monitorSocket = io.of(namespace);
-    let monitor = new Monitor(configId);
+function createAndRunMonitor(configId, config) {
+  console.log('Create /monitor' + configId);
 
-    monitorSocket.on('connection', function (socket) {
-      socket.emit('settingsChanged', {
-        version: version
+  let namespace = '/monitor-' + configId;
+  let monitorSocket = io.of(namespace);
+  let monitor = new Monitor(configId);
+
+  monitorSocket.on('connection', function (socket) {
+    socket.emit('settingsChanged', {
+      version: version
+    });
+
+    socket.emit('buildsLoaded', monitor.currentBuilds);
+  });
+
+  app.get('/monitor/' + configId, function(req, res) {
+      res.render('monitor', {
+          title: 'Build Monitor',
       });
+  });
 
-      socket.emit('buildsLoaded', monitor.currentBuilds);
-    });
+  app.get('/monitor/'+ configId + '/variables', function(req, res) {
+      res.json({ namespace: namespace });
+  });
 
-    app.get('/monitor/' + configId, function(req, res) {
-        res.render('monitor', {
-            title: 'Build Monitor',
-        });
-    });
+  for (var i = 0; i < config.services.length; i++) {
+      let serviceConfig = config.services[i];
+      let service = new (require('./services/' + serviceConfig.name))();
 
-    app.get('/monitor/'+ configId + '/variables', function(req, res) {
-        res.json({ namespace: namespace });
-    });
+      service.configure(serviceConfig.configuration);
 
-    for (var i = 0; i < config.services.length; i++) {
-        let serviceConfig = config.services[i];
-        let service = new (require('./services/' + serviceConfig.name))();
+      monitor.watchOn(service);
+  }
 
-        service.configure(serviceConfig.configuration);
+  monitor.configure(config.monitor);
 
-        monitor.watchOn(service);
-    }
+  monitor.on('buildsChanged', function (changes) {
+    monitorSocket.emit('buildsChanged', changes);
+  });
 
-    monitor.configure(config.monitor);
-
-    monitor.on('buildsChanged', function (changes) {
-      monitorSocket.emit('buildsChanged', changes);
-    });
-
-    // run monitor
-    monitor.run();
+  // run monitor
+  monitor.run();
 }

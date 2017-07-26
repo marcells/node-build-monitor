@@ -8,4 +8,4 @@ block content
         ul
           each config, index in configs
             li(style='color: white').
-              #[a(href=`monitor/${index}` style='color: white') Monitor #{index}] [#[a(href=`monitor/${index}` target='blank' style='color: white') New Window]]
+              #[a(href=`monitor/${index}` style='color: white') #{config.monitor.name}] [#[a(href=`monitor/${index}` target='blank' style='color: white') New Window]]

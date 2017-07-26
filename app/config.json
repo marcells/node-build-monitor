@@ -1,6 +1,7 @@
 [
   {
     "monitor": {
+      "name": "node-build-monitor",
       "interval": 5000,
       "numberOfBuilds": 12,
       "latestBuildOnly": false,
@@ -18,6 +19,7 @@
   },
   {
     "monitor": {
+      "name": "bloggy",
       "interval": 5000,
       "numberOfBuilds": 12,
       "latestBuildOnly": false,

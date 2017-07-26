@@ -1,8 +1,8 @@
 var async = require('async'),
     events = require('events'),
-    log = function (text, debug) {
+    log = function (text, id, debug) {
         if(debug) {
-            console.log(new Date().toLocaleTimeString(), '|', text);
+            console.log(new Date().toLocaleTimeString(), ' | ', id, ' | ', text);
         }
     },
     generateAndApplyETags = function (newBuilds) {
@@ -20,7 +20,7 @@ var async = require('async'),
             newBuilds.sort(function (a, b) {
                 if(a.project > b.project) return 1;
                 if(a.project < b.project) return -1;
- 
+
                 return 0;
             });
         }
@@ -112,7 +112,7 @@ var async = require('async'),
         return changes;
     };
 
-module.exports = function () {
+module.exports = function (id) {
     var self = this;
 
     self.configuration = {
@@ -135,7 +135,7 @@ module.exports = function () {
         var allBuilds = [];
 
         async.each(self.plugins, function (plugin, callback) {
-            log('Check for builds...', self.configuration.debug);
+            log('Check for builds...', id, self.configuration.debug);
 
             plugin.check(function (error, pluginBuilds) {
                 if (error) {
@@ -163,7 +163,7 @@ module.exports = function () {
             });
         },
         function (error) {
-            log(allBuilds.length + ' builds found....', self.configuration.debug);
+            log(allBuilds.length + ' builds found....', id, self.configuration.debug);
 
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
@@ -174,7 +174,7 @@ module.exports = function () {
             }
 
             if(changed(self.currentBuilds, allBuilds)) {
-                log('builds changed', self.configuration.debug);
+                log('builds changed', id, self.configuration.debug);
 
                 self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 

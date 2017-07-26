@@ -1,12 +1,11 @@
-extends layout.pug
+//- extends layout.pug
 
 block scripts
-    script(src='/scripts/libs/jquery-2.1.0.min.js')
-    script(src='/scripts/libs/jquery.color-2.1.2.min.js')
-    script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
 
 block content
-    .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }, changeFavicon: faviconImageUrl')
-
-    include options.pug
-    include overlay.pug
+    | My build group list comes here! But only if more than one build group is set up! Compatibility!
+    ul
+      li
+        a(href='monitor/0') Monitor 0
+      li
+        a(href='monitor/1') Monitor 1

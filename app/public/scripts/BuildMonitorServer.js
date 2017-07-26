@@ -1,10 +1,12 @@
 define(['io'], function (io) {
-    var BuildMonitorServer = function () {
+    var BuildMonitorServer = function (variables) {
         var self = this,
             cachedSettings;
 
         this.connect = function () {
-            var socket = io.connect();
+            var socket = io(variables.namespace);
+
+            console.log(socket);
 
             socket.on('connect', self.onConnected);
             socket.on('disconnect', self.onDisconnected);

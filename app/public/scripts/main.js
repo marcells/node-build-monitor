@@ -8,7 +8,7 @@ require.config({
     }
 });
 
-define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], function (ko, knockoutExtensions, BuildMonitorServer, AppViewModel) {
+define(['ko', 'knockoutExtensions', 'helper', 'BuildMonitorServer', 'AppViewModel'], function (ko, knockoutExtensions, helper, BuildMonitorServer, AppViewModel) {
     knockoutExtensions.register();
 
     var app = new AppViewModel();
@@ -22,38 +22,40 @@ define(['ko', 'knockoutExtensions', 'BuildMonitorServer', 'AppViewModel'], funct
     });
 
     $(function() {
-        ko.applyBindings(app);
+        helper.getVariables(function (variables) {
+            ko.applyBindings(app);
 
-        var buildMonitorServer = new BuildMonitorServer();
+            var buildMonitorServer = new BuildMonitorServer(variables);
 
-        buildMonitorServer.onConnected = function() {
-            app.setIsConnected(true);
-        };
+            buildMonitorServer.onConnected = function() {
+                app.setIsConnected(true);
+            };
 
-        buildMonitorServer.onDisconnected = function() {
-            app.setIsConnected(false);
-        };
+            buildMonitorServer.onDisconnected = function() {
+                app.setIsConnected(false);
+            };
 
-        buildMonitorServer.onBuildsLoaded = function (builds) {
-            app.loadBuilds(builds);
-            app.setIsLoading(false);
-        };
+            buildMonitorServer.onBuildsLoaded = function (builds) {
+                app.loadBuilds(builds);
+                app.setIsLoading(false);
+            };
 
-        buildMonitorServer.onBuildsChanged = function (changes) {
-            app.updateCurrentBuildsWithChanges(changes);
-            app.setIsLoading(false);
-        };
+            buildMonitorServer.onBuildsChanged = function (changes) {
+                app.updateCurrentBuildsWithChanges(changes);
+                app.setIsLoading(false);
+            };
 
-        buildMonitorServer.onVersionChanged = function () {
-            window.location.reload(true);
-        };
+            buildMonitorServer.onVersionChanged = function () {
+                window.location.reload(true);
+            };
 
-        buildMonitorServer.onSettingsLoaded = function (settings) {
-            app.version(settings.version);
-        };
+            buildMonitorServer.onSettingsLoaded = function (settings) {
+                app.version(settings.version);
+            };
 
-        buildMonitorServer.connect();
+            buildMonitorServer.connect();
 
-        setInterval(app.updateBuildTimes, 1000);
+            setInterval(app.updateBuildTimes, 1000);
+        });
     });
 });

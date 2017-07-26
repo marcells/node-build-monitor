@@ -1,4 +1,8 @@
 define(function () {
+    var getVariables = function (result) {
+      $.get(location.href + '/variables', result);
+    };
+
     var getUrlParameter = function (parameter) {
         var pageUrl = window.location.search.substring(1),
             urlParameters = pageUrl.split('&');
@@ -51,6 +55,7 @@ define(function () {
     };
 
     return {
+        getVariables: getVariables,
         getUrlParameter: getUrlParameter,
         detectGlobalInteraction: detectGlobalInteraction,
         detectInteraction: detectInteraction

@@ -112,78 +112,80 @@ var async = require('async'),
         return changes;
     };
 
-module.exports = function (id) {
-    var self = this;
+function Monitor(id) {
+  var self = this;
 
-    self.configuration = {
-        interval: 5000,
-        numberOfBuilds: 12,
-        debug: false
-    };
-    self.plugins = [];
-    self.currentBuilds = [];
+  self.configuration = {
+      interval: 5000,
+      numberOfBuilds: 12,
+      debug: false
+  };
+  self.plugins = [];
+  self.currentBuilds = [];
 
-    self.configure = function (config) {
-        self.configuration = config;
-    };
+  self.configure = function (config) {
+      self.configuration = config;
+  };
 
-    self.watchOn = function (plugin) {
-        self.plugins.push(plugin);
-    };
+  self.watchOn = function (plugin) {
+      self.plugins.push(plugin);
+  };
 
-    self.run = function () {
-        var allBuilds = [];
+  self.run = function () {
+      var allBuilds = [];
 
-        async.each(self.plugins, function (plugin, callback) {
-            log('Check for builds...', id, self.configuration.debug);
+      async.each(self.plugins, function (plugin, callback) {
+          log('Check for builds...', id, self.configuration.debug);
 
-            plugin.check(function (error, pluginBuilds) {
-                if (error) {
-                  console.log('**********************************************************************');
-                  console.log('An error occured when fetching builds for the following configuration:');
-                  console.log('----------------------------------------------------------------------');
-                  console.log(plugin.configuration);
-                  console.log('----------------------------------------------------------------------');
-                  console.log();
-                  console.error(error);
-                  console.log('**********************************************************************');
-                  console.log();
-                  console.log();
-                  callback();
-                  return;
-                }
-
-                if(self.configuration.latestBuildOnly) {
-                    Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
-                }
-                else {
-                    Array.prototype.push.apply(allBuilds, pluginBuilds);
-                }
+          plugin.check(function (error, pluginBuilds) {
+              if (error) {
+                console.log('**********************************************************************');
+                console.log('An error occured when fetching builds for the following configuration:');
+                console.log('----------------------------------------------------------------------');
+                console.log(plugin.configuration);
+                console.log('----------------------------------------------------------------------');
+                console.log();
+                console.error(error);
+                console.log('**********************************************************************');
+                console.log();
+                console.log();
                 callback();
-            });
-        },
-        function (error) {
-            log(allBuilds.length + ' builds found....', id, self.configuration.debug);
+                return;
+              }
 
-            generateAndApplyETags(allBuilds);
-            distinctBuildsByETag(allBuilds);
-            sortBuilds(allBuilds, self.configuration.sortOrder);
+              if(self.configuration.latestBuildOnly) {
+                  Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
+              }
+              else {
+                  Array.prototype.push.apply(allBuilds, pluginBuilds);
+              }
+              callback();
+          });
+      },
+      function (error) {
+          log(allBuilds.length + ' builds found....', id, self.configuration.debug);
 
-            if(!self.configuration.latestBuildOnly) {
-              onlyTake(self.configuration.numberOfBuilds, allBuilds);
-            }
+          generateAndApplyETags(allBuilds);
+          distinctBuildsByETag(allBuilds);
+          sortBuilds(allBuilds, self.configuration.sortOrder);
 
-            if(changed(self.currentBuilds, allBuilds)) {
-                log('builds changed', id, self.configuration.debug);
+          if(!self.configuration.latestBuildOnly) {
+            onlyTake(self.configuration.numberOfBuilds, allBuilds);
+          }
 
-                self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
+          if(changed(self.currentBuilds, allBuilds)) {
+              log('builds changed', id, self.configuration.debug);
 
-                self.currentBuilds = allBuilds;
-            }
+              self.emit('buildsChanged', detectChanges(self.currentBuilds, allBuilds));
 
-            setTimeout(self.run, self.configuration.interval);
-        });
-    };
-};
+              self.currentBuilds = allBuilds;
+          }
 
-module.exports.prototype = new events.EventEmitter();
+          setTimeout(self.run, self.configuration.interval);
+      });
+  };
+}
+
+require('util').inherits(Monitor, events.EventEmitter);
+
+module.exports = Monitor;

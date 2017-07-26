@@ -102,6 +102,7 @@ function createAndRunMonitor(configId, config) {
   monitor.configure(config.monitor);
 
   monitor.on('buildsChanged', function (changes) {
+    console.log('emit buildsChanged to ' + configId);
     monitorSocket.emit('buildsChanged', changes);
   });
 

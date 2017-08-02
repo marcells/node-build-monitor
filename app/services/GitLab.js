@@ -38,7 +38,7 @@ module.exports = function () {
     }
 
     function getBuildExpiration(job) {
-        if (job.status !== 'running') {
+        if (job.pipeline.status !== 'running') {
             return getDefaultExpiration();
         } else {
             return now();
@@ -84,8 +84,8 @@ module.exports = function () {
 
     //noinspection JSUnusedLocalSymbols
     function getBuildIsRunning (project, job) {
-        return (job.status === 'running' ||
-                job.status === 'pending');
+        return (job.pipeline.status === 'running' ||
+                job.pipeline.status === 'pending');
     }
 
     //noinspection JSUnusedLocalSymbols
@@ -105,7 +105,7 @@ module.exports = function () {
 
     //noinspection JSUnusedLocalSymbols
     function getBuildStatus (project, job) {
-        switch (job.status) {
+        switch (job.pipeline.status) {
             case 'pending':
                 return '#ffa500';
             case 'running':
@@ -121,7 +121,7 @@ module.exports = function () {
 
     //noinspection JSUnusedLocalSymbols
     function getBuildStatusText (project, job) {
-        return job.stage + ' ' + job.status;
+        return job.pipeline.status;
     }
 
     //noinspection JSUnusedLocalSymbols

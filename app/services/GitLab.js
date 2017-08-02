@@ -69,7 +69,7 @@ module.exports = function () {
     }
 
     function getBuildId (project, job) {
-        return project.id + '-' + job.ref + '-' + job.stage;
+        return project.id + '-' + job.pipeline.id;
     }
 
     //noinspection JSUnusedLocalSymbols
@@ -262,20 +262,8 @@ module.exports = function () {
                 if (typeof seen[key] === 'undefined') {
                     seen[key] = build;
                     return true;
-                }
-                else if (seen[key].monitor.startedAt < build.monitor.startedAt) {
-                    seen[key] = build;
-                    return true;
                 } else {
                     return false;
-                }
-            })
-            .filter(build => {
-                if (!latest || build.monitor.startedAt > latest) {
-                    latest = build.monitor.startedAt;
-                    return true;
-                } else {
-                    return build.monitor.isRunning || build.status === 'failing';
                 }
             });
 

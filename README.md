@@ -244,14 +244,11 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
     "token": "secret_user_token",
     "additional_query": "&search=gitlab-org&starred=true",
     "slugs": [
-      "gitlab-org/gitlab-ci-multi-runner"
-    ],
-    "intervals": {
-      "disabled": 3600000,
-      "empty": 60000,
-      "default": 60000
-    },
-    "debug": true
+      {
+        "project": "gitlab-org/gitlab-ci-multi-runner",
+        "ref": "master"
+      }
+    ]
   }
 }
 ```
@@ -260,13 +257,9 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 |--------------------|-------------------------------------------------------------------------------------------------------------
 | `url`              | GitLab server http(s) address string
 | `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API
-| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to
+| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
 | `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched. 
-| `.disabled`        | ... to poll all GitLab projects, including projects with builds disabled, for new builds
-| `.empty`           | ... to poll GitLab projects with builds enabled, but still without any builds yet, for new builds
-| `.default`         | ... to poll GitLab projects with existing builds
-| `debug`            | Boolean to run GitLab plugin in verbose mode
 
 Because API V4 returns **all** internal and public projects by default, you propably
 want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.  

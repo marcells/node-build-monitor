@@ -61,6 +61,9 @@ module.exports = function () {
             ], callback);
         },
         getBuilds = function(callback) {
+            if(self.projects.length === 0) {
+                loadProjects();
+            }
             async.map(self.projects, getProjectPipelines, function(err, builds) {
                 if(err) {
                     callback(err);
@@ -176,7 +179,6 @@ module.exports = function () {
                 }
             });
         }
-        loadProjects();
     };
 
     self.check = getBuilds;

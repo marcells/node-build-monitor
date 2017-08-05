@@ -23,10 +23,10 @@ module.exports = function () {
         getProjectsApiUrl = function(page, perPage) {
             var query = '?page=' + page + '&per_page=' + perPage + self.config.additional_query;
             return self.config.url + '/api/v4/projects' + query;
-        }
+        },
         getRequestHeaders = function() {
             return { 'PRIVATE-TOKEN': self.config.token };
-        }
+        },
         makeRequest = function (url, callback) {
             request({
                 headers: getRequestHeaders(),
@@ -130,7 +130,7 @@ module.exports = function () {
 
                     async.map(urls, makeRequest, function(err, projects){
                         callback(err, flatten(projects));
-                    })
+                    });
                 }
             });
         },

@@ -31,6 +31,10 @@ module.exports = function () {
         return build;
     };
 
+    self.configure = function (config) {
+        self.configuration = config;
+    };
+
     self.addLater = function () {
         var build = self.add();
 

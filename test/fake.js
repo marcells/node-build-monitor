@@ -14,6 +14,7 @@ module.exports = function () {
         var build = {
             id: 'project_' + (self.builds.length + 1),
             project: 'project',
+            displayName: 'displayName',
             number: 'number',
             isRunning: true,
             startedAt: new Date(2000, 0, 1),

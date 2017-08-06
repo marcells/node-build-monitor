@@ -58,12 +58,14 @@ The build monitor configuration can be placed in one of the following locations:
     {
       "name": "Travis",
       "configuration": {
+        "displayName": "Main Build",
         "slug": "node-build-monitor"
       }
     },
     {
       "name": "Travis",
       "configuration": {
+        "displayName": "Blog Build",
         "slug": "marcells/bloggy"
       }
     }
@@ -75,6 +77,7 @@ In the `monitor` section you can set up some general settings:
 
 | Setting           | Description
 |-------------------|---------------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `interval`        | The update interval (in milliseconds)
 | `numberOfBuilds`  | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
 | `latestBuildOnly` | Will only retrieve single latest build from each service configuration
@@ -101,6 +104,7 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 | Setting      | Description
 |--------------|--------------------------------------------------------------------------------------------
 | `slug`       | The name of the build (usually your GitHub user name and the project name)
+| `displayName`| Display Name of the Build
 | `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.
 | `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)
 
@@ -125,6 +129,7 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 
 | Setting      | Description
 |--------------|------------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `url`        | The url to the Jenkins server
 | `username`   | Your Jenkins user name
 | `password`   | Your Jenkins password
@@ -148,6 +153,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 
 | Setting                 | Description
 |-------------------------|-----------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
 | `buildConfigurationId`  | The id of the TeamCity build configuration
 
@@ -169,6 +175,7 @@ Supports the [Visual Studio Online](http://www.visualstudio.com/) build service.
 
 | Setting       | Description
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
 | `accountname` | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
 | `username`    | Your Visual Studio Online user name (alternate credentials *User name (secondary)*) see info below
@@ -202,6 +209,7 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 
 | Setting       | Description
 |---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section).
 | `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)
 | `username`    | User with permission to query build details
@@ -224,6 +232,7 @@ Supports an on-premise Microsoft Team Foundation Server 2015/2017 (and later).
 
 | Setting       | Description
 |---------------|-------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `url`         | The full Team Collection Url, including the TeamProject, which builds are displayed
 | `username`    | User with permission to query build details
 | `password`    | The password for the user (if using TFS 2017 see notes below)
@@ -255,11 +264,12 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 
 | Setting            | Description
 |--------------------|-------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `url`              | GitLab server http(s) address string
 | `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API
 | `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
-| `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched. 
+| `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched.
 
 Because API V4 returns **all** internal and public projects by default, you propably
 want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.  
@@ -284,6 +294,7 @@ Supports [BuddyBuild](https://buddybuild.com/) build service
 
 | Setting          | Description
 |------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| `displayName`| Display Name of the Build
 | `project_name`   | Label of the project name, normally IOS or Android. Required only, if your app_id is provided.
 | `app_id`         | BuddyBuild Application ID. Leave empty to get all the builds for your user token.
 | `url`            | BuddyBuild Build Query url
@@ -309,6 +320,7 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 
 | Setting          | Description
 |------------------|------------------------------------
+| `displayName`    | Display Name of the Build
 | `url`            | URL of the Bamboo host
 | `planKey`        | Plan-Key
 | `username`       | HTTP-Basic-Auth Username (optional)

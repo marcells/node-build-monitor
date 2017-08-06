@@ -7,25 +7,25 @@ module.exports = function () {
             return [].concat.apply([], arrayOfArray);
         },
         buildProjectUrl = function(projectId) {
-            return self.config.url + '/api/v4/projects/' + projectId;
+            return self.configuration.url + '/api/v4/projects/' + projectId;
         },
         buildProjectPipelinesUrl = function(projectId, ref) {
-            var url = self.config.url + '/api/v4/projects/' + projectId + '/pipelines';
+            var url = self.configuration.url + '/api/v4/projects/' + projectId + '/pipelines';
             if(ref) { url = url + '?ref=' + ref; }
             return url;
         },
         buildPipelineDetailsUrl = function(projectId, pipelineId) {
-            return self.config.url + '/api/v4/projects/' + projectId + '/pipelines/' + pipelineId;
+            return self.configuration.url + '/api/v4/projects/' + projectId + '/pipelines/' + pipelineId;
         },
         buildJobUrl = function(projectId, pipelineId) {
-            return self.config.url + '/api/v4/projects/' + projectId + '/pipelines/' + pipelineId + '/jobs/';
+            return self.configuration.url + '/api/v4/projects/' + projectId + '/pipelines/' + pipelineId + '/jobs/';
         },
         getProjectsApiUrl = function(page, perPage) {
-            var query = '?page=' + page + '&per_page=' + perPage + self.config.additional_query;
-            return self.config.url + '/api/v4/projects' + query;
+            var query = '?page=' + page + '&per_page=' + perPage + self.configuration.additional_query;
+            return self.configuration.url + '/api/v4/projects' + query;
         },
         getRequestHeaders = function() {
-            return { 'PRIVATE-TOKEN': self.config.token };
+            return { 'PRIVATE-TOKEN': self.configuration.token };
         },
         makeRequest = function (url, callback) {
             request({
@@ -112,7 +112,7 @@ module.exports = function () {
         },
         getBuildUrl = function(project, build) {
             if(build.jobs && build.jobs[0]) {
-                var base = self.config.url + '/';
+                var base = self.configuration.url + '/';
                 return base + project.path_with_namespace + '/-/jobs/' + build.jobs[0].id; //Not sure whether this works
             } else {
                 return "";
@@ -138,7 +138,7 @@ module.exports = function () {
             });
         },
         loadProjects = function() {
-            var slugs = self.config.slugs,
+            var slugs = self.configuration.slugs,
                 matchers = slugs.map(slug => slug.project);
             getAllProjects(function(err, projects){
                 if(err) return;
@@ -161,21 +161,21 @@ module.exports = function () {
         };
 
     self.configure = function (config) {
-        self.config = config;
+        self.configuration = config;
         self.projects = [];
-        if (typeof self.config.slugs === 'undefined') {
-            self.config.slugs = [{project: '*/*'}];
+        if (typeof self.configuration.slugs === 'undefined') {
+            self.configuration.slugs = [{project: '*/*'}];
         }
-        if (typeof self.config.additional_query === 'undefined') {
-          self.config.additional_query = "";
+        if (typeof self.configuration.additional_query === 'undefined') {
+          self.configuration.additional_query = "";
         }
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
-            self.config.token = process.env.GITLAB_TOKEN;
+            self.configuration.token = process.env.GITLAB_TOKEN;
         }
-        if (typeof self.config.caPath !== 'undefined') {
+        if (typeof self.configuration.caPath !== 'undefined') {
             request = request.defaults({
                 agentOptions: {
-                    ca: require('fs').readFileSync(self.config.caPath).toString().split("\n\n")
+                    ca: require('fs').readFileSync(self.configuration.caPath).toString().split("\n\n")
                 }
             });
         }

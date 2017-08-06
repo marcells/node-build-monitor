@@ -154,7 +154,7 @@ module.exports = function () {
                 }
                 pluginBuilds.forEach(function(result){
                   result.displayName = plugin.configuration.displayName || result.project ;
-                })
+                });
                 if(self.configuration.latestBuildOnly) {
                     if (pluginBuilds.length > 0) {
                        Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);

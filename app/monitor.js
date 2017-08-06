@@ -20,7 +20,6 @@ var async = require('async'),
             newBuilds.sort(function (a, b) {
                 if(a.project > b.project) return 1;
                 if(a.project < b.project) return -1;
-
                 return 0;
             });
         }

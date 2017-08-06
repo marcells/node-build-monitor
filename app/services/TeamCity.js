@@ -8,18 +8,32 @@ module.exports = function () {
         selectMany = function (array, selector) {
             return array.map(selector).reduce(function (x, y) { return x.concat(y); }, []);
         },
-        getFinishedBuildsUrl = function () {
-            return self.configuration.url +
+        getBuildsUrl = function(status) {
+            var url =  self.configuration.url +
                 '/httpAuth/app/rest/buildTypes/id:' + self.configuration.buildConfigurationId +
                 '/builds';
+            var locators = [];
+            if(self.configuration.branch) {
+                locators.push('branch:' + self.configuration.branch);
+            }
+            if(status) {
+                locators.push(status + ':true');
+            }
+            if(locators.length > 0) {
+                url = url + '?locator=' + locators.join(',');
+            }
+            return url;
+        },
+        getFinishedBuildsUrl = function () {
+            return getBuildsUrl();
         },
         getCanceledBuildsUrl = function () {
-            return getFinishedBuildsUrl() + '?locator=canceled:true';
+            return getBuildsUrl('canceled');
         },
         getRunningBuildsUrl = function () {
-            return getFinishedBuildsUrl() + '?locator=running:true';
+            return getBuildsUrl('running');
         },
-        getBuildDetailsUrl = function (url) {
+        getHrefUrl = function (url) {
             return self.configuration.url + url;
         },
         makeRequest = function (url, callback) {
@@ -52,14 +66,32 @@ module.exports = function () {
                 callback(error, merged);
             });
         },
+        requestLastCommitDetails = function(build, callback) {
+            if(build.lastChanges.change && build.lastChanges.change[0]) {
+                makeRequest(getHrefUrl(build.lastChanges.change[0].href), function(error, data) {
+                    if (error) {
+                        callback(error);
+                        return;
+                    }
+                    build.lastCommit = data;
+                    callback(error, build);
+                });
+            } else {
+                callback(null, build);
+            }
+        },
         requestBuild = function (build, callback) {
-            makeRequest(getBuildDetailsUrl(build.href), function(error, data) {
-                if (error) {
-                  callback(error);
-                  return;
+            async.waterfall([
+                function(callback) {
+                    makeRequest(getHrefUrl(build.href), callback);
+                },
+                requestLastCommitDetails
+            ], function(error, build) {
+                if(error){
+                    callback(error);
+                    return;
                 }
-
-                callback(error, simplifyBuild(data));
+                callback(error, simplifyBuild(build));
             });
         },
         queryBuilds = function (callback) {
@@ -101,28 +133,31 @@ module.exports = function () {
 
             return null;
         },
-        getRequestedFor = function (build) {
-            if(build.triggered.type === 'user' && build.triggered.user) {
-                return build.triggered.user.username;
-            } else if (build.triggered.type === 'vcs') {
-                return build.triggered.details;
+        getCommitMessage = function (build) {
+            if(build.lastCommit) {
+                return build.lastCommit.comment;
             }
-
+            return null;
+        },
+        getRequestedBy = function (build) {
+            if(build.lastCommit) {
+                return build.lastCommit.username;
+            }
             return null;
         },
         simplifyBuild = function (res) {
             return {
                 id: res.buildTypeId + '|' + res.number,
                 project: res.buildType.projectName,
-                definition: res.buildType.name,
+                definition: res.buildType.name + '|' + res.branchName,
                 number: res.number,
                 isRunning: res.running === true,
                 startedAt: parseStartDate(res),
                 finishedAt: parseFinishDate(res),
-                requestedFor: getRequestedFor(res),
+                requestedFor: getRequestedBy(res),
                 statusText: getStatusText(res),
                 status: getStatus(res),
-                reason: res.triggered.type,
+                reason: getCommitMessage(res),
                 hasErrors: false,
                 hasWarnings: false,
                 url: self.configuration.url.replace(/(https?):\/\/([\w]*:[\w]*@)/, '$1://') + '/viewLog.html?buildId=' + res.id + '&buildTypeId=' + res.buildTypeId

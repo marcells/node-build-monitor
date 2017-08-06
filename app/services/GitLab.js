@@ -80,10 +80,10 @@ module.exports = function () {
                 isRunning: ['running', 'pending'].includes(build.status),
                 startedAt: getDateTime(build.started_at),
                 finishedAt: getDateTime(build.finished_at),
-                requestedFor: getBuildRequestedFor(build),
+                requestedFor: getAuthor(build),
                 status: getBuildStatus(build.status),
                 statusText: build.status,
-                reason: getBuildRequestedFor(build),
+                reason: getCommitMessage(build),
                 hasErrors: false,
                 hasWarnings: false,
                 url: getBuildUrl(project, build)
@@ -92,9 +92,13 @@ module.exports = function () {
         getDateTime = function(dateTime) {
             return dateTime ? new Date(dateTime) : dateTime;
         },
-        getBuildRequestedFor = function(build) {
+        getCommitMessage = function(build) {
             var job = build.jobs && build.jobs[0];
-            return job && (job.commit.message + ' | ' + job.commit.author_name);
+            return job && job.commit.message;
+        },
+        getAuthor = function(build) {
+            var job = build.jobs && build.jobs[0];
+            return job && job.commit.author_name;
         },
         getBuildStatus = function(status) {
             switch (status) {

@@ -141,7 +141,8 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
   "name": "TeamCity",
   "configuration": {
     "url": "http://teamcity_username:teamcity_password@teamcity-server:8111",
-    "buildConfigurationId": "TeamCityProject_TeamCityBuildConfiguration"
+    "buildConfigurationId": "TeamCityProject_TeamCityBuildConfiguration",
+    "branch": "master"
   }
 }
 ```
@@ -150,6 +151,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 |-------------------------|-----------------------------------------------------------------------------------------
 | `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
 | `buildConfigurationId`  | The id of the TeamCity build configuration
+| `branch`                | The name of branch that needs to be monitored. Will monitor all branches if not specified.
 
 #### Visual Studio Online
 

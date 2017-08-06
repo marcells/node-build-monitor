@@ -20,7 +20,7 @@ var async = require('async'),
             newBuilds.sort(function (a, b) {
                 if(a.project > b.project) return 1;
                 if(a.project < b.project) return -1;
- 
+
                 return 0;
             });
         }
@@ -154,7 +154,9 @@ module.exports = function () {
                 }
 
                 if(self.configuration.latestBuildOnly) {
-                    Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
+                    if (pluginBuilds.length > 0) {
+                       Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
+                    }
                 }
                 else {
                     Array.prototype.push.apply(allBuilds, pluginBuilds);

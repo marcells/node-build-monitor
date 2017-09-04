@@ -76,10 +76,11 @@ module.exports = function () {
       return null;
     },
     simplifyBuild = function (res) {
+      let branceType = isGlobBranch(self.configuration.branch) ? 'Pull Request' : res.branch;
       return {
         id: self.configuration.slug + '|' + res.build_num,
-        project: self.configuration.slug + ' | ' + res.branch,
-        number: res.build_num,
+        project: self.configuration.slug + ' | ' + branceType,
+        number: '#' + res.build_num + '   ' + res.branch,
         isRunning: res.status === 'running',
         startedAt: parseDate(res.start_time),
         finishedAt: parseDate(res.stop_time),

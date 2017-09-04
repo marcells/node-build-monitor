@@ -1,4 +1,5 @@
-var request = require('request');
+var request = require('request'),
+    ntlm = require('httpntlm');
 
 module.exports = function () {
     var self = this,
@@ -12,16 +13,26 @@ module.exports = function () {
             return baseUrl;
         },
         makeRequest = function (url, callback) {
+          if (self.configuration.authentication.trim() === 'ntlm') {
+            ntlm.get({
+              'url': url,
+              'username': self.configuration.username,
+              'password': self.configuration.password
+            }, function (error, response) {
+              callback(error, JSON.parse(response.body));
+            });
+          } else {
             request({
                 'url': url,
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
-                'json' : true,
-                'auth': { 'user': self.configuration.accountname + '\\' + self.configuration.username, 'pass': self.configuration.password }
-                },
-                function(error, response, body) {
-                    callback(error, body);
-            });
+                'json': true,
+                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
+              },
+              function (error, response, body) {
+                callback(error, body);
+              });
+          }
         },
         parseDate = function (dateAsString) {
             return new Date(parseInt(dateAsString.substr(6)));

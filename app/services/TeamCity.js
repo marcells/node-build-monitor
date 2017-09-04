@@ -1,6 +1,7 @@
 var request = require('request'),
     async = require('async'),
     moment = require('moment'),
+    ntlm = require('httpntlm'),
     TEAMCITY_DATE_FORMAT = 'YYYYMMDDTHHmmss+Z';
 
 module.exports = function () {
@@ -37,15 +38,26 @@ module.exports = function () {
             return self.configuration.url + url;
         },
         makeRequest = function (url, callback) {
+          if (self.configuration.authentication.trim() === 'ntlm') {
+            ntlm.get({
+              'url': url,
+              'username': self.configuration.username,
+              'password': self.configuration.password
+            }, function (error, response) {
+              callback(error, JSON.parse(response.body));
+            });
+          } else {
             request({
                 'url': url,
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
-                'json' : true
-                },
-                function(error, response, body) {
-                    callback(error, body);
-            });
+                'json': true,
+                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
+              },
+              function (error, response, body) {
+                callback(error, body);
+              });
+          }
         },
         requestBuilds = function (callback) {
             var requestFinishedBuilds = makeRequest.bind(this, getFinishedBuildsUrl());

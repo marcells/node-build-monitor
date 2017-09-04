@@ -1,4 +1,5 @@
-var request = require('request');
+var request = require('request'),
+    ntlm = require('httpntlm');
 
 module.exports = function () {
     var self = this,
@@ -9,21 +10,27 @@ module.exports = function () {
                 process.env.TFS_PROXY_PORT_4567_TCP_PORT +
                 '/builds';
         },
-        makeRequest = function (callback) {
-            request({
-                'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
-                'rejectUnauthorized': false,
-                'headers': {
-                    'Accept': 'application/json',
-                    'url': self.configuration.url,
-                    'username': self.configuration.username,
-                    'password': self.configuration.password
-                },
-                'json' : true
-                },
-                function(error, response, body) {
-                    callback(error, body);
+        makeRequest = function (url, callback) {
+          if (self.configuration.authentication.trim() === 'ntlm') {
+            ntlm.get({
+              'url': url,
+              'username': self.configuration.username,
+              'password': self.configuration.password
+            }, function (error, response) {
+              callback(error, JSON.parse(response.body));
             });
+          } else {
+            request({
+                'url': url,
+                'rejectUnauthorized': false,
+                'headers': { 'Accept': 'application/json' },
+                'json': true,
+                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
+              },
+              function (error, response, body) {
+                callback(error, body);
+              });
+          }
         },
         parseDate = function (dateAsString) {
             return new Date(dateAsString);

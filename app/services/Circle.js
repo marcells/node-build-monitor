@@ -45,7 +45,7 @@ module.exports = function () {
     },
     filterBuild = function (partten, res) {
       let prefix = partten.replace('*', '');
-      return res.branch && res.branch.startsWith(prefix)
+      return res.branch && res.branch.startsWith(prefix) && res.dont_build != 'prs-only';
     },
     queryBuilds = function (callback) {
       requestBuilds(function (error, body) {

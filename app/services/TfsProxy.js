@@ -13,7 +13,7 @@ module.exports = function () {
         makeRequest = function (url, callback) {
           if (self.configuration.authentication.trim() === 'ntlm') {
             ntlm.get({
-              'url': url,
+              'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
               'username': self.configuration.username,
               'password': self.configuration.password
             }, function (error, response) {
@@ -21,7 +21,7 @@ module.exports = function () {
             });
           } else {
             request({
-                'url': url,
+                'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
                 'rejectUnauthorized': false,
                 'headers': { 'Accept': 'application/json' },
                 'json': true,

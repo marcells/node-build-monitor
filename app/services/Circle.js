@@ -12,25 +12,41 @@ module.exports = function () {
           callback(error, body);
         });
     },
-
     getRequestURL = function () {
       let config = self.configuration;
-      let branch = config.branch ? '/tree/' + config.branch : '';
-
+      let branch = isExplicitBranch(config.branch) ? '/tree/' + config.branch : '';
       let endPoint = getProjectAPIURL() + branch + getAdditionParams();
 
       return endPoint;
     },
-
-    getAdditionParams = function() {
-      let config = self.configuration;
-      return '?circle-token=' + config.token + '&limit=' + config.numberOfBuilds;
-    };
-
-    getProjectAPIURL = function () {
-      return self.configuration.url + '/api/v1.1/project/' + self.configuration.vcsType +'/' + self.configuration.slug;
+    isExplicitBranch = function (branchName) {
+      return branchName && !isGlobBranch(branchName);
     },
+    isGlobBranch = function (branchName) {
+      return branchName && branchName.endsWith('*');
+    },
+    getAdditionParams = function () {
+      let config = self.configuration;
+      let limit = isGlobBranch(config.branch) ? '' : '&limit=' + config.numberOfBuilds;
+      return '?circle-token=' + config.token + limit;
+    },
+    getProjectAPIURL = function () {
+      return self.configuration.url + '/api/v1.1/project/' + self.configuration.vcsType + '/' + self.configuration.slug;
+    },
+    filterBuilds = function (results) {
+      let branchName = self.configuration.branch;
+      let numberOfBuilds = self.configuration.numberOfBuilds;
 
+      if (!isGlobBranch(branchName)) return results;
+
+      return results
+        .filter(filterBuild.bind(null, branchName))
+        .slice(0, numberOfBuilds);
+    },
+    filterBuild = function (partten, res) {
+      let prefix = partten.replace('*', '');
+      return res.branch && res.branch.startsWith(prefix)
+    },
     queryBuilds = function (callback) {
       requestBuilds(function (error, body) {
         if (error) {
@@ -38,7 +54,8 @@ module.exports = function () {
           return;
         }
 
-        let results = body.map(simplifyBuild);
+        let filteredResults = filterBuilds(body);
+        let results = filteredResults.map(simplifyBuild);
         callback(error, results);
       });
     },

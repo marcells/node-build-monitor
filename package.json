@@ -41,7 +41,7 @@
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",
   "scripts": {
-    "start": "node app/app.js",
+    "start": "export PORT=8080 && node app/app.js",
     "ci": "grunt ci",
     "test": "grunt mochaTest:test",
     "pkg": "pkg -c ./package.json --out-dir ./release ./app/app.js"

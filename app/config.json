@@ -1,22 +1,30 @@
 {
   "monitor": {
     "interval": 5000,
-    "numberOfBuilds": 12,
+    "numberOfBuilds": 20,
     "latestBuildOnly": false,
-    "sortOrder": "date",
+    "sortOrder": "project",
     "debug": true
   },
   "services": [
     {
-      "name": "Travis",
+      "name": "Circle",
       "configuration": {
-        "slug": "marcells/bloggy"
+        "slug": "twlabs/tw-bnb",
+        "token": "303914b0484e4299d991937ddd1ed3191456720d",
+        "vscType": "github",
+        "branch": "master",
+        "numberOfBuilds": "1"
       }
     },
     {
-      "name": "Travis",
+      "name": "Circle",
       "configuration": {
-        "slug": "marcells/node-build-monitor"
+        "slug": "twlabs/tw-bnb",
+        "token": "303914b0484e4299d991937ddd1ed3191456720d",
+        "vscType": "github",
+        "branch": "BNB-*",
+        "numberOfBuilds": "2"
       }
     }
   ]

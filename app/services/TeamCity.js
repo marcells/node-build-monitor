@@ -1,7 +1,6 @@
-var request = require('request'),
+var request = require('../requests'),
     async = require('async'),
     moment = require('moment'),
-    ntlm = require('httpntlm'),
     TEAMCITY_DATE_FORMAT = 'YYYYMMDDTHHmmss+Z';
 
 module.exports = function () {
@@ -38,26 +37,13 @@ module.exports = function () {
             return self.configuration.url + url;
         },
         makeRequest = function (url, callback) {
-          if (self.configuration.authentication.trim() === 'ntlm') {
-            ntlm.get({
-              'url': url,
-              'username': self.configuration.username,
-              'password': self.configuration.password
-            }, function (error, response) {
-              callback(error, JSON.parse(response.body));
-            });
-          } else {
-            request({
-                'url': url,
-                'rejectUnauthorized': false,
-                'headers': { 'Accept': 'application/json' },
-                'json': true,
-                'auth': { 'user': self.configuration.username, 'pass': self.configuration.password }
-              },
-              function (error, response, body) {
-                callback(error, body);
-              });
-          }
+          request.makeRequest({
+            authentication: self.configuration.authentication,
+            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
+            username: self.configuration.username,
+            password: self.configuration.password,
+            headers: {Accept: 'application/json'}
+          }, callback);
         },
         requestBuilds = function (callback) {
             var requestFinishedBuilds = makeRequest.bind(this, getFinishedBuildsUrl());

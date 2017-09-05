@@ -142,7 +142,10 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
   "configuration": {
     "url": "http://teamcity_username:teamcity_password@teamcity-server:8111",
     "buildConfigurationId": "TeamCityProject_TeamCityBuildConfiguration",
-    "branch": "master"
+    "branch": "master",
+    "authentication": "ntlm",
+    "username": "teamcity_username",
+    "password": "teamcity_password"
   }
 }
 ```
@@ -152,6 +155,9 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 | `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
 | `buildConfigurationId`  | The id of the TeamCity build configuration
 | `branch`                | The name of branch that needs to be monitored. Will monitor all branches if not specified.
+| `authentication`        | This option is only required if using 'ntlm' other option have no meaning
+| `username`              | Your TeamCity user name (if required)
+| `password`              | Your TeamCity password (if required)
 
 #### Visual Studio Team Services
 
@@ -169,12 +175,13 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 }
 ```
 
-| Setting       | Description
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `collection`  | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
-| `accountname` | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
-| `username`    | Your Visual Studio Online user name (alternate credentials *User name (secondary)*) see info below
-| `password`    | Your Visual Studio Online password (alternate credentials *Password*) see info below
+| Setting         | Description
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `collection`    | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
+| `accountname`   | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
+| `authentication`| This option is only required if using 'ntlm' other option have no meaning
+| `username`      | Your Visual Studio Online user name (alternate credentials *User name (secondary)*) see info below
+| `password`      | Your Visual Studio Online password (alternate credentials *Password*) see info below
 
 To create the alternate credentials, please do the following steps:
 
@@ -202,12 +209,13 @@ Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](http
 }
 ```
 
-| Setting       | Description
-|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| `tfsProxyUrl` | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section).
-| `url`         | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)
-| `username`    | User with permission to query build details
-| `password`    | The password for the user
+| Setting          | Description
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| `tfsProxyUrl`    | The url to the [tfs-proxy](https://github.com/marcells/tfs-proxy). If you use Docker to run node-build-monitor and tfs-proxy, this setting can be omitted (see details below in the Docker section).
+| `url`            | The full Team Collection Url, which builds are displayed (selecting single team projects or build definitions is not supported currently)
+| `authentication` | This option is only required if using 'ntlm' other option have no meaning
+| `username`       | User with permission to query build details
+| `password`       | The password for the user
 
 #### Team Foundation Server 2015/2017 (on-premise)
 
@@ -224,11 +232,12 @@ Supports an on-premise Microsoft Team Foundation Server 2015/2017 (and later).
 }
 ```
 
-| Setting       | Description
-|---------------|-------------------------------------------------------------------------------------
-| `url`         | The full Team Collection Url, including the TeamProject, which builds are displayed
-| `username`    | User with permission to query build details
-| `password`    | The password for the user (if using TFS 2017 see notes below)
+| Setting         | Description
+|-----------------|-------------------------------------------------------------------------------------
+| `url`           | The full Team Collection Url, including the TeamProject, which builds are displayed
+| `authentication`| This option is only required if using 'ntlm' other option have no meaning
+| `username`      | User with permission to query build details
+| `password`      | The password for the user (if using TFS 2017 see notes below)
 
 _Important_: For TFS 2017 you have to [create a personal access token](https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate). It only needs
 the permission to read builds. Please use your username and the generated token as the password.

@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('../requests');
 
 module.exports = function () {
     var self = this,
@@ -9,21 +9,19 @@ module.exports = function () {
                 process.env.TFS_PROXY_PORT_4567_TCP_PORT +
                 '/builds';
         },
-        makeRequest = function (callback) {
-            request({
-                'url': self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
-                'rejectUnauthorized': false,
-                'headers': {
-                    'Accept': 'application/json',
-                    'url': self.configuration.url,
-                    'username': self.configuration.username,
-                    'password': self.configuration.password
-                },
-                'json' : true
-                },
-                function(error, response, body) {
-                    callback(error, body);
-            });
+        makeRequest = function (url, callback) {
+          request.makeRequest({
+            authentication: self.configuration.authentication,
+            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
+            username: self.configuration.username,
+            password: self.configuration.password,
+            headers:{
+              Accept: 'application/json',
+              url: self.configuration.url,
+              username: self.configuration.username,
+              password: self.configuration.password
+            }
+          }, callback);
         },
         parseDate = function (dateAsString) {
             return new Date(dateAsString);

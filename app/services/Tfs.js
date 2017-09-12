@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('../requests');
 
 module.exports = function () {
     var self = this,
@@ -12,16 +12,13 @@ module.exports = function () {
             return baseUrl;
         },
         makeRequest = function (url, callback) {
-            request({
-                'url': url,
-                'rejectUnauthorized': false,
-                'headers': { 'Accept': 'application/json' },
-                'json' : true,
-                'auth': { 'user': self.configuration.accountname + '\\' + self.configuration.username, 'pass': self.configuration.password }
-                },
-                function(error, response, body) {
-                    callback(error, body);
-            });
+          request.makeRequest({
+            authentication: self.configuration.authentication,
+            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
+            username: self.configuration.accountname + '\\' + self.configuration.username,
+            password: self.configuration.password,
+            headers: {Accept: 'application/json'}
+          }, callback);
         },
         parseDate = function (dateAsString) {
             return new Date(parseInt(dateAsString.substr(6)));

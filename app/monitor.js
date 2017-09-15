@@ -42,7 +42,7 @@ var async = require('async'),
 
             return 0;
         });
-    }
+    },
     distinctBuildsByETag = function (newBuilds) {
         var unique = {};
 

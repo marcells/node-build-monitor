@@ -39,7 +39,7 @@ module.exports = function () {
         makeRequest = function (url, callback) {
           request.makeRequest({
             authentication: self.configuration.authentication,
-            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
+            url: url,
             username: self.configuration.username,
             password: self.configuration.password,
             headers: {Accept: 'application/json'}

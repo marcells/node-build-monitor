@@ -65,7 +65,7 @@ module.exports = function () {
             });
         },
         requestLastCommitDetails = function(build, callback) {
-            if(build.lastChanges.change && build.lastChanges.change[0]) {
+            if(build.lastChanges && build.lastChanges.change && build.lastChanges.change[0]) {
                 makeRequest(getHrefUrl(build.lastChanges.change[0].href), function(error, data) {
                     if (error) {
                         callback(error);

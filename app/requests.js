@@ -3,7 +3,7 @@ var request = require('request'),
 
 module.exports = {
   makeRequest: function (opts, callback) {
-    if (opts.authentication.trim() === 'ntlm') {
+    if (opts.authentication && opts.authentication.trim() === 'ntlm') {
       ntlm.get({
         url: opts.url,
         username: opts.username,
@@ -17,8 +17,7 @@ module.exports = {
           url: opts.url,
           rejectUnauthorized: false,
           headers: opts.headers || {},
-          json: true,
-          auth: {'user': opts.username, 'pass': opts.password}
+          json: true
         },
         function (error, response, body) {
           callback(error, body);

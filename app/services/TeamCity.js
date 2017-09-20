@@ -39,7 +39,7 @@ module.exports = function () {
         makeRequest = function (url, callback) {
           request.makeRequest({
             authentication: self.configuration.authentication,
-            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
+            url: url,
             username: self.configuration.username,
             password: self.configuration.password,
             headers: {Accept: 'application/json'}
@@ -65,7 +65,7 @@ module.exports = function () {
             });
         },
         requestLastCommitDetails = function(build, callback) {
-            if(build.lastChanges.change && build.lastChanges.change[0]) {
+            if(build.lastChanges && build.lastChanges.change && build.lastChanges.change[0]) {
                 makeRequest(getHrefUrl(build.lastChanges.change[0].href), function(error, data) {
                     if (error) {
                         callback(error);

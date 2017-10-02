@@ -25,6 +25,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
+- [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -270,10 +271,10 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 | `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API
 | `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
-| `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched. 
+| `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched.
 
 Because API V4 returns **all** internal and public projects by default, you propably
-want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.  
+want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.
 
 #### BuddyBuild
 
@@ -324,6 +325,27 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 | `planKey`        | Plan-Key
 | `username`       | HTTP-Basic-Auth Username (optional)
 | `password`       | HTTP-Basic-Auth Password (optional)
+
+#### Bitbucket Pipelines
+
+Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service
+
+```json
+{
+  "name": "BitbucketPipelines",
+  "configuration": {
+    "apiKey": "key",
+    "username": "username",
+    "slug": "slug"
+  }
+}
+```
+
+| Setting          | Description
+|------------------|------------------------------------
+| `apiKey`         | The API key on the Bitbucket settings
+| `username`       | The account username
+| `slug`           | The name of the project
 
 ### Run the standalone version (easiest way)
 

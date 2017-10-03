@@ -254,6 +254,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
     "url": "http://gitlab.example.com:8080",
     "token": "secret_user_token",
     "additional_query": "&search=gitlab-org&starred=true",
+    "numberOfPipelinesPerProject": 3,
     "slugs": [
       {
         "project": "gitlab-org/gitlab-ci-multi-runner",
@@ -271,6 +272,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 | `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
 | `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched. 
+| `numberOfPipelinesPerProject` | Limit the number of pipelines fetched for each project. Optional, defaults to no limitation.
 
 Because API V4 returns **all** internal and public projects by default, you propably
 want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.  

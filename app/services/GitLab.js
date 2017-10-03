@@ -42,6 +42,9 @@ module.exports = function () {
                     callback(err);
                     return;
                 }
+                if (typeof self.config.numberOfPipelinesPerProject !== 'undefined') {
+                    pipelines = pipelines.slice(0, self.config.numberOfPipelinesPerProject);
+                }
                 async.map(pipelines, function(pipeline, callback) {
                     getPipelineDetails(project, pipeline.id, callback);
                 }, callback);

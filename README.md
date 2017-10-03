@@ -106,7 +106,11 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 
 #### Jenkins
 
-Supports the [Jenkins](http://jenkins-ci.org/) build service.
+Supports the [Jenkins](http://jenkins-ci.org/) build service. The service can
+operate in single-job or single-view mode. In single-job mode, the builds of
+a selected Jenkins job are shown. In single-view mode, the builds of all the
+jobs in a given Jenkins view are shown. In both modes, one can limit the
+maximum number of recent builds per job.
 
 ```json
 {
@@ -116,6 +120,7 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
     "username": "jenkins_username",
     "password": "jenkins_password",
     "job": "JenkinsJobName",
+    "numberOfBuildsPerJob": 3,
     "options": {
       "strictSSL": false
     }
@@ -128,9 +133,11 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 | `url`        | The url to the Jenkins server
 | `username`   | Your Jenkins user name
 | `password`   | Your Jenkins password
-| `job`        | The name of the Jenkins Job
+| `job`        | The name of the Jenkins job whose builds are to be shown in single-job mode. Takes precedence over `view` if both are given.
+| `view`       | The name of the Jenkins view whose jobs and builds are to be shown in single-view mode. Optional.
 | `options`    | The request options.
 |              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values
+| `numberOfBuildsPerJob` | Limit the number of builds fetched for each job. Optional, defaults to no limitation.
 
 #### TeamCity
 

@@ -94,11 +94,11 @@ module.exports = function () {
         },
         getCommitMessage = function(build) {
             var job = build.jobs && build.jobs[0];
-            return job && job.commit.message;
+            return job && job.commit ? job.commit.message : undefined;
         },
         getAuthor = function(build) {
             var job = build.jobs && build.jobs[0];
-            return job && job.commit.author_name;
+            return job && job.commit ? job.commit.author_name : undefined;
         },
         getBuildStatus = function(status) {
             switch (status) {

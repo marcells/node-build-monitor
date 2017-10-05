@@ -5,6 +5,8 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
         this.id = ko.observable();
         this.isRunning = ko.observable();
         this.project = ko.observable();
+        this.branch = ko.observable();
+        this.commit = ko.observable();
         this.definition = ko.observable();
         this.number = ko.observable();
         this.startedAt = ko.observable();
@@ -21,6 +23,8 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
             this.id(build.id);
             this.isRunning(build.isRunning);
             this.project(build.project);
+            this.branch(build.branch);
+            this.commit(build.commit);
             this.definition(build.definition);
             this.number(build.number);
             this.startedAt(moment(build.startedAt));
@@ -59,6 +63,11 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
 
         this.isMenuAvailable = ko.computed(function () {
             return this.url() || false;
+        }, this);
+
+        this.shortCommit = ko.computed(function () {
+            var commit = this.commit();
+            return commit !== undefined ? commit.substr(0, 7) : undefined;
         }, this);
     };
 

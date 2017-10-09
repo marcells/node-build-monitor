@@ -65,8 +65,14 @@ module.exports = function () {
         },
         getBuilds = function(callback) {
             if(self.projects.length === 0) {
-                loadProjects();
+                loadProjects(function () {
+                    _getBuilds(callback);
+                });
+            } else {
+                _getBuilds(callback);
             }
+        },
+        _getBuilds = function(callback) {
             async.map(self.projects, getProjectPipelines, function(err, builds) {
                 if(err) {
                     callback(err);
@@ -144,7 +150,7 @@ module.exports = function () {
                 }
             });
         },
-        loadProjects = function() {
+        loadProjects = function(callback) {
             var slugs = self.config.slugs,
                 matchers = slugs.map(slug => slug.project);
             getAllProjects(function(err, projects){
@@ -164,6 +170,7 @@ module.exports = function () {
                         self.projects.push(project);
                     }
                 });
+                callback();
             });
         };
 

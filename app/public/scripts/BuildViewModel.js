@@ -64,11 +64,6 @@ define(['ko', 'moment', 'countdown'], function (ko, moment, countdown) {
         this.isMenuAvailable = ko.computed(function () {
             return this.url() || false;
         }, this);
-
-        this.shortCommit = ko.computed(function () {
-            var commit = this.commit();
-            return commit !== undefined ? commit.substr(0, 7) : undefined;
-        }, this);
     };
 
     return BuildViewModel;

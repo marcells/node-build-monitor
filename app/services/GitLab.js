@@ -81,7 +81,7 @@ module.exports = function () {
                 number: build.id,
                 project: project.name + '/' + build.ref,
                 branch: build.ref,
-                commit: build.sha,
+                commit: build.sha ? build.sha.substr(0, 7) : undefined,
                 isRunning: ['running', 'pending'].includes(build.status),
                 startedAt: getDateTime(build.started_at),
                 finishedAt: getDateTime(build.finished_at),

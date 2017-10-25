@@ -37,32 +37,61 @@ var request = require('request'),
 
 module.exports = function () {
     var self = this,
-      requestWithDefaults,
-        requestBuilds = function (callback) {
-            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + self.configuration.job + '/api/json', function(error, data) {
+        requestWithDefaults,
+        flatten = function(arrayOfArray) {
+            return [].concat.apply([], arrayOfArray);
+        },
+        requestBuildsForJob = function (job, callback) {
+            requestBuildsForJobByUrl(job, self.configuration.url + '/job/' + job, callback);
+        },
+        requestBuildsForJobByUrl = function (job, url, callback) {
+            if (url.substr(url.length - 1, 1) !== '/') {
+                url = url + '/';
+            }
+            makeRequest(requestWithDefaults, url + 'api/json', function(error, data) {
                 if (error) {
-                  callback(error);
-                  return;
+                    callback(error);
+                    return;
                 }
+
+                if (typeof self.configuration.numberOfBuildsPerJob !== 'undefined') {
+                    data.builds = data.builds.slice(0, self.configuration.numberOfBuildsPerJob);
+                }
+
+                data.builds.forEach(function (build) {
+                    build.jobId = job;
+                });
 
                 callback(error, data.builds);
             });
         },
         requestBuild = function (build, callback) {
-            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + self.configuration.job + '/' + build.number + '/api/json', function(error, data) {
+            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + build.jobId + '/' + build.number + '/api/json', function(error, data) {
                 if (error) {
-                  callback(error);
-                  return;
+                    callback(error);
+                    return;
                 }
+
+                data.jobId = build.jobId;
 
                 callback(error, simplifyBuild(data));
             });
         },
-        queryBuilds = function (callback) {
-            requestBuilds(function (error, body) {
+        requestJobsForView = function (viewId, callback) {
+            makeRequest(requestWithDefaults, self.configuration.url + '/view/' + viewId + '/api/json', function(error, data) {
                 if (error) {
-                  callback(error);
-                  return;
+                    callback(error);
+                    return;
+                }
+
+                callback(error, data.jobs);
+            });
+        },
+        queryBuildsForJob = function (jobId, callback) {
+            requestBuildsForJob(jobId, function (error, body) {
+                if (error) {
+                    callback(error);
+                    return;
                 }
 
                 async.map(body, requestBuild, function (error, results) {
@@ -70,12 +99,26 @@ module.exports = function () {
                 });
             });
         },
+        queryBuildsForView = function (viewId, callback) {
+            requestJobsForView(viewId, function (error, body) {
+                if (error) {
+                  callback(error);
+                  return;
+                }
+
+                async.map(body, function (job, callback) {
+                    queryBuildsForJob(job.name, callback);
+                }, function (error, results) {
+                    callback(error, flatten(results));
+                });
+            });
+        },
         parseDate = function (dateAsString) {
             return new Date(dateAsString);
         },
         getStatus = function (build) {
-	    if (build.building) return "Blue";
-	    var result = build.result;
+            if (build.building) return "Blue";
+            var result = build.result;
             if (result === 'FAILURE') return "Red";
             if (result === 'SUCCESS') return "Green";
             if (result === 'UNSTABLE') return "#ffa500";
@@ -84,10 +127,10 @@ module.exports = function () {
             if (result === null) return "Blue";
 
             return null;
-	},
+        },
         getStatusText = function (build) {
-	    if (build.building) return "Running";
-	    var result = build.result;
+            if (build.building) return "Running";
+            var result = build.result;
             if (result === 'FAILURE') return "Failure";
             if (result === 'SUCCESS') return "Success";
             if (result === 'UNSTABLE') return "Unstable";
@@ -116,8 +159,8 @@ module.exports = function () {
         },
         simplifyBuild = function (res) {
             return {
-                id: self.configuration.job + '|' + res.id,
-                project: self.configuration.job,
+                id: res.jobId + '|' + res.id,
+                project: res.jobId,
                 number: res.number,
                 isRunning: res.building,
                 startedAt: parseDate(res.timestamp),
@@ -128,7 +171,7 @@ module.exports = function () {
                 reason: "Build",
                 hasErrors: false,
                 hasWarnings: res.result == 'UNSTABLE',
-                url: self.configuration.url + '/job/' + self.configuration.job + '/' + res.number
+                url: self.configuration.url + '/job/' + res.jobId + '/' + res.number
             };
         };
 
@@ -148,6 +191,10 @@ module.exports = function () {
     };
 
     self.check = function (callback) {
-        queryBuilds(callback);
+        if (self.configuration.view) {
+            queryBuildsForView(self.configuration.view, callback);
+        } else {
+            queryBuildsForJob(self.configuration.job, callback);
+        }
     };
 };

@@ -42,6 +42,9 @@ module.exports = function () {
                     callback(err);
                     return;
                 }
+                if (typeof self.config.numberOfPipelinesPerProject !== 'undefined') {
+                    pipelines = pipelines.slice(0, self.config.numberOfPipelinesPerProject);
+                }
                 async.map(pipelines, function(pipeline, callback) {
                     getPipelineDetails(project, pipeline.id, callback);
                 }, callback);
@@ -62,8 +65,14 @@ module.exports = function () {
         },
         getBuilds = function(callback) {
             if(self.projects.length === 0) {
-                loadProjects();
+                loadProjects(function () {
+                    _getBuilds(callback);
+                });
+            } else {
+                _getBuilds(callback);
             }
+        },
+        _getBuilds = function(callback) {
             async.map(self.projects, getProjectPipelines, function(err, builds) {
                 if(err) {
                     callback(err);
@@ -77,6 +86,8 @@ module.exports = function () {
                 id: project.id + '|' + build.id,
                 number: build.id,
                 project: project.name + '/' + build.ref,
+                branch: build.ref,
+                commit: build.sha ? build.sha.substr(0, 7) : undefined,
                 isRunning: ['running', 'pending'].includes(build.status),
                 startedAt: getDateTime(build.started_at),
                 finishedAt: getDateTime(build.finished_at),
@@ -94,11 +105,11 @@ module.exports = function () {
         },
         getCommitMessage = function(build) {
             var job = build.jobs && build.jobs[0];
-            return job && job.commit.message;
+            return job && job.commit ? job.commit.message : undefined;
         },
         getAuthor = function(build) {
             var job = build.jobs && build.jobs[0];
-            return job && job.commit.author_name;
+            return job && job.commit ? job.commit.author_name : undefined;
         },
         getBuildStatus = function(status) {
             switch (status) {
@@ -141,7 +152,7 @@ module.exports = function () {
                 }
             });
         },
-        loadProjects = function() {
+        loadProjects = function(callback) {
             var slugs = self.config.slugs,
                 matchers = slugs.map(slug => slug.project);
             getAllProjects(function(err, projects){
@@ -161,6 +172,7 @@ module.exports = function () {
                         self.projects.push(project);
                     }
                 });
+                callback();
             });
         };
 

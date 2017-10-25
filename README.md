@@ -107,7 +107,11 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 
 #### Jenkins
 
-Supports the [Jenkins](http://jenkins-ci.org/) build service.
+Supports the [Jenkins](http://jenkins-ci.org/) build service. The service can
+operate in single-job or single-view mode. In single-job mode, the builds of
+a selected Jenkins job are shown. In single-view mode, the builds of all the
+jobs in a given Jenkins view are shown. In both modes, one can limit the
+maximum number of recent builds per job.
 
 ```json
 {
@@ -117,6 +121,7 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
     "username": "jenkins_username",
     "password": "jenkins_password",
     "job": "JenkinsJobName",
+    "numberOfBuildsPerJob": 3,
     "options": {
       "strictSSL": false
     }
@@ -129,9 +134,11 @@ Supports the [Jenkins](http://jenkins-ci.org/) build service.
 | `url`        | The url to the Jenkins server
 | `username`   | Your Jenkins user name
 | `password`   | Your Jenkins password
-| `job`        | The name of the Jenkins Job
+| `job`        | The name of the Jenkins job whose builds are to be shown in single-job mode. Takes precedence over `view` if both are given.
+| `view`       | The name of the Jenkins view whose jobs and builds are to be shown in single-view mode. Optional.
 | `options`    | The request options.
 |              | Refer to [request module](https://github.com/request/request#requestdefaultsoptions) options for possible values
+| `numberOfBuildsPerJob` | Limit the number of builds fetched for each job. Optional, defaults to no limitation.
 
 #### TeamCity
 
@@ -255,6 +262,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
     "url": "http://gitlab.example.com:8080",
     "token": "secret_user_token",
     "additional_query": "&search=gitlab-org&starred=true",
+    "numberOfPipelinesPerProject": 3,
     "slugs": [
       {
         "project": "gitlab-org/gitlab-ci-multi-runner",
@@ -272,6 +280,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 | `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
 | `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched.
+| `numberOfPipelinesPerProject` | Limit the number of pipelines fetched for each project. Optional, defaults to no limitation.
 
 Because API V4 returns **all** internal and public projects by default, you propably
 want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.

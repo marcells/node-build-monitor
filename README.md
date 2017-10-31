@@ -368,8 +368,9 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 1. Pull the repository
 2. Run `npm install`
 3. Place a file `config.json` in the app folder (see the description of the file in the [configuration section](#configuration) above)
-4. Run the build monitor with `node app/app.js`
-5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
+4. *If you connect to services, which are using self signed certificates, then you have to set the environment variable`NODE_TLS_REJECT_UNAUTHORIZED=0`. ([More Info](https://github.com/marcells/node-build-monitor/issues/79))*
+5. Run the build monitor with `node app/app.js`
+6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
 
 Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
 
@@ -426,6 +427,8 @@ docker build -t my-node-build-monitor .
 ```
 
 #### 4. Run the container
+
+*If you connect to services, which are using self signed certificates, then you have to add the `-e NODE_TLS_REJECT_UNAUTHORIZED=0` parameter to the `docker run` command below. ([More Info](https://github.com/marcells/node-build-monitor/issues/79))*
 
 ##### a. Without tfs-proxy
 

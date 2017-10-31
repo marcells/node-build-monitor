@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  node-build-monitor:
+    restart: unless-stopped
+    image: marcells/node-build-monitor
+    build: .
+    environment:
+      NODE_ENV: production
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    ports:
+      - 3000:3000

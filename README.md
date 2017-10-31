@@ -38,6 +38,7 @@ You have three options:
 - Run node-build-monitor [by downloading the standalone version](#run-the-standalone-version-easiest-way) <sub><sup>(easiest way to run it)</sup></sub>
 - Run node-build-monitor [manually with node](#run-it-manually-during-development) <sub><sup>(preferred during development)</sup></sub>
 - Run node-build-monitor [with Docker](#run-it-with-docker-in-production) <sub><sup>(preferred in production)</sup></sub>
+- Run node-build-monitor [with Docker Compose](#run-it-with-docker-compose-in-production) <sub><sup>(preferred in production)</sup></sub>
 
 ### Configuration
 
@@ -449,6 +450,94 @@ docker run -d -p 12345:3000 --link tfs-proxy:tfs-proxy my-node-build-monitor
 ```
 
 Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
+
+#### 5. Access it with your browser
+
+Now open your browser and navigate to [http://localhost:12345](http://localhost:12345) to see your running or finished builds. Switch to fullscreen for the best experience.
+
+### Run it with Docker Compose (in production)
+
+You can try out or install the build monitor with [Docker Compose](https://docs.docker.com/compose/) easily.
+
+__TL;DR:__ Go to the [docker directory](docker/), edit the file `config.json` and run the following commands, which you need.
+
+Below, each commands is explained in detail.
+
+#### 1. Create configuration and set up the build monitor
+Place a file `config.json` next to the `docker-compose.*.yml` and configure the services:
+```json
+{
+  "monitor": {
+    "interval": 30000,
+    "numberOfBuilds": 12,
+    "latestBuildOnly": false,
+    "sortOrder": "date",
+    "debug": true
+  },
+  "services": [
+    {
+      "name": "Travis",
+      "configuration": {
+        "slug": "marcells/bloggy"
+      }
+    },
+    {
+      "name": "Travis",
+      "configuration": {
+        "slug": "marcells/node-build-monitor"
+      }
+    }
+  ]
+}
+```
+
+See the description of this file in the configuration section above.
+
+#### 2. Build your custom build monitor image
+
+Build your custom node-build-monitor docker image. This will also include your configuration from the previous step.
+
+#### 3. Run the container
+
+##### a. Without tfs-proxy
+
+Installing and running node-build-monitor in a docker container for use on the same machine is simple with the following commands:
+
+Run docker-compose from your custom `docker-compose.yml`
+```
+docker-compose build
+docker-compose -f docker-compose.yml up -d
+```
+You can now find your node-build-monitor instance running on localhost:3000.
+
+##### b. With tfs-proxy
+
+If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
+
+Run docker-compose from your custom `docker-compose.with-tfs-proxy.yml`
+```
+docker-compose -f docker-compose.with-tfs-proxy.yml up -d --build
+```
+Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
+
+You can now find your node-build-monitor instance running on localhost:3000.
+
+##### c. With self-signed-certs
+
+If you connect to services, which are using self signed certificates, run docker-compose from your custom `docker-compose.with-self-signed-certs.yml`
+```
+docker-compose build
+docker-compose.with-self-signed-certs.yml
+```
+You can now find your node-build-monitor instance running on localhost:3000.
+
+##### d. Access logs
+
+To see logs:
+``` 
+docker logs -f docker_node-build-monitor_1
+```
+View which dockers are running by executing docker ps.
 
 #### 5. Access it with your browser
 

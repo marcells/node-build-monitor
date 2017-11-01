@@ -37,7 +37,6 @@ You have three options:
 
 - Run node-build-monitor [by downloading the standalone version](#run-the-standalone-version-easiest-way) <sub><sup>(easiest way to run it)</sup></sub>
 - Run node-build-monitor [manually with node](#run-it-manually-during-development) <sub><sup>(preferred during development)</sup></sub>
-- Run node-build-monitor [with Docker](#run-it-with-docker-in-production) <sub><sup>(preferred in production)</sup></sub>
 - Run node-build-monitor [with Docker Compose](#run-it-with-docker-compose-in-production) <sub><sup>(preferred in production)</sup></sub>
 
 ### Configuration
@@ -375,86 +374,6 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 
 Run `grunt` to execute the tests and check the source code with [JSHint](http://jshint.com/).
 
-### Run it with Docker (in production)
-
-You can try out or install the build monitor with [Docker](https://www.docker.com/) easily.
-
-__TL;DR:__ Go to the [docker directory](docker/), edit the file `config.json` and execute the script, which you need.
-
-Below, each step of the script is explained in detail.
-
-#### 1. Create Dockerfile
-
-Create a `Dockerfile` with the following content (just this one line). You can find information about the base image [here](https://registry.hub.docker.com/u/marcells/node-build-monitor/dockerfile/).
-```
-FROM marcells/node-build-monitor
-```
-
-#### 2. Create configuration and set up the build monitor
-Place a file `config.json` next to the `Dockerfile` and configure the services:
-```json
-{
-  "monitor": {
-    "interval": 30000,
-    "numberOfBuilds": 12,
-    "latestBuildOnly": false,
-    "sortOrder": "date",
-    "debug": true
-  },
-  "services": [
-    {
-      "name": "Travis",
-      "configuration": {
-        "slug": "marcells/bloggy"
-      }
-    },
-    {
-      "name": "Travis",
-      "configuration": {
-        "slug": "marcells/node-build-monitor"
-      }
-    }
-  ]
-}
-```
-
-See the description of this file in the configuration section above.
-
-#### 3. Build your custom build monitor image
-
-Build your custom node-build-monitor docker image. This will also include your configuration from the previous step.
-```
-docker build -t my-node-build-monitor .
-```
-
-#### 4. Run the container
-
-*If you connect to services, which are using self signed certificates, then you have to add the `-e NODE_TLS_REJECT_UNAUTHORIZED=0` parameter to the `docker run` command below. ([More Info](https://github.com/marcells/node-build-monitor/issues/79))*
-
-##### a. Without tfs-proxy
-
-Run a new container from your custom image and provide the exposed port 3000 a port number you want.
-```
-docker run -d -p 12345:3000 my-node-build-monitor
-```
-
-##### b. With tfs-proxy
-
-If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
-
-1. Run the tfs-proxy container and give it a unique name.
-2. Run a new container from your custom image, link the tfs-proxy container into it and provide the exposed port 3000 a port number you want (in this sample 12345).
-```
-docker run -d --name tfs-proxy marcells/tfs-proxy
-docker run -d -p 12345:3000 --link tfs-proxy:tfs-proxy my-node-build-monitor
-```
-
-Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
-
-#### 5. Access it with your browser
-
-Now open your browser and navigate to [http://localhost:12345](http://localhost:12345) to see your running or finished builds. Switch to fullscreen for the best experience.
-
 ### Run it with Docker Compose (in production)
 
 You can try out or install the build monitor with [Docker Compose](https://docs.docker.com/compose/) easily.
@@ -534,7 +453,7 @@ You can now find your node-build-monitor instance running on localhost:3000.
 ##### d. Access logs
 
 To see logs:
-``` 
+```
 docker logs -f docker_node-build-monitor_1
 ```
 View which dockers are running by executing docker ps.

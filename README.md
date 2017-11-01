@@ -412,55 +412,49 @@ Place a file `config.json` next to the `docker-compose.*.yml` and configure the 
 
 See the description of this file in the configuration section above.
 
-#### 2. Build your custom build monitor image
+#### 2. Build your custom build monitor image and run the container
 
-Build your custom node-build-monitor docker image. This will also include your configuration from the previous step.
-
-#### 3. Run the container
+Build your custom node-build-monitor docker image. This will also include your configuration from the previous step. Afterwards the container is started.
 
 ##### a. Without tfs-proxy
 
 Installing and running node-build-monitor in a docker container for use on the same machine is simple with the following commands:
 
-Run docker-compose from your custom `docker-compose.yml`
+Run docker-compose from your custom `docker-compose.yml`:
 ```
-docker-compose build
-docker-compose -f docker-compose.yml up -d
+docker-compose build --pull
+docker-compose up -d
 ```
-You can now find your node-build-monitor instance running on localhost:3000.
 
 ##### b. With tfs-proxy
 
 If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
 
-Run docker-compose from your custom `docker-compose.with-tfs-proxy.yml`
+Run docker-compose from your custom `docker-compose.with-tfs-proxy.yml`:
 ```
-docker-compose -f docker-compose.with-tfs-proxy.yml up -d --build
+docker-compose -f docker-compose.with-tfs-proxy.yml build --pull
+docker-compose -f docker-compose.with-tfs-proxy.yml up -d
 ```
 Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
 
-You can now find your node-build-monitor instance running on localhost:3000.
-
 ##### c. With self-signed-certs
 
-If you connect to services, which are using self signed certificates, run docker-compose from your custom `docker-compose.with-self-signed-certs.yml`
+If you connect to services which are using self signed certificates, run docker-compose from your custom `docker-compose.with-self-signed-certs.yml`:
 ```
-docker-compose build
-docker-compose.with-self-signed-certs.yml
+docker-compose -f docker-compose.with-self-signed-certs.yml build --pull
+docker-compose -f docker-compose.with-self-signed-certs.yml up -d
 ```
-You can now find your node-build-monitor instance running on localhost:3000.
 
-##### d. Access logs
+#### 3. Access it with your browser
 
-To see logs:
+Now open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see your running or finished builds. Switch to fullscreen for the best experience.
+
+#### (4. Access logs)
+
+You can take a look at the logs of the build monitor by using this command:
 ```
-docker logs -f docker_node-build-monitor_1
+docker-compose logs
 ```
-View which dockers are running by executing docker ps.
-
-#### 5. Access it with your browser
-
-Now open your browser and navigate to [http://localhost:12345](http://localhost:12345) to see your running or finished builds. Switch to fullscreen for the best experience.
 
 ### Theming support
 

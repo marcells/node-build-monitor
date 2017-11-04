@@ -4,6 +4,7 @@ services:
   node-build-monitor:
     restart: unless-stopped
     image: marcells/node-build-monitor
+    container_name: node-build-monitor
     build: .
     environment:
       NODE_ENV: production

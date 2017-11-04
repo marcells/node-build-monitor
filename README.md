@@ -378,7 +378,7 @@ Run `grunt` to execute the tests and check the source code with [JSHint](http://
 
 You can try out or install the build monitor with [Docker Compose](https://docs.docker.com/compose/) easily.
 
-__TL;DR:__ Go to the [docker directory](docker/), edit the file `config.json` and run the following commands, which you need.
+__TL;DR:__ Go to the [docker directory](docker/), rename the file `config.example.json` to `config.json` and edit with your configuration or create `config.json` file directly. Then run the following commands, which you need.
 
 Below, each commands is explained in detail.
 

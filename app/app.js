@@ -40,7 +40,7 @@ function printStartupInformation() {
 
     console.log(`Printing environment Variables...`);
     importantEnvironmentVariables
-        .map(x => { return { variable : x, stringValue : process.env.hasOwnProperty(x.name) ? process.env[x.name] : `unset (Default: ${x.defaultValue})` };})
+        .map(x => ({ variable : x, stringValue : process.env.hasOwnProperty(x.name) ? process.env[x.name] : `unset (Default: ${x.defaultValue})` }))
         .forEach(x => console.log(`    ${x.variable.name} = ${x.stringValue}`));
   
     console.log('node-build-monitor is starting...');

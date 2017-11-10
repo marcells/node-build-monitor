@@ -27,6 +27,27 @@ function getConfig() {
   return JSON.parse(fs.readFileSync(availableFileNames[0], 'utf8'));
 }
 
+function printStartupInformation() {
+    const importantEnvironmentVariables = [
+        { 
+            name : 'PORT',
+            defaultValue : '3000' 
+        },
+        {
+            name : 'NODE_TLS_REJECT_UNAUTHORIZED',
+            defaultValue : '1' 
+        }];
+
+    console.log(`Printing environment Variables...`);
+    importantEnvironmentVariables
+        .map(x => ({ variable : x, stringValue : process.env.hasOwnProperty(x.name) ? process.env[x.name] : `unset (Default: ${x.defaultValue})` }))
+        .forEach(x => console.log(`    ${x.variable.name} = ${x.stringValue}`));
+  
+    console.log('node-build-monitor is starting...');
+}
+
+printStartupInformation();
+
 var config = getConfig();
 
 app.set('port', process.env.PORT || 3000);
@@ -54,7 +75,7 @@ var server = http.createServer(app),
     io = socketio.listen(server);
 
 server.listen(app.get('port'), function() {
-  console.log('node-build-monitor ' + version + ' is listening on port ' + app.get('port'));
+  console.log(`node-build-monitor ${version} is listening on port ${app.get('port')}...`);
 });
 
 // run socket.io

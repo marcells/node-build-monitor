@@ -4,7 +4,6 @@ services:
   node-build-monitor:
     restart: unless-stopped
     image: marcells/node-build-monitor
-    container_name: node-build-monitor
     build: .
     links:
       - tfs-proxy

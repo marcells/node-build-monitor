@@ -15,4 +15,5 @@ services:
   tfs-proxy:
     restart: unless-stopped
     image: marcells/tfs-proxy
+    container_name: tfs-proxy
     build: .

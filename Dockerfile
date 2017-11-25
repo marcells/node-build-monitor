@@ -14,4 +14,4 @@ ONBUILD ADD config.json /build-mon/app/config.json
 
 EXPOSE 3000
 
-CMD [ "forever", "/build-mon/app/app.js" ]
+CMD [ "forever","--watch", "--watchDirectory", "/build-mon/app", "/build-mon/app/app.js"]

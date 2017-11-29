@@ -47,7 +47,6 @@ module.exports = function () {
             return null;
         },
         simplifyBuild = function (res) {
-            console.log(res);
             return {
                 id: res.project.name + '|' + res.definition.name + '|' + res.buildNumber,
                 project: res.project.name,

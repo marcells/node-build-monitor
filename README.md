@@ -173,12 +173,12 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 
 ```json
 {
-  "name": "Tfs",
+  "name": "VSTSRest",
   "configuration": {
-    "collection": "DefaultCollection",
-    "accountname": "vs_online_accountname",
-    "username": "vs_online_username",
-    "password": "vs_online_password"
+    "collection": "collection",
+    "accountname": "account",
+    "pat": "personalaccesstoken",
+    "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
   }
 }
 ```
@@ -187,19 +187,8 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
 | `collection`    | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
 | `accountname`   | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
-| `authentication`| This option is only required if using 'ntlm' other option have no meaning
-| `username`      | Your Visual Studio Online user name (alternate credentials *User name (secondary)*) see info below
-| `password`      | Your Visual Studio Online password (alternate credentials *Password*) see info below
-
-To create the alternate credentials, please do the following steps:
-
-  1. Login to your account
-  2. Hover over your avatar (top right)
-  3. Click on *Security*
-  4. Click on *Alternate authentication credentials*
-  5. Create and save the credentials
-
-Get more information about OData and the different account/user name on [https://tfsodata.visualstudio.com/](https://tfsodata.visualstudio.com/).
+| `pat`           | Personal Access Token with access to builds
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
 
 #### Team Foundation Server 2013 and lower (on-premise)
 

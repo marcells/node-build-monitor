@@ -71,7 +71,6 @@ module.exports = function () {
                   return;
                 }
 
-                console.log(body);
                 if (body.error) {
                   callback(new Error(body.error.message.value));
                   return;

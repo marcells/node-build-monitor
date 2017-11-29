@@ -4,4 +4,3 @@ log.txt
 .idea/
 /package-lock.json
 /npm-debug.log
-app/config.json

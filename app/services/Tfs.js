@@ -2,30 +2,32 @@ var request = require('../requests');
 
 module.exports = function () {
     var self = this,
-        makeUrl = function (url, odata) {
-            var baseUrl = 'https://tfsodata.visualstudio.com/' + self.configuration.collection + url;
+        makeUrl = function (url, params) {
+            var baseUrl = 'https://' + self.configuration.pat + '@' + self.configuration.accountname + '.visualstudio.com/' + self.configuration.accountname + '/_apis/build/builds?api-version=4.1-preview';
 
-            if (odata) {
-                baseUrl += '?' + odata;
+            if (self.configuration.queryparams)
+            {
+                baseUrl += self.configuration.queryparams;
+                
             }
-
+            if (params) {
+                baseUrl += params;
+            }
             return baseUrl;
         },
         makeRequest = function (url, callback) {
           request.makeRequest({
-            authentication: self.configuration.authentication,
-            url: self.configuration.tfsProxyUrl || tryGetTfsProxyUrlOfDocker(),
-            username: self.configuration.accountname + '\\' + self.configuration.username,
-            password: self.configuration.password,
+            url: url,
             headers: {Accept: 'application/json'}
           }, callback);
         },
         parseDate = function (dateAsString) {
-            return new Date(parseInt(dateAsString.substr(6)));
+            if (dateAsString == null) return null;
+            return new Date(dateAsString);
         },
         forEachResult = function (body, callback) {
-            for (var i = 0; i < body.d.results.length; i++) {
-                callback(body.d.results[i]);
+            for (var i = 0; i < body.value.length; i++) {
+                callback(body.value[i]);
             }
         },
         isNullOrWhiteSpace = function (string) {
@@ -36,33 +38,35 @@ module.exports = function () {
             return string === null || string.match(/^ *$/) !== null;
         },
         getStatus = function (statusText) {
-            if (statusText === "Succeeded") return "Green";
-            if (statusText === "Failed") return "Red";
-            if (statusText === "InProgress") return "Blue";
-            if (statusText === "Stopped") return "Gray";
-            if (statusText === "PartiallySucceeded") return "'#FFA500'";
+            if (statusText === "succeeded") return "Green";
+            if (statusText === "failed") return "Red";
+            if (statusText === "inProgress") return "Blue";
+            if (statusText === "stopped") return "Gray";
+            if (statusText === "partiallySucceeded") return "'#FFA500'";
 
             return null;
         },
         simplifyBuild = function (res) {
+            console.log(res);
             return {
-                id: res.Project + '|' + res.Definition + '|' + res.Number,
-                project: res.Project,
-                definition: res.Definition,
-                number: res.Number,
-                isRunning: !res.BuildFinished,
-                startedAt: parseDate(res.StartTime),
-                finishedAt: parseDate(res.FinishTime),
-                requestedFor: res.RequestedFor,
-                statusText: res.Status,
-                status: getStatus(res.Status),
-                reason: res.Reason,
-                hasErrors: !isNullOrWhiteSpace(res.Errors),
-                hasWarnings: !isNullOrWhiteSpace(res.Warnings)
+                id: res.project.name + '|' + res.definition.name + '|' + res.buildNumber,
+                project: res.project.name,
+                definition: res.definition.name,
+                number: res.buildNumber,
+                isRunning: res.result=='inProgress',
+                startedAt: parseDate(res.startTime),
+                finishedAt: parseDate(res.finishTime),
+                requestedFor: res.requestedFor.displayName,
+                statusText: res.result,
+                status: getStatus(res.result),
+                reason: res.reason,
+                url: res._links.web.href,
+                hasErrors: !isNullOrWhiteSpace(res.errors),
+                hasWarnings: !isNullOrWhiteSpace(res.warnings)
             };
         },
         queryBuilds = function (callback) {
-            makeRequest(makeUrl('/Builds', '$top=12&$orderby=StartTime%20desc'), function (error, body) {
+            makeRequest(makeUrl(null, null), function (error, body) {
                 if (error) {
                   callback(error);
                   return;

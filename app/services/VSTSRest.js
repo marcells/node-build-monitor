@@ -22,8 +22,8 @@ module.exports = function () {
           }, callback);
         },
         parseDate = function (dateAsString) {
-            if (dateAsString == null) return '';
-            return new Date(parseInt(dateAsString.substr(6)));
+            if (dateAsString == null) return null;
+            return new Date(dateAsString);
         },
         forEachResult = function (body, callback) {
             for (var i = 0; i < body.value.length; i++) {
@@ -47,6 +47,7 @@ module.exports = function () {
             return null;
         },
         simplifyBuild = function (res) {
+            console.log(res);
             return {
                 id: res.project.name + '|' + res.definition.name + '|' + res.buildNumber,
                 project: res.project.name,

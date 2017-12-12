@@ -159,7 +159,7 @@ module.exports = function () {
                 if(err) return;
                 var indexOfAllMatch = matchers.indexOf('*/*');
                 projects.forEach(function(project){
-                    var indexOfNamespace = matchers.indexOf(project.namespace.name + "/*"),
+                    var indexOfNamespace = matchers.indexOf(project.namespace.path + "/*"),
                         indexOfProject = matchers.indexOf(project.path_with_namespace),
                         index = indexOfAllMatch > -1 ? indexOfAllMatch : (
                             indexOfNamespace > -1 ? indexOfNamespace : (

@@ -156,12 +156,25 @@ module.exports = function () {
         },
         loadProjects = function(callback) {
             var slugs = self.config.slugs,
-                matchers = slugs.map(slug => slug.project);
+                matchers = slugs.map(slug => slug.project),
+                findNamespaceIndexInMatchers = function(namespace) {
+                    for(var i = 0; i < matchers.length; i++){
+                        var matcher = matchers[i];
+                        if(matcher.endsWith("/**")){
+                            prefix = matcher.replace("/**","");
+                            if(namespace.full_path.startsWith(prefix)) return i;
+                        }else{
+                            if( matcher === namespace.full_path + "/*") return i;
+                        }
+                    }
+                    return -1;
+                };
+
             getAllProjects(function(err, projects){
                 if(err) return;
                 var indexOfAllMatch = matchers.indexOf('*/*');
                 projects.forEach(function(project){
-                    var indexOfNamespace = matchers.indexOf(project.namespace.path + "/*"),
+                    var indexOfNamespace = findNamespaceIndexInMatchers(project.namespace),
                         indexOfProject = matchers.indexOf(project.path_with_namespace),
                         index = indexOfAllMatch > -1 ? indexOfAllMatch : (
                             indexOfNamespace > -1 ? indexOfNamespace : (

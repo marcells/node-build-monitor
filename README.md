@@ -266,7 +266,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 |--------------------|-------------------------------------------------------------------------------------------------------------
 | `url`              | GitLab server http(s) address string
 | `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API
-| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Optional 'ref' attribute can be used to specify the branch.
+| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Use `/*` when specifying group slug to include projects only from current group and `/**` to also include subgroups. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
 | `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched.
 | `numberOfPipelinesPerProject` | Limit the number of pipelines fetched for each project. Optional, defaults to no limitation.

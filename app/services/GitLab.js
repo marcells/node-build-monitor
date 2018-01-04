@@ -42,8 +42,10 @@ module.exports = function () {
                     callback(err);
                     return;
                 }
-                if (pipelines && pipelines.slice && typeof self.config.numberOfPipelinesPerProject !== 'undefined') {
-                    pipelines = pipelines.slice(0, self.config.numberOfPipelinesPerProject);
+                if(pipelines && pipelines.slice) {
+                    if(typeof self.config.numberOfPipelinesPerProject !== 'undefined') {
+                        pipelines = pipelines.slice(0, self.config.numberOfPipelinesPerProject);
+                    }
                 } else {
                     pipelines = [];
                 }

@@ -1,22 +1,15 @@
 {
   "monitor": {
     "interval": 5000,
-    "numberOfBuilds": 12,
+    "numberOfBuilds": 16,
     "latestBuildOnly": false,
     "sortOrder": "date",
     "debug": true
   },
   "services": [
     {
-      "name": "Travis",
+      "name": "Buildkite",
       "configuration": {
-        "slug": "marcells/bloggy"
-      }
-    },
-    {
-      "name": "Travis",
-      "configuration": {
-        "slug": "marcells/node-build-monitor"
       }
     }
   ]

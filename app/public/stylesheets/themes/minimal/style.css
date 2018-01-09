@@ -11,18 +11,18 @@
   border: 1px solid black;
 }
 
-.default-theme .middle { 
+.default-theme .middle {
   vertical-align: middle;
 }
 
 .default-theme .medium-height {
-    line-height: 40px;
-    height: 40px;
+  line-height: 40px;
+  height: 40px;
 }
 
 .default-theme .reset-height {
-    display: inline-block;
-    line-height: normal;
+  display: inline-block;
+  line-height: normal;
 }
 
 .default-theme .flex-container {
@@ -44,7 +44,7 @@
   background: transparent;
   margin: 15px;
   padding: 15px;
-  box-shadow: 0px 0px 25px 8px rgba(0,0,0,0.8);
+  box-shadow: 0px 0px 25px 8px rgba(0, 0, 0, 0.8);
 }
 
 .flex-item .overlay {
@@ -81,10 +81,7 @@
 .default-theme .flex-item .project-definition-separator {
   border-left: 1px solid;
   padding-left: 10px;
-  margin-left: 10px
-}
-
-.default-theme .flex-item .definition {
+  margin-left: 10px;
 }
 
 .default-theme .flex-item .projectName {
@@ -109,7 +106,7 @@
 
 .default-theme .flex-item .status {
   float: left;
-  font-family: 'open_sans_condensedbold';
+  font-family: "open_sans_condensedbold";
   font-weight: bold;
   font-size: 25pt;
 }
@@ -144,41 +141,3 @@
   float: right;
   vertical-align: middle;
 }
-
-/*
-@media (max-height: 600px) {
-  .default-theme .prio-vertical-one {
-    display: none;
-  }
-}
-
-@media (max-height: 760px) {
-  .default-theme .prio-vertical-two {
-    display: none;
-  }
-}
-
-@media (max-height: 900px) {
-  .default-theme .prio-vertical-three {
-    display: none;
-  }
-}
-
-@media (max-width: 870px) {
-  .default-theme .prio-horizontal-one {
-    display: none;
-  }
-}
-
-@media (max-width: 1000px) {
-  .default-theme .prio-horizontal-two {
-    display: none;
-  }
-}
-
-@media (max-width: 1300px) {
-  .default-theme .prio-horizontal-three {
-    display: none;
-  }
-}
-*/

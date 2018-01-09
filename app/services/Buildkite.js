@@ -94,7 +94,7 @@ module.exports = function() {
               reason: build.message,
               hasErrors: false,
               hasWarnings: false,
-              url: build.web_url
+              url: build.url
             };
           });
           callback(null, result);

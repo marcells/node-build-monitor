@@ -1,3 +1,6 @@
+.default-theme a {
+  text-decoration: none;
+}
 .default-theme .clear {
   clear: both;
 }

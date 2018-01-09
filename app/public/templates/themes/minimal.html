@@ -1,7 +1,7 @@
 <div class="default-theme full-size">
   <div class="flex-container" data-bind="foreach: builds">
     <div data-bind='hover: isMenuVisible' class="flex-item">
-      <a data-bind="attr: {href: url }">
+      <a data-bind='attr: { href: url }' target="_blank">
         <div data-bind="animateCss: style" class="flex-item-inner nowrap">
 
           <span data-bind="text: project().replace(/-/g, ' ')" class="projectName nowrap"></span>
@@ -21,12 +21,6 @@
 
         </div>
       </a>
-      <div data-bind="fade: isMenuAvailable() && isMenuVisible(), fadeInDuration: 200, fadeOutDuration: 10" style="display: none"
-        class="overlay">
-        <a data-bind="visible: url, attr: { href: url }" target="_blank">
-          <i class="fa fa-external-link"></i>
-        </a>
-      </div>
     </div>
   </div>
 </div>

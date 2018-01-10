@@ -1,0 +1,161 @@
+#pluginWrap {
+  display: flex;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.default-theme a {
+  text-decoration: none;
+}
+
+.default-theme .full-size {
+  
+}
+
+.default-theme .clear {
+  clear: both;
+}
+
+.default-theme .nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.default-theme .box {
+  border: 1px solid black;
+}
+
+.default-theme .middle {
+  vertical-align: middle;
+}
+
+.default-theme .medium-height {
+  line-height: 40px;
+  height: 40px;
+}
+
+.default-theme .reset-height {
+  display: inline-block;
+  line-height: normal;
+}
+
+.default-theme .flex-container {
+  padding: 0px;
+  margin: 0 auto 0 auto;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.default-theme .flex-item {
+  float: left;
+  width: 25%;
+  height: auto;
+  color: transparent;
+  position: relative;
+}
+
+.default-theme .flex-item-inner {
+  background: transparent;
+  margin: 15px;
+  padding: 15px;
+  box-shadow: 0px 0px 25px 8px rgba(0, 0, 0, 0.8);
+}
+
+.flex-item .overlay {
+  background-color: transparent;
+  position: absolute;
+  margin: 25px;
+  top: 0px;
+  right: 0px;
+}
+
+.flex-item .overlay a {
+  float: left;
+  color: white;
+  font-size: 20pt;
+  background-color: black;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.8;
+}
+
+.default-theme .flex-item .info-block {
+  float: left;
+  font-size: 15pt;
+}
+
+.default-theme .flex-item .project {
+  font-weight: bold;
+}
+
+.default-theme .flex-item .project-definition-separator {
+  border-left: 1px solid;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+.default-theme .flex-item .projectName {
+  text-align: center;
+  font-size: 25pt;
+}
+
+.default-theme .flex-item .duration-block {
+  float: right;
+  font-size: 10pt;
+}
+
+.default-theme .flex-item .duration-icon {
+  font-size: 35px;
+  float: left;
+  margin-top: 3px;
+}
+
+.default-theme .flex-item .time {
+  margin-left: 10px;
+}
+
+.default-theme .flex-item .status {
+  float: left;
+  font-family: "open_sans_condensedbold";
+  font-weight: bold;
+  font-size: 25pt;
+}
+
+.default-theme .flex-item .reason {
+  margin-left: 10px;
+  font-size: 15pt;
+}
+
+.default-theme .flex-item .reason-icon {
+  font-size: 25px;
+}
+
+.default-theme .flex-item .reason-block {
+  float: right;
+}
+
+.default-theme .flex-item .for {
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+.default-theme .requestedFor-block {
+  font-size: 15pt;
+  float: right;
+  vertical-align: middle;
+}
+
+.default-theme .flex-item .warnings {
+  font-weight: bold;
+  font-size: 20pt;
+  float: right;
+  vertical-align: middle;
+}

@@ -1,0 +1,30 @@
+<div id="pluginWrap">
+  <div class="default-theme">
+
+    <div class="flex-container" data-bind="foreach: builds">
+      <div data-bind='hover: isMenuVisible' class="flex-item">
+        <a data-bind='attr: { href: url }' target="_blank">
+          <div data-bind="animateCss: style" class="flex-item-inner nowrap">
+
+            <span data-bind="text: project().replace(/-/g, ' ')" class="projectName nowrap"></span>
+
+            <div class="clear"></div>
+
+            <div class="medium-height nowrap prio-vertical-two">
+              <span class="info-block middle">
+                <span data-bind="text: branch" class="project"></span>
+              </span>
+              <span class="middle requestedFor-block">
+                <span class="middle fa fa-user"></span>
+                <span data-bind="text: requestedFor" class="middle for"></span>
+              </span>
+
+            </div>
+
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

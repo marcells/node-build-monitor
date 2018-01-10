@@ -3,7 +3,7 @@
     "interval": 5000,
     "numberOfBuilds": 16,
     "latestBuildOnly": false,
-    "sortOrder": "date",
+    "sortOrder": "name",
     "debug": true
   },
   "services": [

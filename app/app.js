@@ -95,7 +95,7 @@ for (var i = 0; i < config.services.length; i++) {
     var serviceConfig = config.services[i],
         service = new (require('./services/' + serviceConfig.name))();
 
-    service.configure(serviceConfig.configuration);
+    service.configure(tryExpandEnvironmentVariables(config.monitor, serviceConfig.configuration));
 
     monitor.watchOn(service);
 }
@@ -108,3 +108,28 @@ monitor.on('buildsChanged', function (changes) {
 
 // run monitor
 monitor.run();
+
+// helpers
+function tryExpandEnvironmentVariables(monitorConfiguration, serviceConfiguration) {
+    if (monitorConfiguration.expandEnvironmentVariables) {
+        for (var property in serviceConfiguration) {
+            serviceConfiguration[property] = tryExpandEnvironmentVariable(serviceConfiguration[property]);
+        }
+    }
+
+    return serviceConfiguration;
+}
+
+function tryExpandEnvironmentVariable(value) {
+    const environmentPattern = /^\${(.*?)}$/g;
+
+    if (typeof value === 'string') {
+        let match = environmentPattern.exec(value);
+
+        if (match && match.length == 2) {
+            return process.env[match[1]];
+        }
+    }
+
+    return value;
+}

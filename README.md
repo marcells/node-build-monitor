@@ -54,6 +54,7 @@ The build monitor configuration can be placed in one of the following locations:
     "numberOfBuilds": 12,
     "latestBuildOnly": false,
     "sortOrder": "date",
+    "expandEnvironmentVariables": false,
     "debug": true
   },
   "services": [
@@ -75,13 +76,14 @@ The build monitor configuration can be placed in one of the following locations:
 
 In the `monitor` section you can set up some general settings:
 
-| Setting           | Description
-|-------------------|---------------------------------------------------------------------------------------------------------------------
-| `interval`        | The update interval (in milliseconds)
-| `numberOfBuilds`  | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
-| `latestBuildOnly` | Will only retrieve single latest build from each service configuration
-| `sortOrder`       | The sort order for buils, options : `project`, `date`
-| `debug`           | Enable or disable some debug output on the console
+| Setting                      | Description
+|------------------------------|---------------------------------------------------------------------------------------------------------------------
+| `interval`                   | The update interval (in milliseconds)
+| `numberOfBuilds`             | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
+| `latestBuildOnly`            | Will only retrieve single latest build from each service configuration
+| `sortOrder`                  | The sort order for buils, options : `project`, `date`
+| `expandEnvironmentVariables` | Tries to expand root service configuration properties from environment variables (e.g.: "${MY_PASSWORD}" will look for an environment variable `MY_PASSWORD` and will use that)
+| `debug`                      | Enable or disable some debug output on the console
 
 The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
 - the `name` setting refers to the used service

@@ -29,20 +29,20 @@ function getConfig() {
 
 function printStartupInformation() {
     const importantEnvironmentVariables = [
-        { 
+        {
             name : 'PORT',
-            defaultValue : '3000' 
+            defaultValue : '3000'
         },
         {
             name : 'NODE_TLS_REJECT_UNAUTHORIZED',
-            defaultValue : '1' 
+            defaultValue : '1'
         }];
 
     console.log(`Printing environment Variables...`);
     importantEnvironmentVariables
         .map(x => ({ variable : x, stringValue : process.env.hasOwnProperty(x.name) ? process.env[x.name] : `unset (Default: ${x.defaultValue})` }))
         .forEach(x => console.log(`    ${x.variable.name} = ${x.stringValue}`));
-  
+
     console.log('node-build-monitor is starting...');
 }
 

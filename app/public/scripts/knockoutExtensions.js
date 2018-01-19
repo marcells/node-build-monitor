@@ -89,8 +89,8 @@ define(['ko'], function (ko) {
         var namingConventionLoader = {
             getConfig: function(name, callback) {
                 var templateConfig = {
-                    templateUrl: '/templates/themes/' + name + '.html',
-                    cssUrl: '/stylesheets/themes/' + name + '/style.css'
+                    templateUrl: 'templates/themes/' + name + '.html',
+                    cssUrl: 'stylesheets/themes/' + name + '/style.css'
                 };
 
                 callback({ template: templateConfig });

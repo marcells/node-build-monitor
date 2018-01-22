@@ -1,9 +1,9 @@
 extends layout.pug
 
 block scripts
-    script(src='/scripts/libs/jquery-2.1.0.min.js')
-    script(src='/scripts/libs/jquery.color-2.1.2.min.js')
-    script(data-main="/scripts/main", src='/scripts/libs/require-2.1.15.min.js')
+    script(src='scripts/libs/jquery-2.1.0.min.js')
+    script(src='scripts/libs/jquery.color-2.1.2.min.js')
+    script(data-main="scripts/main", src='scripts/libs/require-2.1.15.min.js')
 
 block content
     .full-size(data-bind='component: { name: options.theme(), params: { builds: builds } }, changeFavicon: faviconImageUrl')

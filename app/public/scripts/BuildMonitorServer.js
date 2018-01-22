@@ -4,7 +4,7 @@ define(['io'], function (io) {
             cachedSettings;
 
         this.connect = function () {
-            pathname = document.location.pathname
+            pathname = document.location.pathname;
             separator = (pathname.substr(-1) == '/')?'':'/';
             io = io(undefined, {path: pathname + separator + 'socket.io/'});
             var socket = io.connect();

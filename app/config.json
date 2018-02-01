@@ -1,7 +1,7 @@
 {
   "monitor": {
     "interval": 5000,
-    "numberOfBuilds": 16,
+    "numberOfBuilds": 20,
     "latestBuildOnly": false,
     "sortOrder": "project",
     "debug": true

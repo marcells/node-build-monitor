@@ -176,7 +176,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 
 ```json
 {
-  "name": "VSTSRest",
+  "name": "Tfs",
   "configuration": {
     "collection": "collection",
     "accountname": "account",

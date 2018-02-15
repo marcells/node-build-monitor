@@ -19,6 +19,17 @@ function VSTSRestBuilds() {
    * @see https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
    */
   const resultFilter = Object.freeze({
+    succeeded: 'succeeded',
+    partiallySucceeded: 'partiallySucceeded',
+    failed: 'failed',
+    canceled: 'canceled',
+  });
+
+  /**
+   * This object defines the color scheme used.
+   * @private
+   */
+  const colorScheme = Object.freeze({
     succeeded: 'Green',
     partiallySucceeded: 'Yellow',
     failed: 'Red',
@@ -172,16 +183,16 @@ function VSTSRestBuilds() {
     const transformer = (build) => {
       return {
         finishedAt: new Date(build.finishTime),
-        hasErrors:false,
-        hasWarnings:false,
+        hasErrors: build.result === resultFilter.failed,
+        hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,
-        isRunning:false,
+        isRunning: build.status === statusFilter.inProgress,
         number: build.buildNumber,
         project: build.definition.name,
         reason: build.reason,
         requestedFor: build.requestedFor.displayName,
         startedAt: new Date(build.startTime),
-        status: resultFilter[build.result],
+        status: colorScheme[resultFilter[build.result]],
         statusText: build.status,
         url: build.url,
       };

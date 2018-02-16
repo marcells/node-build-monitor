@@ -90,7 +90,7 @@ function VSTSRestBuilds() {
     }
     callback('incomplete configuration');
     return;
-  }
+  };
 
   /**
    * @typedef {Object} VSTSRestBuildsConfiguration
@@ -129,7 +129,7 @@ function VSTSRestBuilds() {
     project = config.collection;
 
     console.log(config);
-  }
+  };
 
   /**
    * @private
@@ -169,7 +169,7 @@ function VSTSRestBuilds() {
       }
       const transformedData = body.value.map(transformer);
       callback(null, transformedData);
-    }
+    };
 
     /**
      * The function transforms the data from VSTS API to
@@ -196,8 +196,8 @@ function VSTSRestBuilds() {
         statusText: build.status,
         url: build.url,
       };
-    }
-  }
+    };
+  };
 }
 
 module.exports = VSTSRestBuilds;

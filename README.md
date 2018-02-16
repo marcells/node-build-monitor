@@ -176,10 +176,11 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 
 ```json
 {
-  "name": "VSTSRest",
+  "name": "VSTSRestBuilds",
   "configuration": {
     "collection": "collection",
     "accountname": "account",
+    "username": "username",
     "pat": "personalaccesstoken",
     "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
   }
@@ -190,6 +191,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
 | `collection`    | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
 | `accountname`   | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
+| `username`      | Username used to login
 | `pat`           | Personal Access Token with access to builds
 | `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
 

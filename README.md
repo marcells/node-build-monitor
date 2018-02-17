@@ -19,7 +19,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
-- [Visual Studio Team Services](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services))</sup></sub>
+- [Visual Studio Team Services and Team Foundation Server](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services-and-team-foundation-server))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
@@ -170,7 +170,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 | `username`              | Your TeamCity user name (if required)
 | `password`              | Your TeamCity password (if required)
 
-#### Visual Studio Team Services
+#### Visual Studio Team Services and Team Foundation Server
 
 Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build service.
 
@@ -178,8 +178,8 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 {
   "name": "Tfs",
   "configuration": {
-    "collection": "collection",
-    "accountname": "account",
+    "project": "projectname",
+    "instance": "instance",
     "username": "username",
     "pat": "personalaccesstoken",
     "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
@@ -189,11 +189,12 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `collection`    | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
-| `accountname`   | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
+| `project`       | Team project ID or name
+| `instance`      | VS Team Services account ({account}.visualstudio.com) or TFS server ({server:port})
 | `username`      | Username used to login
 | `pat`           | Personal Access Token with access to builds
 | `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
+_Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 
 #### Team Foundation Server 2013 and lower (on-premise)
 

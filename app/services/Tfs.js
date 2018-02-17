@@ -2,7 +2,10 @@ const request = require('../requests');
 
 /** 
  * The service which provides build information by using the VSTS REST API
- *  v2.0.
+ *  v2.0. Although the naming of the variables suggest usage with VSTS, the
+ *  code is compatible with both VSTS and TFS. The naming is simply the
+ *  artifact of making the code generalised for both after initial usage
+ *  with VSTS.
  * @public
  * @constructor
  * @see https://www.visualstudio.com/en-us/docs/integrate/api/build/overview
@@ -94,9 +97,9 @@ function VSTSRestBuilds() {
 
   /**
    * @typedef {Object} VSTSRestBuildsConfiguration
-   * @property {string} accountname VS Team Services account
-   *  ({account}.visualstudio.com)
-   * @property {string} collection Team project ID or name
+   * @property {string} instance VS Team Services account
+   *  ({account}.visualstudio.com) or TFS server ({server:port}).
+   * @property {string} project Team project ID or name
    * @property {string} queryparams Additional queryparams to filter the data
    *  and provide additional options
    * @property {string} username Username
@@ -124,9 +127,9 @@ function VSTSRestBuilds() {
     this.configuration = config;
     basicAuth = new Buffer(`${config.username}:${config.pat}`)
       .toString('base64');
-    instance = config.accountname;
+    instance = config.instance;
     params = config.queryparams;
-    project = config.collection;
+    project = config.project;
 
     console.log(config);
   };
@@ -137,7 +140,7 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   const getListOfBuilds = (callback) => {
-    const url = `https://${instance}.visualstudio.com/DefaultCollection/${project}/_apis/build/builds?api-version=2.0${params}`;
+    const url = `https://${instance}/DefaultCollection/${project}/_apis/build/builds?api-version=2.0${params}`;
     const options = {
       url,
       headers: {

@@ -172,7 +172,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 
 #### Visual Studio Team Services and Team Foundation Server
 
-Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build service.
+Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Team Foundation Server](https://www.visualstudio.com/tfs/) build service.
 
 ```json
 {
@@ -194,6 +194,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build s
 | `username`      | Username used to login
 | `pat`           | Personal Access Token with access to builds
 | `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
+
 _Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 
 #### Team Foundation Server 2013 and lower (on-premise)

@@ -26,6 +26,8 @@ function VSTSRestBuilds() {
     partiallySucceeded: 'partiallySucceeded',
     failed: 'failed',
     canceled: 'canceled',
+    inProgress: 'inProgress',
+    completed: 'completed'
   });
 
   /**
@@ -34,9 +36,11 @@ function VSTSRestBuilds() {
    */
   const colorScheme = Object.freeze({
     succeeded: 'Green',
-    partiallySucceeded: 'Yellow',
+    partiallySucceeded: '#F8A800',
     failed: 'Red',
-    canceled: 'Black',
+    canceled: 'Gray',
+    inProgress: '#0078D7',
+    completed: 'Green'
   });
 
   /** This object is the representation of statusFilter mentioned in the docs
@@ -184,8 +188,8 @@ function VSTSRestBuilds() {
      * @returns {Build} the object is in the format accepted by the application
      */
     const transformer = (build) => {
-      return {
-        finishedAt: new Date(build.finishTime),
+      let result = {
+        finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,
@@ -195,10 +199,12 @@ function VSTSRestBuilds() {
         reason: build.reason,
         requestedFor: build.requestedFor.displayName,
         startedAt: new Date(build.startTime),
-        status: colorScheme[resultFilter[build.result]],
-        statusText: build.status,
-        url: build.url,
+        status: colorScheme[resultFilter[build.result ? build.result : resultFilter.inProgress]],
+        statusText: build.result ? build.result : resultFilter.inProgress,
+        url: build.url
       };
+
+      return result;
     };
   };
 }

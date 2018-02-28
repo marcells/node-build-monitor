@@ -133,7 +133,7 @@ function VSTSRestReleases() {
    *  requested Release information
    */
   const getListOfReleases = (callback) => {
-    const url = `https://${instance}.vsrm.visualstudio.com/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
+    const url = `https://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
 
     const options = {
       url,

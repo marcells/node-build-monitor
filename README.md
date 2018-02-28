@@ -197,6 +197,38 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 
 _Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 
+
+#### Visual Studio Team Services and Team Foundation Server (Releases)
+
+Supports the [Visual Studio Team Services (Releases)](http://www.visualstudio.com/) and [Team Foundation Server (Releases)](https://www.visualstudio.com/tfs/) release service.
+
+```json
+{
+  "name": "VstsReleases",
+  "configuration": {
+    "project": "projectname",
+    "instance": "instance",
+    "username": "username",
+    "pat": "personalaccesstoken",
+    "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
+  }
+}
+```
+
+| Setting         | Description
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `project`       | Team project ID or name
+| `instance`      | VS Team Services account ({account}.vsrm.visualstudio.com) or TFS server ({server:port})
+| `username`      | Username used to login
+| `pat`           | Personal Access Token with access to releases
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list#URI_Parameters
+
+_Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+
+
+
+
+
 #### Team Foundation Server 2013 and lower (on-premise)
 
 Supports an on-premise Microsoft Team Foundation Server via the [tfs-proxy](https://github.com/marcells/tfs-proxy) bridge.

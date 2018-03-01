@@ -10,7 +10,7 @@ const request = require('../requests');
  * @constructor
  * @see https://docs.microsoft.com/en-us/rest/api/vsts/release/
  */
-function VSTSRestReleases() {
+function TfsRestRelease() {
   let basicAuth = null;
   let instance = null;
   let project = null;
@@ -64,24 +64,24 @@ function VSTSRestReleases() {
 
   /**
    * It is a node-style callback.
-   * @callback releasesInfoRequestCallback
+   * @callback releaseInfoRequestCallback
    * @param {Error|null} err It is an instance of Error
    * @param {Array<Release>} listOfRelease It is an array of {@link Release}
    */
 
   /**
-   * It exposes the API needed by the application to check the status of releases.
+   * It exposes the API needed by the application to check the status of release.
    * @name check
    * @function
    * @public
    * @instance
-   * @memberOf VSTSRestReleases
-   * @param {releasesInfoRequestCallback} cb Callback which handles the
+   * @memberOf TfsRestRelease
+   * @param {releaseInfoRequestCallback} cb Callback which handles the
    *  requested Release information
    */
   this.check = (callback) => {
     if (basicAuth && instance && project) {
-      getListOfReleases(callback);
+      getListOfRelease(callback);
       return;
     }
     callback('incomplete configuration');
@@ -89,14 +89,14 @@ function VSTSRestReleases() {
   };
 
   /**
-   * @typedef {Object} VSTSRestReleasesConfiguration
+   * @typedef {Object} TfsRestReleaseConfiguration
    * @property {string} instance VS Team Services account
    *  ({account}.visualstudio.com) or TFS server ({server:port}).
    * @property {string} project Team project ID or name
    * @property {string} queryparams Additional queryparams to filter the data
    *  and provide additional options
    * @property {string} username Username
-   * @property {string} pat Personal Access Token with access to Releases
+   * @property {string} pat Personal Access Token with access to Release
    *  information
    */
 
@@ -107,8 +107,8 @@ function VSTSRestReleases() {
    * @function
    * @public
    * @instance
-   * @memberOf VSTSRestReleases
-   * @param {VSTSRestReleasesConfiguration} config Configuration parameters
+   * @memberOf TfsRestRelease
+   * @param {TfsRestReleaseConfiguration} config Configuration parameters
    */
   this.configure = (config) => {
     /**
@@ -129,10 +129,10 @@ function VSTSRestReleases() {
 
   /**
    * @private
-   * @param {releasesInfoRequestCallback} cb Callback which handles the
+   * @param {releaseInfoRequestCallback} cb Callback which handles the
    *  requested Release information
    */
-  const getListOfReleases = (callback) => {
+  const getListOfRelease = (callback) => {
     const url = `https://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
 
     const options = {
@@ -151,7 +151,7 @@ function VSTSRestReleases() {
      * @param {any} err If the value is truthy, it indicates an error has
      *  occurred.
      * @param {object} body It contains the response body from VSTS REST API
-     * @param {releasesInfoRequestCallback} cb Callback which handles the
+     * @param {releaseInfoRequestCallback} cb Callback which handles the
      *  requested Release information
      * @return {null}
      */
@@ -199,4 +199,4 @@ function VSTSRestReleases() {
   };
 }
 
-module.exports = VSTSRestReleases;
+module.exports = TfsRestRelease;

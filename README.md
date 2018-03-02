@@ -20,6 +20,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
 - [Visual Studio Team Services and Team Foundation Server](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services-and-team-foundation-server))</sup></sub>
+- [VSTS and TFS Releases](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
@@ -196,6 +197,38 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 | `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
 
 _Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+
+
+#### Visual Studio Team Services and Team Foundation Server (Releases)
+
+Supports the [Visual Studio Team Services (Releases)](http://www.visualstudio.com/) and [Team Foundation Server (Releases)](https://www.visualstudio.com/tfs/) release service.
+
+```json
+{
+  "name": "TfsRelease",
+  "configuration": {
+    "project": "projectname",
+    "instance": "instance",
+    "username": "username",
+    "pat": "personalaccesstoken",
+    "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
+  }
+}
+```
+
+| Setting         | Description
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `project`       | Team project ID or name
+| `instance`      | VS Team Services account ({account}.vsrm.visualstudio.com) or TFS server ({server:port})
+| `username`      | Username used to login
+| `pat`           | Personal Access Token with access to releases
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list#URI_Parameters
+
+_Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+
+
+
+
 
 #### Team Foundation Server 2013 and lower (on-premise)
 

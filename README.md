@@ -183,7 +183,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
     "instance": "instance",
     "username": "username",
     "pat": "personalaccesstoken",
-    "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
+    "queryparams" : "&branchName=refs/heads/master&definitions=4,5,6,7&maxBuildsPerDefinition=1"
   }
 }
 ```

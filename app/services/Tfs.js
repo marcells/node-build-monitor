@@ -1,6 +1,6 @@
 const request = require('../requests');
 
-/** 
+/**
  * The service which provides build information by using the VSTS REST API
  *  v2.0. Although the naming of the variables suggest usage with VSTS, the
  *  code is compatible with both VSTS and TFS. The naming is simply the
@@ -14,6 +14,7 @@ function VSTSRestBuilds() {
   let basicAuth = null;
   let instance = null;
   let project = null;
+  let collection = null;
   let params = null;
 
   /**
@@ -68,7 +69,7 @@ function VSTSRestBuilds() {
    * @property {string} project Name of the project
    * @property {string} reason Reason for building the project
    * @property {string} requestedFor Name of the Requester
-   * @property {string} status The color to be used for displaying 
+   * @property {string} status The color to be used for displaying
    * @property {string} statusText The status of the build
    * @property {string} url URL of the project
    */
@@ -123,7 +124,7 @@ function VSTSRestBuilds() {
    */
   this.configure = (config) => {
     /**
-     * It exposes the configuration passed to the 
+     * It exposes the configuration passed to the
      * configure instance method.
      * @public
      * @instance
@@ -134,6 +135,7 @@ function VSTSRestBuilds() {
     instance = config.instance;
     params = config.queryparams;
     project = config.project;
+    collection = config.collection || 'DefaultCollection';
 
     console.log(config);
   };
@@ -144,7 +146,7 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   const getListOfBuilds = (callback) => {
-    const url = `https://${instance}/DefaultCollection/${project}/_apis/build/builds?api-version=2.0${params}`;
+    const url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=2.0${params}`;
     const options = {
       url,
       headers: {
@@ -180,7 +182,7 @@ function VSTSRestBuilds() {
 
     /**
      * The function transforms the data from VSTS API to
-     *  the accepted by callback 
+     *  the accepted by callback
      * @name transformer
      * @private
      * @param {object} build individual build information object returned

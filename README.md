@@ -179,8 +179,9 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 {
   "name": "Tfs",
   "configuration": {
-    "project": "projectname",
     "instance": "instance",
+    "collection": "DefaultCollection",
+    "project": "projectname",
     "username": "username",
     "pat": "personalaccesstoken",
     "queryparams" : "&branchName=refs/heads/master&definitions=4,5,6,7&maxBuildsPerDefinition=1"
@@ -190,15 +191,16 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `project`       | Team project ID or name
 | `instance`      | VS Team Services account ({account}.visualstudio.com) or TFS server ({server:port})
+| `collection`    | Collection name. Defaults to DefaultCollection.
+| `project`       | Team project ID or name
 | `username`      | Username used to login
 | `pat`           | Personal Access Token with access to builds
 | `queryparams`   | Any query params that REST API accepts, more info: https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
 
 _Note_:
 - [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
-- The url formed is of the following format: https://{instance}/DefaultCollection/{project}/_apis/build/builds?api-version=2.0[queryparams]
+- The url formed is of the following format: https://{instance}/{collection}/{project}/_apis/build/builds?api-version=2.0[queryparams]
 - Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
 
 

@@ -199,7 +199,7 @@ function VSTSRestBuilds() {
         number: build.buildNumber,
         project: build.definition.name,
         reason: build.reason,
-        requestedFor: build.requestedFor.displayName,
+        requestedFor: build.requestedFor ? build.requestedFor.displayName : '',
         startedAt: new Date(build.startTime),
         status: colorScheme[resultFilter[build.result ? build.result : resultFilter.inProgress]],
         statusText: build.result ? build.result : resultFilter.inProgress,

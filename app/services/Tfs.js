@@ -53,7 +53,10 @@ function VSTSRestBuilds() {
     canceled:           'Gray',
     inProgress:         '#0078D7',
     completed:          'Green',
-    notStarted:         'Gray'
+    cancelling:         '#0078D7',
+    postponed:          'Gray',
+    notStarted:         'Gray',
+    all:                'Gray'
   });
 
   /**

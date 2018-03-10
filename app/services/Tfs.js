@@ -26,10 +26,7 @@ function VSTSRestBuilds() {
     succeeded: 'succeeded',
     partiallySucceeded: 'partiallySucceeded',
     failed: 'failed',
-    canceled: 'canceled',
-    inProgress: 'inProgress',
-    completed: 'completed',
-	notStarted: 'notStarted'
+    canceled: 'canceled'
   });
 
   /**
@@ -43,7 +40,7 @@ function VSTSRestBuilds() {
     canceled: 'Gray',
     inProgress: '#0078D7',
     completed: 'Green',
-	notStarted: 'Gray'
+    notStarted: 'Gray'
   });
 
   /** This object is the representation of statusFilter mentioned in the docs
@@ -66,7 +63,7 @@ function VSTSRestBuilds() {
    * @property {boolean} hasErrors Does the resulting build have errors?
    * @property {boolean} hasWarnings Did the build give some warnings?
    * @property {boolean} isRunning Is the build currently running?
-   * @property [boolean] isQueued Is the build currently waiting in the queue?
+   * @property {boolean} isQueued Is the build currently waiting in the queue?
    * @property {string} id Unique ID of the build
    * @property {string} number Build number
    * @property {string} project Name of the project
@@ -195,35 +192,35 @@ function VSTSRestBuilds() {
     const transformer = (build) => {
       let color = colorScheme[
 	    resultFilter[ build.result ?
-		  build.result : 
-		  (build.status === statusFilter.notStarted ?
-		    statusFilter.notStarted :
-			statusFilter.inProgress
-		  )
-		]
+        build.result :
+        (build.status === statusFilter.notStarted ?
+          statusFilter.notStarted :
+          statusFilter.inProgress
+        )
+      ]
 	  ];
-	  
+
 	  let text = build.result ?
 	    build.result :
-		(build.status === statusFilter.notStarted ?
-		  statusFilter.notStarted :
-		  statusFilter.inProgress
-		);
-		
+      (build.status === statusFilter.notStarted ?
+        statusFilter.notStarted :
+        statusFilter.inProgress
+      );
+
 	  let webUrl = build._links ?
-	    (build._links.web ? build._links.web.href : build.url) :
-		build.url;
-	  
+      (build._links.web ? build._links.web.href : build.url) :
+      build.url;
+
 	  let result = {
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,
         isRunning: build.status === statusFilter.inProgress,
-		isQueued: build.status === statusFilter.notStarted,
+        isQueued: build.status === statusFilter.notStarted,
         number: build.buildNumber,
         project: build.definition.name,
-		queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
+        queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
         reason: build.reason,
         requestedFor: build.requestedFor ? build.requestedFor.displayName : '',
         startedAt: new Date(build.startTime),

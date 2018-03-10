@@ -28,7 +28,8 @@ function VSTSRestBuilds() {
     failed: 'failed',
     canceled: 'canceled',
     inProgress: 'inProgress',
-    completed: 'completed'
+    completed: 'completed',
+	notStarted: 'notStarted'
   });
 
   /**
@@ -41,7 +42,8 @@ function VSTSRestBuilds() {
     failed: 'Red',
     canceled: 'Gray',
     inProgress: '#0078D7',
-    completed: 'Green'
+    completed: 'Green',
+	notStarted: 'Gray'
   });
 
   /** This object is the representation of statusFilter mentioned in the docs
@@ -64,6 +66,7 @@ function VSTSRestBuilds() {
    * @property {boolean} hasErrors Does the resulting build have errors?
    * @property {boolean} hasWarnings Did the build give some warnings?
    * @property {boolean} isRunning Is the build currently running?
+   * @property [boolean] isQueued Is the build currently waiting in the queue?
    * @property {string} id Unique ID of the build
    * @property {string} number Build number
    * @property {string} project Name of the project
@@ -190,20 +193,43 @@ function VSTSRestBuilds() {
      * @returns {Build} the object is in the format accepted by the application
      */
     const transformer = (build) => {
-      let result = {
+      let color = colorScheme[
+	    resultFilter[ build.result ?
+		  build.result : 
+		  (build.status === statusFilter.notStarted ?
+		    statusFilter.notStarted :
+			statusFilter.inProgress
+		  )
+		]
+	  ];
+	  
+	  let text = build.result ?
+	    build.result :
+		(build.status === statusFilter.notStarted ?
+		  statusFilter.notStarted :
+		  statusFilter.inProgress
+		);
+		
+	  let webUrl = build._links ?
+	    (build._links.web ? build._links.web.href : build.url) :
+		build.url;
+	  
+	  let result = {
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,
         isRunning: build.status === statusFilter.inProgress,
+		isQueued: build.status === statusFilter.notStarted,
         number: build.buildNumber,
         project: build.definition.name,
+		queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
         reason: build.reason,
         requestedFor: build.requestedFor ? build.requestedFor.displayName : '',
         startedAt: new Date(build.startTime),
-        status: colorScheme[resultFilter[build.result ? build.result : resultFilter.inProgress]],
-        statusText: build.result ? build.result : resultFilter.inProgress,
-        url: build.url
+        status: color,
+        statusText: text,
+        url: webUrl
       };
 
       return result;

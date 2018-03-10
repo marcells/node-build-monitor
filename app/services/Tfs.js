@@ -23,24 +23,10 @@ function VSTSRestBuilds() {
    * @see https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
    */
   const resultFilter = Object.freeze({
-    succeeded: 'succeeded',
+    succeeded:          'succeeded',
     partiallySucceeded: 'partiallySucceeded',
-    failed: 'failed',
-    canceled: 'canceled'
-  });
-
-  /**
-   * This object defines the color scheme used.
-   * @private
-   */
-  const colorScheme = Object.freeze({
-    succeeded: 'Green',
-    partiallySucceeded: '#F8A800',
-    failed: 'Red',
-    canceled: 'Gray',
-    inProgress: '#0078D7',
-    completed: 'Green',
-    notStarted: 'Gray'
+    failed:             'failed',
+    canceled:           'canceled'
   });
 
   /** This object is the representation of statusFilter mentioned in the docs
@@ -49,11 +35,25 @@ function VSTSRestBuilds() {
    */
   const statusFilter = Object.freeze({
     inProgress: 'inProgress',
-    completed: 'completed',
+    completed:  'completed',
     cancelling: 'cancelling',
-    postponed: 'postponed',
+    postponed:  'postponed',
     notStarted: 'notStarted',
-    all: 'all',
+    all:        'all',
+  });
+
+  /**
+   * This object defines the color scheme used.
+   * @private
+   */
+  const colorScheme = Object.freeze({
+    succeeded:          'Green',
+    partiallySucceeded: '#F8A800',
+    failed:             'Red',
+    canceled:           'Gray',
+    inProgress:         '#0078D7',
+    completed:          'Green',
+    notStarted:         'Gray'
   });
 
   /**
@@ -191,27 +191,26 @@ function VSTSRestBuilds() {
      */
     const transformer = (build) => {
       let color = colorScheme[
-	    resultFilter[ build.result ?
-        build.result :
+        build.result ?
+          resultFilter[build.result] :
+          (build.status === statusFilter.notStarted ?
+            statusFilter[statusFilter.notStarted] :
+            statusFilter[statusFilter.inProgress]
+          )
+      ];
+
+      let text = build.result ?
+      build.result :
         (build.status === statusFilter.notStarted ?
           statusFilter.notStarted :
           statusFilter.inProgress
-        )
-      ]
-	  ];
+        );
 
-	  let text = build.result ?
-	    build.result :
-      (build.status === statusFilter.notStarted ?
-        statusFilter.notStarted :
-        statusFilter.inProgress
-      );
+      let webUrl = build._links ?
+        (build._links.web ? build._links.web.href : build.url) :
+        build.url;
 
-	  let webUrl = build._links ?
-      (build._links.web ? build._links.web.href : build.url) :
-      build.url;
-
-	  let result = {
+      let result = {
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,

@@ -202,11 +202,11 @@ function VSTSRestBuilds() {
           });
 
           // Get the second to last build instead
-          options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`
+          options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
           request.makeRequest(options, (err, body) => {
             if (err) { callback(err); return; }
             if (!(body && body.value)) {
-              console.log('No previous builds found') // Don't break the rest of the builds if we can't get a previous one
+              console.log('No previous builds found'); // Don't break the rest of the builds if we can't get a previous one
               callback(null);
               return;
              }

@@ -193,13 +193,11 @@ function VSTSRestBuilds() {
           let def = build.definition;
 
           // If we already have a previous build, then we don't need to get another one
-          get_builds.forEach((record) => {
-            if ((record.definition === build.definition) && (record.project === build.project)) {
-              callback(null);
-              return;
-            }
-
-          });
+          const hasBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
+          if (get_builds.some(hasBuild)) {
+            callback(null);
+            return;
+          }
 
           // Get the second to last build instead
           options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
@@ -221,6 +219,7 @@ function VSTSRestBuilds() {
 
             console.log('Unable to fetch previous build');  // Don't break the rest of the builds if we can't get a previous one
             callback(null);
+
           });
 
         }, (err, results) => {
@@ -232,7 +231,8 @@ function VSTSRestBuilds() {
       let latestBuilds = results.get_builds;
       let prevBuilds = results.get_previous_builds;
       let builds = [];
-      if (prevBuilds) {
+      
+      if (prevBuilds && prevBuilds[0]) {
         builds = [...new Set([...latestBuilds,...prevBuilds])]; // Merge arrays, removing duplicates
       } else {
         builds = latestBuilds;

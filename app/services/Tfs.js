@@ -193,8 +193,8 @@ function VSTSRestBuilds() {
           let def = build.definition;
 
           // If we already have a previous build, then we don't need to get another one
-          const hasBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
-          if (get_builds.some(hasBuild)) {
+          const hasPreviousBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
+          if (get_builds.some(hasPreviousBuild)) {
             callback(null);
             return;
           }

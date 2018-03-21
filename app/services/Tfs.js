@@ -20,6 +20,7 @@ function VSTSRestBuilds() {
   let includeQueued = null;
   let previousBuildsToGet = [];
   let apiVersion = null;
+  let showBuildStep = null;
 
   /**
    * This object is the representation of resultFilter mentioned in the docs
@@ -47,9 +48,9 @@ function VSTSRestBuilds() {
   });
 
   const timelineRecordState = Object.freeze({
-    completed: 'completed',
+    completed:  'completed',
     inProgress: 'inProgress',
-    pending: 'pending'
+    pending:    'pending'
   })
 
   /**
@@ -135,6 +136,7 @@ function VSTSRestBuilds() {
    *  information
    * @property {boolean} includeQueued Show queued builds
    * @property {string} apiVersion The api version to use
+   * @property {boolean} showBuildStep Adds the current build step to the statusString of the build variable
    */
 
   /**
@@ -163,6 +165,8 @@ function VSTSRestBuilds() {
     collection = config.collection || 'DefaultCollection';
     includeQueued = config.includeQueued || false;
     apiVersion = allowedAPIVersions[config.apiVersion] || '2.0';
+    showBuildStep = config.showBuildStep || false;
+
 
     console.log(config,apiVersion);
   };
@@ -208,6 +212,8 @@ function VSTSRestBuilds() {
       },
       // ### 4. Get the current build steps/stage for each build ###
       get_build_steps: (merge_builds, callback) => {
+        // Only get the build step if we are allowed to
+        if (!showBuildStep) { callback(null, merge_builds); return; }
         async.map(merge_builds, (build, callback) => {
           getLatestBuildStep(build, callback);
         }, (err, results) => {

@@ -51,7 +51,7 @@ function VSTSRestBuilds() {
     completed:  'completed',
     inProgress: 'inProgress',
     pending:    'pending'
-  })
+  });
 
   /**
    * This object defines the color scheme used.
@@ -356,7 +356,7 @@ function VSTSRestBuilds() {
       callback(null, results);
       previousBuildsToGet = [];
     });
-  }
+  };
 
   /**
    * This function gets the most recent timeline record (aka step) for a build

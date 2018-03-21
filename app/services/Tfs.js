@@ -1,4 +1,5 @@
 const request = require('../requests');
+const async = require('async');
 
 /**
  * The service which provides build information by using the VSTS REST API
@@ -16,6 +17,9 @@ function VSTSRestBuilds() {
   let project = null;
   let collection = null;
   let params = null;
+  let includeQueued = null;
+  let previousBuildsToGet = [];
+  let apiVersion = null;
 
   /**
    * This object is the representation of resultFilter mentioned in the docs
@@ -23,25 +27,10 @@ function VSTSRestBuilds() {
    * @see https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
    */
   const resultFilter = Object.freeze({
-    succeeded: 'succeeded',
+    succeeded:          'succeeded',
     partiallySucceeded: 'partiallySucceeded',
-    failed: 'failed',
-    canceled: 'canceled',
-    inProgress: 'inProgress',
-    completed: 'completed'
-  });
-
-  /**
-   * This object defines the color scheme used.
-   * @private
-   */
-  const colorScheme = Object.freeze({
-    succeeded: 'Green',
-    partiallySucceeded: '#F8A800',
-    failed: 'Red',
-    canceled: 'Gray',
-    inProgress: '#0078D7',
-    completed: 'Green'
+    failed:             'failed',
+    canceled:           'canceled'
   });
 
   /** This object is the representation of statusFilter mentioned in the docs
@@ -50,20 +39,48 @@ function VSTSRestBuilds() {
    */
   const statusFilter = Object.freeze({
     inProgress: 'inProgress',
-    completed: 'completed',
+    completed:  'completed',
     cancelling: 'cancelling',
-    postponed: 'postponed',
+    postponed:  'postponed',
     notStarted: 'notStarted',
-    all: 'all',
+    all:        'all',
+  });
+
+  /**
+   * This object defines the color scheme used.
+   * @private
+   */
+  const colorScheme = Object.freeze({
+    succeeded:          'Green',
+    partiallySucceeded: '#F8A800',
+    failed:             'Red',
+    canceled:           'Gray',
+    inProgress:         '#0078D7',
+    completed:          'Green',
+    cancelling:         '#0078D7',
+    postponed:          'Gray',
+    notStarted:         'Gray',
+    all:                'Gray'
+  });
+
+  /**
+   * This object defines the compatable api versions that we are allowed to use
+   * @private
+   */
+  const allowedAPIVersions = Object.freeze({
+    '2.0':      '2.0',
+    undefined:  '2.0'
   });
 
   /**
    * @typedef {Object} Build
+   * @property {string} definition Build definition id
    * @property {Date} startedAt Build start time
    * @property {Date} finishedAt Build finish time
    * @property {boolean} hasErrors Does the resulting build have errors?
    * @property {boolean} hasWarnings Did the build give some warnings?
    * @property {boolean} isRunning Is the build currently running?
+   * @property {boolean} isQueued Is the build currently waiting in the queue?
    * @property {string} id Unique ID of the build
    * @property {string} number Build number
    * @property {string} project Name of the project
@@ -110,6 +127,8 @@ function VSTSRestBuilds() {
    * @property {string} username Username
    * @property {string} pat Personal Access Token with access to Builds
    *  information
+   * @property {boolean} includeQueued Show queued builds
+   * @property {string} apiVersion The api version to use
    */
 
   /**
@@ -136,8 +155,10 @@ function VSTSRestBuilds() {
     params = config.queryparams;
     project = config.project;
     collection = config.collection || 'DefaultCollection';
+    includeQueued = config.includeQueued || false;
+    apiVersion = allowedAPIVersions[config.apiVersion] || '2.0';
 
-    console.log(config);
+    console.log(config,apiVersion);
   };
 
   /**
@@ -146,15 +167,78 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   const getListOfBuilds = (callback) => {
-    const url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=2.0${params}`;
-    const options = {
+    const url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}${params}`;
+    let options = {
       url,
       headers: {
         Authorization: `Basic ${basicAuth}`,
       },
     };
-    request.makeRequest(options, (err, body) => {
-      transformData(err, body, callback);
+
+    // Set up our dependency tree, similar to angular
+    // https://caolan.github.io/async/docs.html#autoInject
+    async.autoInject({
+      // ### 1. Get the list of builds ###
+      get_builds: (callback) => {
+        request.makeRequest(options, (err, body) => {
+          transformData(err, body, callback);
+        });
+      },
+      // ### 2. Get any previous builds ###
+      get_previous_builds: (get_builds, callback) => {
+        // No builds to get ? then nothing to add
+        if (previousBuildsToGet.length === 0) { callback(null); return; }
+
+        async.map(previousBuildsToGet, (build, callback) => {
+          let def = build.definition;
+
+          // If we already have a previous build, then we don't need to get another one
+          const hasPreviousBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
+          if (get_builds.some(hasPreviousBuild)) {
+            callback(null);
+            return;
+          }
+
+          // Get the second to last build instead
+          options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
+          request.makeRequest(options, (err, body) => {
+            if (err) { callback(err); return; }
+            if (!(body && body.value)) {
+              console.log('No previous builds found'); // Don't break the rest of the builds if we can't get a previous one
+              callback(null);
+              return;
+             }
+
+            let prevBuild = [body.value[1]];
+
+            if (prevBuild) {
+              const transformedData = prevBuild.map(transformer);
+              callback(null, transformedData[0]);
+              return;
+            }
+
+            console.log('Unable to fetch previous build');  // Don't break the rest of the builds if we can't get a previous one
+            callback(null);
+
+          });
+
+        }, (err, results) => {
+          callback(null, results);
+          previousBuildsToGet = [];
+        });
+      }
+    }, (err, results) => {
+      let latestBuilds = results.get_builds;
+      let prevBuilds = results.get_previous_builds;
+      let builds = [];
+      
+      if (prevBuilds && prevBuilds[0]) {
+        builds = [...new Set([...latestBuilds,...prevBuilds])]; // Merge arrays, removing duplicates
+      } else {
+        builds = latestBuilds;
+      }
+
+      callback(err, builds);
     });
 
     /**
@@ -176,7 +260,9 @@ function VSTSRestBuilds() {
         callback('No values found');
         return;
       }
-      const transformedData = body.value.map(transformer);
+      // Filter out any dummy empty objects
+      const transformedData = body.value.map(transformer).filter((val) => { return Object.keys(val).length; });
+      
       callback(null, transformedData);
     };
 
@@ -190,21 +276,50 @@ function VSTSRestBuilds() {
      * @returns {Build} the object is in the format accepted by the application
      */
     const transformer = (build) => {
+      let color = colorScheme[
+        build.result ?
+          resultFilter[build.result] :
+          (build.status === statusFilter.notStarted ?
+            statusFilter[statusFilter.notStarted] :
+            statusFilter[statusFilter.inProgress]
+          )
+      ];
+
+      let text = build.result ?
+      build.result :
+        (build.status === statusFilter.notStarted ?
+          statusFilter.notStarted :
+          statusFilter.inProgress
+        );
+
+      let webUrl = build._links ?
+        (build._links.web ? build._links.web.href : build.url) :
+        build.url;
+
       let result = {
+        definition: build.definition.id,
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,
         isRunning: build.status === statusFilter.inProgress,
+        isQueued: build.status === statusFilter.notStarted,
         number: build.buildNumber,
         project: build.definition.name,
+        queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
         reason: build.reason,
         requestedFor: build.requestedFor ? build.requestedFor.displayName : '',
         startedAt: new Date(build.startTime),
-        status: colorScheme[resultFilter[build.result ? build.result : resultFilter.inProgress]],
-        statusText: build.result ? build.result : resultFilter.inProgress,
-        url: build.url
+        status: color,
+        statusText: text,
+        url: webUrl
       };
+
+      // Only show queued builds if we're told to
+      if (result.isQueued && !includeQueued) {
+        previousBuildsToGet.push(result);
+        return {};  // Return a dummy empty object (that we will remove later)
+      }
 
       return result;
     };

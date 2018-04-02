@@ -184,8 +184,9 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
     "project": "projectname",
     "username": "username",
     "pat": "personalaccesstoken",
-    "queryparams" : "&branchName=refs/heads/master&definitions=4,5,6,7&maxBuildsPerDefinition=1",
-    "includeQueued": false
+    "queryparams": "&branchName=refs/heads/master&definitions=4,5,6,7&maxBuildsPerDefinition=1",
+    "includeQueued": false,
+    "showBuildStep": false
   }
 }
 ```
@@ -199,6 +200,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 | `pat`           | Personal Access Token with access to builds
 | `queryparams`   | Any query params that REST API accepts, more info: https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
 | `includeQueued` | Set to `true`, if queued builds should be shown on the monitor. Defaults to `false`.
+| `showBuildStep` | Set to `true`, to add the current step/stage to the text show for the status. Defaults to `false`.
 
 _Note_:
 - [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.

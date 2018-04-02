@@ -20,6 +20,7 @@ function VSTSRestBuilds() {
   let includeQueued = null;
   let previousBuildsToGet = [];
   let apiVersion = null;
+  let showBuildStep = null;
 
   /**
    * This object is the representation of resultFilter mentioned in the docs
@@ -44,6 +45,12 @@ function VSTSRestBuilds() {
     postponed:  'postponed',
     notStarted: 'notStarted',
     all:        'all',
+  });
+
+  const timelineRecordState = Object.freeze({
+    completed:  'completed',
+    inProgress: 'inProgress',
+    pending:    'pending'
   });
 
   /**
@@ -129,6 +136,7 @@ function VSTSRestBuilds() {
    *  information
    * @property {boolean} includeQueued Show queued builds
    * @property {string} apiVersion The api version to use
+   * @property {boolean} showBuildStep Adds the current build step to the statusString of the build variable
    */
 
   /**
@@ -157,6 +165,8 @@ function VSTSRestBuilds() {
     collection = config.collection || 'DefaultCollection';
     includeQueued = config.includeQueued || false;
     apiVersion = allowedAPIVersions[config.apiVersion] || '2.0';
+    showBuildStep = config.showBuildStep || false;
+
 
     console.log(config,apiVersion);
   };
@@ -188,58 +198,33 @@ function VSTSRestBuilds() {
       get_previous_builds: (get_builds, callback) => {
         // No builds to get ? then nothing to add
         if (previousBuildsToGet.length === 0) { callback(null); return; }
-
-        async.map(previousBuildsToGet, (build, callback) => {
-          let def = build.definition;
-
-          // If we already have a previous build, then we don't need to get another one
-          const hasPreviousBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
-          if (get_builds.some(hasPreviousBuild)) {
-            callback(null);
-            return;
-          }
-
-          // Get the second to last build instead
-          options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
-          request.makeRequest(options, (err, body) => {
-            if (err) { callback(err); return; }
-            if (!(body && body.value)) {
-              console.log('No previous builds found'); // Don't break the rest of the builds if we can't get a previous one
-              callback(null);
-              return;
-             }
-
-            let prevBuild = [body.value[1]];
-
-            if (prevBuild) {
-              const transformedData = prevBuild.map(transformer);
-              callback(null, transformedData[0]);
-              return;
-            }
-
-            console.log('Unable to fetch previous build');  // Don't break the rest of the builds if we can't get a previous one
-            callback(null);
-
-          });
-
+        getPreviousBuilds(get_builds, callback);
+      },
+      // ### 3. Merge our 2 arrays ###
+      merge_builds: (get_builds, get_previous_builds, callback) => {
+        let builds = [];
+        if (get_previous_builds && get_previous_builds.shift()) {
+          builds = [...new Set([...get_builds.shift(),...get_previous_builds.shift()])]; // Merge arrays, removing duplicates
+        } else {
+          builds = get_builds;
+        }
+        callback(null, builds);
+      },
+      // ### 4. Get the current build steps/stage for each build ###
+      get_build_steps: (merge_builds, callback) => {
+        // Only get the build step if we are allowed to
+        if (!showBuildStep) { callback(null, merge_builds); return; }
+        async.map(merge_builds, (build, callback) => {
+          getLatestBuildStep(build, callback);
         }, (err, results) => {
           callback(null, results);
-          previousBuildsToGet = [];
         });
       }
     }, (err, results) => {
-      let latestBuilds = results.get_builds;
-      let prevBuilds = results.get_previous_builds;
-      let builds = [];
-      
-      if (prevBuilds && prevBuilds[0]) {
-        builds = [...new Set([...latestBuilds,...prevBuilds])]; // Merge arrays, removing duplicates
-      } else {
-        builds = latestBuilds;
-      }
-
-      callback(err, builds);
+      // Pass back to the monitor app
+      callback(err, results.get_build_steps);
     });
+    
 
     /**
      * Transforms the data received from the request to VSTS REST API
@@ -312,6 +297,7 @@ function VSTSRestBuilds() {
         startedAt: new Date(build.startTime),
         status: color,
         statusText: text,
+        timeline: build._links.timeline ? build._links.timeline.href : '',
         url: webUrl
       };
 
@@ -323,6 +309,93 @@ function VSTSRestBuilds() {
 
       return result;
     };
+  };
+
+  /**
+   * This function makes an individual API call for each build we need
+   *  to get the previous version for
+   * @private
+   * @param {buildsInfoRequsetCallback} callback Callback which handles the
+   *  requested build information
+   */
+  const getPreviousBuilds = (currentBuilds, callback) => {
+    async.map(previousBuildsToGet, (build, callback) => {
+      let def = build.definition;
+
+      // If we already have a previous build, then we don't need to get another one
+      const hasPreviousBuild = (val) => { return (val.definition === build.definition) && (val.project === build.project); };
+      if (currentBuilds.some(hasPreviousBuild)) {
+        callback(null);
+        return;
+      }
+
+      // Get the second to last build instead
+      options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
+      request.makeRequest(options, (err, body) => {
+        if (err) { callback(err); return; }
+        if (!(body && body.value)) {
+          console.log('No previous builds found'); // Don't break the rest of the builds if we can't get a previous one
+          callback(null);
+          return;
+         }
+
+        let prevBuild = [body.value[1]];
+
+        if (prevBuild) {
+          const transformedData = prevBuild.map(transformer);
+          callback(null, transformedData[0]);
+          return;
+        }
+
+        console.log('Unable to fetch previous build');  // Don't break the rest of the builds if we can't get a previous one
+        callback(null);
+
+      });
+
+    }, (err, results) => {
+      callback(null, results);
+      previousBuildsToGet = [];
+    });
+  };
+
+  /**
+   * This function gets the most recent timeline record (aka step) for a build
+   * @private
+   * @param {string} timelineURL the url to the timeline VSTS API
+   */
+  const getLatestBuildStep = (build, callback) => {
+    const timelineURL = build.timeline;
+    if (!timelineURL || timelineURL === '') {
+      console.log("no timeline url");
+      callback(null);
+      return;
+    }
+    
+    const url = timelineURL;
+    const options = {
+      url,
+      headers: {
+        Authorization: `Basic ${basicAuth}`,
+      },
+    };
+
+    request.makeRequest(options, (err, body) => {
+      if (err) { callback(null); return; }
+      if (!(body && body.records)) { callback(null); return; }
+
+      // As of API version 2.0 there is no better way of doing this, we *have* to retrieve everything
+      let records = body.records.sort( (a, b) => {
+        return a.order - b.order;
+      });
+
+      for (let key in records) {
+        let record = records[key];
+        if (record.state === timelineRecordState.inProgress) {
+          build.statusText += ' - ' + record.name;
+        }
+      }
+      callback(null, build);
+    });
   };
 }
 

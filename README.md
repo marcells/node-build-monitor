@@ -362,17 +362,19 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
     "url": "http://yourbamboo.com",
     "planKey": "Plan-Key",
     "username": "user",
-    "password": "pass"
+    "password": "pass",
+    "includeAllStates": true
   }
 }
 ```
 
-| Setting          | Description
-|------------------|------------------------------------
-| `url`            | URL of the Bamboo host
-| `planKey`        | Plan-Key
-| `username`       | HTTP-Basic-Auth Username (optional)
-| `password`       | HTTP-Basic-Auth Password (optional)
+| Setting            | Description
+|--------------------|------------------------------------
+| `url`              | URL of the Bamboo host
+| `planKey`          | Plan-Key
+| `username`         | HTTP-Basic-Auth Username (optional)
+| `password`         | HTTP-Basic-Auth Password (optional)
+| `includeAllStates` | include in-progress/stopped state (optional)
 
 #### Bitbucket Pipelines
 

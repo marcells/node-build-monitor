@@ -4,7 +4,7 @@ node_js:
 script: npm run-script ci
 before_script:
 - npm install -g grunt-cli
-- npm install -g pkg
+- npm install -g pkg@4.3.0
 
 before_deploy:
   - npm run-script pkg

@@ -28,6 +28,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
 - [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
 - [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
+- [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -416,6 +417,28 @@ Supports [Buildkite](https://buildkite.com) build service
 | `orgSlug`         | Organization slug, visible in the url when on the pipelines page (e.g `https://buildkite.com/<your-organisation-slug>`)
 | `teamSlug`        | An team slug to filter the pipelines on, set to `everyone` for all pipelines
 | `BUILDKITE_TOKEN` | An **ENVIRONMENT VARIABLE** with your access token. See: https://buildkite.com/docs/graphql-api for instructions on generating your token.
+
+#### Bitrise
+
+Supports the [Bitrise](https://bitrise.io/) build service.
+
+```json
+{
+  "name": "Bitrise",
+  "configuration": {
+    "slug": "<ID OF YOUR APPLICATION>",
+    "token": "<YOUR PERSONAL API TOKEN>"
+  }
+}
+```
+
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `slug`       | APP ID of your application
+| `url`        | Build / API server url, defaults to bitrise.io
+| `token`      | API access token (can be generated in account settings)
+| `apiVersion` | API version to use, defaults to v0.1
+
 
 ### Run the standalone version (easiest way)
 

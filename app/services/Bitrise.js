@@ -40,22 +40,22 @@ module.exports = function () {
             return new Date(dateAsString);
         },
         getStatus = function (status) {
-            var statuses = [ "Blue", "Green", "Red", "Gray" ]
+            var statuses = [ "Blue", "Green", "Red", "Gray" ];
             return statuses[status];
         },
         getRequestedFor = function(text) {
             var map = {
                 webhook: 'push'
-            }
+            };
 
-            return map[text] || text
+            return map[text] || text;
         },
         getStatusText = function(text) {
             var map = {
                 success: 'finished'
-            }
+            };
 
-            return map[text] || text
+            return map[text] || text;
         },
         simplifyBuild = function (res) {
             return {
@@ -87,7 +87,7 @@ module.exports = function () {
     self.configure = function (config) {
         self.configuration = config;
 
-        self.configuration.apiVersion = self.configuration.apiVersion || 'v0.1'
+        self.configuration.apiVersion = self.configuration.apiVersion || 'v0.1';
         self.configuration.url = self.configuration.url || 'bitrise.io';
         self.configuration.apiUrl = self.configuration.url + '/' + self.configuration.apiVersion;
         self.configuration.token = self.configuration.token || '';

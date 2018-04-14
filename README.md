@@ -10,7 +10,7 @@
 
 __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-support))</sup></sub>
 <br />
-<sub>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
+<sub>(automatically deployed from [this repository](docker/) with [Docker Cloud](https://cloud.docker.com/) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
 
 [![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
 

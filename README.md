@@ -443,9 +443,12 @@ Supports the [Bitrise](https://bitrise.io/) build service.
 ### Run the standalone version (easiest way)
 
 1. Download the [latest release](https://github.com/marcells/node-build-monitor/releases/latest) for Linux (x64), MacOS (x64) or Windows (x64)
-2. Place a file `config.json` next to the executable (see the description of the file in the [configuration section](#configuration) above)
-3. Run the executable
-4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
+2. For MacOS and Linux you need to set the execute permission to run it
+    - MacOS: `chmod +x node-build-monitor-macos`
+    - Linux: `chmod +x node-build-monitor-linux`
+3. Place a file `config.json` next to the executable (see the description of the file in the [configuration section](#configuration) above)
+4. Run the executable
+5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
 
 ### Run it manually (during development)
 

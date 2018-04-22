@@ -96,7 +96,7 @@ module.exports = function () {
                 startedAt: getDateTime(build.started_at),
                 finishedAt: getDateTime(build.finished_at),
                 requestedFor: getAuthor(build),
-                status: getBuildStatus(build.status),
+                status: getBuildStatus(build.status, build.jobs),
                 statusText: build.status,
                 reason: getCommitMessage(build),
                 hasErrors: false,
@@ -115,7 +115,7 @@ module.exports = function () {
             var job = build.jobs && build.jobs[0];
             return job && job.commit ? job.commit.author_name : undefined;
         },
-        getBuildStatus = function(status) {
+        getBuildStatus = function (status, jobs) {
             switch (status) {
                 case 'pending':
                     return '#ffa500';
@@ -125,9 +125,16 @@ module.exports = function () {
                     return 'Red';
                 case 'success':
                     return 'Green';
+                case 'manual':
+                    return getStatusForManual(jobs);
                 default:
                     return 'Gray';
             }
+        },
+        getStatusForManual = function (jobs) {
+            return getBuildStatus(jobs
+                .map(job => job.status)
+                .includes('running') ? 'running' : 'success');
         },
         getBuildUrl = function(project, build) {
             if(build.jobs && build.jobs[0]) {

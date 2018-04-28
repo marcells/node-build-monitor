@@ -180,7 +180,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 {
   "name": "Tfs",
   "configuration": {
-    "instance": "instance",
+    "url": "https://{youraccount}.visualstudio.com or http://tfs-server:8080/tfs",
     "collection": "DefaultCollection",
     "project": "projectname",
     "username": "username",
@@ -194,7 +194,7 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `instance`      | VS Team Services account ({account}.visualstudio.com) or TFS server ({server:port})
+| `url`           | Url to your VS Team Services account (https://youraccount.visualstudio.com) or TFS server (http://tfs-server:8080/tfs)
 | `collection`    | Collection name. Defaults to DefaultCollection.
 | `project`       | Team project ID or name
 | `username`      | Username used to login

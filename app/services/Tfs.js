@@ -13,7 +13,7 @@ const async = require('async');
  */
 function VSTSRestBuilds() {
   let basicAuth = null;
-  let instance = null;
+  let url = null;
   let project = null;
   let collection = null;
   let params = null;
@@ -116,7 +116,7 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   this.check = (callback) => {
-    if (basicAuth && instance && project) {
+    if (basicAuth && url && project) {
       getListOfBuilds(callback);
       return;
     }
@@ -126,8 +126,8 @@ function VSTSRestBuilds() {
 
   /**
    * @typedef {Object} VSTSRestBuildsConfiguration
-   * @property {string} instance VS Team Services account
-   *  ({account}.visualstudio.com) or TFS server ({server:port}).
+   * @property {string} url VS Team Services account
+   *  ({https://{account.visualstudio.com) or TFS server ({http://server:port}).
    * @property {string} project Team project ID or name
    * @property {string} queryparams Additional queryparams to filter the data
    *  and provide additional options
@@ -159,7 +159,7 @@ function VSTSRestBuilds() {
     this.configuration = config;
     basicAuth = new Buffer(`${config.username}:${config.pat}`)
       .toString('base64');
-    instance = config.instance;
+    url = config.url;
     params = config.queryparams;
     project = config.project;
     collection = config.collection || 'DefaultCollection';
@@ -177,7 +177,7 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   const getListOfBuilds = (callback) => {
-    const url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}${params}`;
+    const url = `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}${params}`;
     let options = {
       url,
       headers: {
@@ -224,7 +224,7 @@ function VSTSRestBuilds() {
       // Pass back to the monitor app
       callback(err, results.get_build_steps);
     });
-    
+
 
     /**
      * Transforms the data received from the request to VSTS REST API
@@ -247,7 +247,7 @@ function VSTSRestBuilds() {
       }
       // Filter out any dummy empty objects
       const transformedData = body.value.map(transformer).filter((val) => { return Object.keys(val).length; });
-      
+
       callback(null, transformedData);
     };
 
@@ -330,7 +330,7 @@ function VSTSRestBuilds() {
       }
 
       // Get the second to last build instead
-      options.url = `https://${instance}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
+      options.url = `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
       request.makeRequest(options, (err, body) => {
         if (err) { callback(err); return; }
         if (!(body && body.value)) {
@@ -370,7 +370,7 @@ function VSTSRestBuilds() {
       callback(null);
       return;
     }
-    
+
     const url = timelineURL;
     const options = {
       url,

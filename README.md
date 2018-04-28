@@ -197,8 +197,8 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 | `url`           | Url to your VS Team Services account (https://youraccount.visualstudio.com) or TFS server (http://tfs-server:8080/tfs)
 | `collection`    | Collection name. Defaults to DefaultCollection.
 | `project`       | Team project ID or name
-| `username`      | Username used to login
-| `pat`           | Personal Access Token with access to builds
+| `username`      | Username used to login (if it's a domain user, ensure to escape the backslash in the configuration: `"domain\\username"`)
+| `pat`           | Personal Access Token with access to builds (TFS 2015 users should be able to use the password for the given user)
 | `queryparams`   | Any query params that REST API accepts, more info: https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
 | `includeQueued` | Set to `true`, if queued builds should be shown on the monitor. Defaults to `false`.
 | `showBuildStep` | Set to `true`, to add the current step/stage to the text show for the status. Defaults to `false`.

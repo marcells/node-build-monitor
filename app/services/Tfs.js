@@ -177,9 +177,9 @@ function VSTSRestBuilds() {
    *  requested build information
    */
   const getListOfBuilds = (callback) => {
-    const url = `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}${params}`;
+    const apiUrl = `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}${params}`;
     let options = {
-      url,
+      url : apiUrl,
       headers: {
         Authorization: `Basic ${basicAuth}`,
       },
@@ -371,9 +371,9 @@ function VSTSRestBuilds() {
       return;
     }
 
-    const url = timelineURL;
+    const apiUrl = timelineURL;
     const options = {
-      url,
+      url : apiUrl,
       headers: {
         Authorization: `Basic ${basicAuth}`,
       },

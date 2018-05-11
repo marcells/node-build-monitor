@@ -282,7 +282,7 @@ function VSTSRestBuilds() {
         build.url;
 
       let result = {
-        definition: build.definition.id,
+        definition: build.definition.name,
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
@@ -290,7 +290,7 @@ function VSTSRestBuilds() {
         isRunning: build.status === statusFilter.inProgress,
         isQueued: build.status === statusFilter.notStarted,
         number: build.buildNumber,
-        project: build.definition.name,
+        project: build.definition.project.name,
         queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
         reason: build.reason,
         requestedFor: build.requestedFor ? build.requestedFor.displayName : '',

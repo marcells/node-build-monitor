@@ -281,6 +281,13 @@ function VSTSRestBuilds() {
         (build._links.web ? build._links.web.href : build.url) :
         build.url;
 
+      let getProjectName = build => {
+        if (build.definition.project) return build.definition.project.name;
+        if (build.project) return build.project.name;
+
+        return null;
+      };
+
       let result = {
         definition: build.definition.name,
         finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
@@ -290,7 +297,7 @@ function VSTSRestBuilds() {
         isRunning: build.status === statusFilter.inProgress,
         isQueued: build.status === statusFilter.notStarted,
         number: build.buildNumber,
-        project: build.definition.project.name,
+        project: getProjectName(build),
         queuedAt: build.queueTime ? new Date(build.queueTime) : new Date(),
         reason: build.reason,
         requestedFor: build.requestedFor ? build.requestedFor.displayName : '',

@@ -337,7 +337,10 @@ function VSTSRestBuilds() {
       }
 
       // Get the second to last build instead
-      options.url = `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`;
+      const options = {
+        url: `${url}/${collection}/${project}/_apis/build/builds?api-version=${apiVersion}&definitions=${def}&$top=2`
+      };
+
       request.makeRequest(options, (err, body) => {
         if (err) { callback(err); return; }
         if (!(body && body.value)) {

@@ -156,7 +156,9 @@ module.exports = function () {
                   return;
                 }
                 if(pluginBuilds.length > 0) {
-                    if(self.configuration.latestBuildOnly) {
+                  //Service's "latestBuildOnly" takes precendence if it is defined. Otherwise use global "latestBuildOnly" setting
+                  if ((self.configuration.latestBuildOnly && plugin.configuration != undefined && plugin.configuration.latestBuildOnly === undefined) ||
+                  (plugin.configuration != undefined && plugin.configuration.latestBuildOnly == true)) {
                         sortBuildsByDate(pluginBuilds);
                         Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
                     } else {

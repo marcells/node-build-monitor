@@ -113,6 +113,10 @@ var async = require('async'),
         changes.order = newBuildIds;
 
         return changes;
+    },
+    shouldOnlyTakeLatestBuild = function (globalConfiguration, pluginConfiguration) {
+      return (globalConfiguration.latestBuildOnly && pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly === undefined) ||
+             (pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly);
     };
 
 module.exports = function () {
@@ -155,10 +159,9 @@ module.exports = function () {
                   callback();
                   return;
                 }
+
                 if(pluginBuilds.length > 0) {
-                  //Service's "latestBuildOnly" takes precendence if it is defined. Otherwise use global "latestBuildOnly" setting
-                  if ((self.configuration.latestBuildOnly && plugin.configuration != undefined && plugin.configuration.latestBuildOnly === undefined) ||
-                  (plugin.configuration != undefined && plugin.configuration.latestBuildOnly == true)) {
+                    if (shouldOnlyTakeLatestBuild(self.configuration, plugin.configuration)) {
                         sortBuildsByDate(pluginBuilds);
                         Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
                     } else {

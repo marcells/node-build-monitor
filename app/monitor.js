@@ -113,6 +113,10 @@ var async = require('async'),
         changes.order = newBuildIds;
 
         return changes;
+    },
+    shouldOnlyTakeLatestBuild = function (globalConfiguration, pluginConfiguration) {
+      return (globalConfiguration.latestBuildOnly && pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly === undefined) ||
+             (pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly);
     };
 
 module.exports = function () {
@@ -155,8 +159,9 @@ module.exports = function () {
                   callback();
                   return;
                 }
+
                 if(pluginBuilds.length > 0) {
-                    if(self.configuration.latestBuildOnly) {
+                    if (shouldOnlyTakeLatestBuild(self.configuration, plugin.configuration)) {
                         sortBuildsByDate(pluginBuilds);
                         Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
                     } else {

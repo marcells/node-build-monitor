@@ -94,7 +94,7 @@ module.exports = function () {
         if (state === 'Failed') return "Red";
         if (state === 'Unknown') {
           if (lifeCycleState === 'NotBuilt') return 'Gray';
-          if (lifeCycleState === 'InProgress') return 'Yellow';
+          if (lifeCycleState === 'InProgress') return '#FF8C00';  // dark orange
         }
         return "Green";
     },

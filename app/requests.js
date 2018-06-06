@@ -24,7 +24,14 @@ module.exports = {
           if (response.statusCode === 200) {
             callback(error, body);
           } else {
-            callback('HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode]);
+            let httpErrRes = 'HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode];
+            if (error) {
+              error.message += ' ('+httpErrRes+')';
+              callback(error);
+            } else {
+              // If the request never reached the server, then chances are the error object is null, so lets return a status code error instead
+              callback(new Error(httpErrRes));
+            }
           }
         });
     }

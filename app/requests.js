@@ -1,5 +1,6 @@
 var request = require('request'),
     ntlm = require('httpntlm');
+    http = require('http');
 
 module.exports = {
   makeRequest: function (opts, callback) {
@@ -15,12 +16,16 @@ module.exports = {
     } else {
       request({
           url: opts.url,
-          rejectUnauthorized: false,
+          rejectUnauthorized: false,    // Don't validate SSL certs
           headers: opts.headers || {},
           json: true
         },
         function (error, response, body) {
-          callback(error, body);
+          if (response.statusCode === 200) {
+            callback(error, body);
+          } else {
+            callback('HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode]);
+          }
         });
     }
   }

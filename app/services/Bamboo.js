@@ -5,7 +5,7 @@ var request = require('request'),
 module.exports = function () {
   var self = this,
     logDebug = function (text) {
-      if (self.configuration.debug === true) {
+      if (self.monitorConfiguration.debug === true) {
         console.log(new Date().toLocaleTimeString(), '|', text);
       }
     },
@@ -31,7 +31,7 @@ module.exports = function () {
         params.includeAllStates = "1";
       }
 
-      if (self.configuration.latestBuildOnly === true) {
+      if (self.monitorConfiguration.latestBuildOnly === true) {
         params["max-results"] = "1";
       }
 
@@ -126,8 +126,9 @@ module.exports = function () {
     projects: {}
   };
 
-  self.configure = function (config) {
+  self.configure = function (config, monitorConfig) {
     self.configuration = config;
+    self.monitorConfiguration = monitorConfig;
 
     if (config.username && config.password) {
       var protocol = config.url.match(/(^|\s)(https?:\/\/)/i);

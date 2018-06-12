@@ -94,7 +94,7 @@ The `services` section accepts an array, each describing a single build service 
 
 #### Travis CI
 
-Supports the [Travis CI](https://travis-ci.org/) build service. In order to use this for Travis CI Enterprise, do the following: (1) in the url setting, use "travis.enterprise_name.com/api", (2) open app/services/Travis.js, and (3) modify lines 8 and 17 from using 'https://api.' to just 'https://'.
+Supports the [Travis CI](https://travis-ci.org/) build service.
 
 ```json
 {
@@ -105,11 +105,12 @@ Supports the [Travis CI](https://travis-ci.org/) build service. In order to use 
 }
 ```
 
-| Setting      | Description
-|--------------|--------------------------------------------------------------------------------------------
-| `slug`       | The name of the build (usually your GitHub user name and the project name)
-| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.
-| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)
+| Setting          | Description
+|------------------|--------------------------------------------------------------------------------------------
+| `slug`           | The name of the build (usually your GitHub user name and the project name)
+| `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to travis-ci.org.
+| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token). 
+| `is_enterprise`  | Set this value to 'true' if you plan to use Travis CI enterprise. Default to false.
 
 #### Jenkins
 

@@ -94,7 +94,7 @@ The `services` section accepts an array, each describing a single build service 
 
 #### Travis CI
 
-Supports the [Travis CI](https://travis-ci.org/) build service.
+Supports the [Travis CI](https://travis-ci.org/) build service. In order to use this for Travis CI Enterprise, do the following: (1) in the url setting, use "travis.enterprise_name.com/api", (2) open app/services/Travis.js, and (3) modify lines 8 and 17 from using 'https://api.' to just 'https://'.
 
 ```json
 {

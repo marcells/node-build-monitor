@@ -105,11 +105,12 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 }
 ```
 
-| Setting      | Description
-|--------------|--------------------------------------------------------------------------------------------
-| `slug`       | The name of the build (usually your GitHub user name and the project name)
-| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.
-| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)
+| Setting          | Description
+|------------------|--------------------------------------------------------------------------------------------
+| `slug`           | The name of the build (usually your GitHub user name and the project name)
+| `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to travis-ci.org.
+| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token). 
+| `is_enterprise`  | Set this value to 'true' if you plan to use Travis CI enterprise. Default to false.
 
 #### Jenkins
 

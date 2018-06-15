@@ -5,7 +5,7 @@ module.exports = function () {
     var self = this,
         requestBuilds = function (callback) {
             request({
-                'url': 'https://api.' + self.configuration.url + '/repos/' + self.configuration.slug + '/builds?access_token=' + self.configuration.token,
+                'url': self.api_base + '/builds?access_token=' + self.configuration.token,
                 'json' : true
                 },
                 function(error, response, body) {
@@ -14,7 +14,7 @@ module.exports = function () {
         },
         requestBuild = function (build, callback) {
             request({
-                'url': 'https://api.' + self.configuration.url + '/repos/' + self.configuration.slug + '/builds/' + build.id + '?access_token=' + self.configuration.token,
+                'url': self.api_base + '/builds/' + build.id + '?access_token=' + self.configuration.token,
                 'json' : true
                 },
                 function(error, response, body) {
@@ -73,6 +73,7 @@ module.exports = function () {
 
         self.configuration.url = self.configuration.url || 'travis-ci.org';
         self.configuration.token = self.configuration.token || '';
+        self.configuration.is_enterprise = self.configuration.is_enterprise || false;
 
         if (typeof self.configuration.caPath !== 'undefined') {
             request = request.defaults({
@@ -81,6 +82,13 @@ module.exports = function () {
                 }
             });
         }
+
+        self.api_base = 'https://';
+        if (self.configuration.is_enterprise)
+          self.api_base += self.configuration.url + '/api';
+        else
+          self.api_base += 'api.' + self.configuration.url;
+        self.api_base += '/repos/' + self.configuration.slug;
     };
 
     self.check = function (callback) {

@@ -1,5 +1,6 @@
 var request = require('request'),
     ntlm = require('httpntlm');
+    http = require('http');
 
 module.exports = {
   makeRequest: function (opts, callback) {
@@ -15,12 +16,23 @@ module.exports = {
     } else {
       request({
           url: opts.url,
-          rejectUnauthorized: false,
+          rejectUnauthorized: false,    // Don't validate SSL certs
           headers: opts.headers || {},
           json: true
         },
         function (error, response, body) {
-          callback(error, body);
+          if (response.statusCode === 200) {
+            callback(error, body);
+          } else {
+            let httpErrRes = 'HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode];
+            if (error) {
+              error.message += ' ('+httpErrRes+')';
+              callback(error);
+            } else {
+              // If the request never reached the server, then chances are the error object is null, so lets return a status code error instead
+              callback(new Error(httpErrRes));
+            }
+          }
         });
     }
   }

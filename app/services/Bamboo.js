@@ -26,6 +26,10 @@ module.exports = function () {
           params.includeAllStates = "1";
       }
 
+      if (self.configuration.latestBuildPerBuildPlanOnly === true) {
+        params["max-results"] = "1";
+      }
+
       return params;
     },
     requestBuilds = function (callback) {

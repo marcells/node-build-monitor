@@ -366,18 +366,20 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
     "planKey": "Plan-Key",
     "username": "user",
     "password": "pass",
-    "includeAllStates": true
+    "includeAllStates": true,
+    "latestBuildPerBuildPlanOnly": true
   }
 }
 ```
 
-| Setting            | Description
-|--------------------|------------------------------------
-| `url`              | URL of the Bamboo host
-| `planKey`          | Plan-Key
-| `username`         | HTTP-Basic-Auth Username (optional)
-| `password`         | HTTP-Basic-Auth Password (optional)
-| `includeAllStates` | include in-progress/stopped state (optional)
+| Setting                       | Description
+|-------------------------------|------------------------------------
+| `url`                         | URL of the Bamboo host
+| `planKey`                     | Plan-Key
+| `username`                    | HTTP-Basic-Auth Username (optional)
+| `password`                    | HTTP-Basic-Auth Password (optional)
+| `includeAllStates`            | include in-progress/stopped state (optional)
+| `latestBuildPerBuildPlanOnly` | request only latest build per build plan. The behavior is similar to `monitor.latestBuildOnly` but this setting limits number of results returned from Bamboo server instead of retrieving all builds and limiting from the application (optional)
 
 #### Bitbucket Pipelines
 

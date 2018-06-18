@@ -68,13 +68,10 @@ module.exports = function () {
             ], callback);
         },
         getBuilds = function(callback) {
-            if(self.projects.length === 0) {
-                loadProjects(function () {
-                    _getBuilds(callback);
-                });
-            } else {
+            self.projects = [];
+            loadProjects(function () {
                 _getBuilds(callback);
-            }
+            });
         },
         _getBuilds = function(callback) {
             async.map(self.projects, getProjectPipelines, function(err, builds) {

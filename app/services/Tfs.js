@@ -290,7 +290,7 @@ function VSTSRestBuilds() {
 
       let result = {
         definition: build.definition.name,
-        finishedAt: build.finishTime ? new Date(build.finishTime) : new Date(),
+        finishedAt: build.finishTime ? new Date(build.finishTime) : '',
         hasErrors: build.result === resultFilter.failed,
         hasWarnings: build.result === resultFilter.partiallySucceeded,
         id: build.id,

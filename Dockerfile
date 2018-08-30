@@ -10,7 +10,7 @@ RUN npm install
 ADD app /build-mon/app
 ADD README.md /build-mon/README.md
 
-ONBUILD ADD app/config.json /build-mon/app/config.json
+ONBUILD ADD config.json /build-mon/app/config.json
 
 EXPOSE 3000
 

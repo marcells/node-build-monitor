@@ -19,8 +19,8 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
-- [Visual Studio Team Services and Team Foundation Server](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services-and-team-foundation-server))</sup></sub>
-- [VSTS and TFS Releases](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services-and-team-foundation-server-releases))</sup></sub>
+- [Azure DevOps and Team Foundation Server Builds)](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
+- [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
@@ -174,9 +174,9 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 | `username`              | Your TeamCity user name (if required)
 | `password`              | Your TeamCity password (if required)
 
-#### Visual Studio Team Services and Team Foundation Server
+#### Azure DevOps and Team Foundation Server Builds
 
-Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Team Foundation Server](https://www.visualstudio.com/tfs/) build service.
+Supports Azure Pipelines, the [Azure DevOps](https://azure.microsoft.com/services/devops/) and [Team Foundation Server](https://www.visualstudio.com/tfs/) build service.
 
 ```json
 {
@@ -196,12 +196,12 @@ Supports the [Visual Studio Team Services](http://www.visualstudio.com/) and [Te
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `url`           | Url to your VS Team Services account (https://youraccount.visualstudio.com) or TFS server (http://tfs-server:8080/tfs)
+| `url`           | Url to your Azure DevOps account (https://dev.azure.com/youraccount/) or TFS server (http://tfs-server:8080/tfs)
 | `collection`    | Collection name. Defaults to DefaultCollection.
 | `project`       | Team project ID or name
 | `username`      | Username used to login (if it's a domain user, ensure to escape the backslash in the configuration: `"domain\\username"`)
 | `pat`           | Personal Access Token with access to builds (TFS 2015 users should be able to use the password for the given user)
-| `queryparams`   | Any query params that REST API accepts, more info: https://www.visualstudio.com/en-us/docs/integrate/api/build/builds
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/
 | `includeQueued` | Set to `true`, if queued builds should be shown on the monitor. Defaults to `false`.
 | `showBuildStep` | Set to `true`, to add the current step/stage to the text show for the status. Defaults to `false`.
 
@@ -211,9 +211,9 @@ _Note_:
 - Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
 
 
-#### Visual Studio Team Services and Team Foundation Server (Releases)
+#### Azure DevOps and Team Foundation Server Releases
 
-Supports the [Visual Studio Team Services (Releases)](http://www.visualstudio.com/) and [Team Foundation Server (Releases)](https://www.visualstudio.com/tfs/) release service.
+Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services/devops/) and [Team Foundation Server (Releases)](https://www.visualstudio.com/tfs/) release service.
 
 ```json
 {
@@ -231,13 +231,13 @@ Supports the [Visual Studio Team Services (Releases)](http://www.visualstudio.co
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
 | `project`       | Team project ID or name
-| `instance`      | VS Team Services account ({account}.vsrm.visualstudio.com) or TFS server ({server:port})
+| `instance`      | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
 | `username`      | Username used to login
 | `pat`           | Personal Access Token with access to releases
-| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list#URI_Parameters
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters
 
 _Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
-- The url formed is of the following format: https://{instance}/DefaultCollection/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]
+- The url formed is of the following format: https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]
 - Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
 
 

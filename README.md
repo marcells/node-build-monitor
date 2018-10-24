@@ -160,19 +160,21 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
     "branch": "master",
     "authentication": "ntlm",
     "username": "teamcity_username",
-    "password": "teamcity_password"
+    "password": "teamcity_password",
+    "useGuest": true
   }
 }
 ```
 
 | Setting                 | Description
 |-------------------------|-----------------------------------------------------------------------------------------
-| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
+| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash, if not the guest user is used).
 | `buildConfigurationId`  | The id of the TeamCity build configuration
 | `branch`                | The name of branch that needs to be monitored. Will monitor all branches if not specified.
 | `authentication`        | This option is only required if using 'ntlm' other option have no meaning
 | `username`              | Your TeamCity user name (if required)
 | `password`              | Your TeamCity password (if required)
+| `useGuest`              | Uses the guest user (if required)
 
 #### Azure DevOps and Team Foundation Server Builds
 

@@ -19,7 +19,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
-- [Azure DevOps and Team Foundation Server Builds)](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
+- [Azure DevOps and Team Foundation Server Builds](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
 - [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>

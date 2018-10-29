@@ -18,20 +18,38 @@ module.exports = {
           url: opts.url,
           rejectUnauthorized: false,    // Don't validate SSL certs
           headers: opts.headers || {},
-          json: true
+          json: true,
+          agent: false,
+          timeout: 0, // avoid timeouts
+          agentOptions: {
+            keepAlive: false, // "http.Agent: idle sockets throw unhandled ECONNRESET"
+            maxSockets: 200 // Infinity switches globalAgent on.
+          }
         },
         function (error, response, body) {
-          if (response.statusCode === 200) {
-            callback(error, body);
-          } else {
-            let httpErrRes = 'HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode];
-            if (error) {
-              error.message += ' ('+httpErrRes+')';
-              callback(error);
+          try {
+            if (response != undefined && response.statusCode === 200) {
+              callback(error, body);
             } else {
-              // If the request never reached the server, then chances are the error object is null, so lets return a status code error instead
-              callback(new Error(httpErrRes));
+              if (response != undefined)
+              {
+                let httpErrRes = 'HTTP Reponse: '+response.statusCode+' '+http.STATUS_CODES[response.statusCode];
+                if (error) {
+                  error.message += ' ('+httpErrRes+')';
+                  callback(error);
+                } else {
+                  // If the request never reached the server, then chances are the error object is null, so lets return a status code error instead
+                  callback(new Error(httpErrRes));
+                }
+              }
+              else{
+                callback(error, body);    
+              }
             }
+          }
+          catch (err) // some exception cannot be handled, like ECONNRESET
+          {
+            callback(error, body);
           }
         });
     }

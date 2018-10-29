@@ -15,7 +15,25 @@ var async = require('async'),
                 .digest('hex');
         }
     },
-    sortBuilds = function (newBuilds, sortOrder) {
+    sortBuilds = function (newBuilds, sortOrder, errorFirst) {
+        if (errorFirst)
+        {
+            var errorChunk = [];
+            var normalChunk = [];
+            for (var i = 0; i < newBuilds.length; i++)
+            {
+                if (newBuilds[i].hasErrors)
+                    errorChunk.push(newBuilds[i]);
+                else
+                    normalChunk.push(newBuilds[i]);
+            }
+
+            sortBuilds(errorChunk, sortOrder);
+            sortBuilds(normalChunk, sortOrder);
+
+            return errorChunk.concat(normalChunk);
+        }
+        
         if(sortOrder == "project") {
             newBuilds.sort(function (a, b) {
                 if(a.project > b.project) return 1;
@@ -27,6 +45,8 @@ var async = require('async'),
         else {
             sortBuildsByDate(newBuilds);
         }
+
+        return newBuilds;
     },
     sortBuildsByDate = function(newBuilds){
         var takeDate = function (build) {
@@ -183,7 +203,7 @@ module.exports = function () {
 
             generateAndApplyETags(allBuilds);
             distinctBuildsByETag(allBuilds);
-            sortBuilds(allBuilds, self.configuration.sortOrder);
+            allBuilds = sortBuilds(allBuilds, self.configuration.sortOrder, self.configuration.errorsFirst);
 
             if(!self.configuration.latestBuildOnly) {
               onlyTake(self.configuration.numberOfBuilds, allBuilds);

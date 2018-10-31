@@ -191,7 +191,7 @@ function TfsRestRelease() {
         startedAt: new Date(release.queuedOn),
         status: colorScheme[resultFilter[release.deploymentStatus ? release.deploymentStatus : resultFilter.inProgress]],
         statusText: release.deploymentStatus ? release.deploymentStatus : resultFilter.inProgress,
-        url: release.release.url
+        url: release.release.webAccessUri
       };
 
       return result;

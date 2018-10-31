@@ -16,6 +16,18 @@ var async = require('async'),
         }
     },
     sortBuilds = function (newBuilds, sortOrder, errorFirst) {
+        if(sortOrder == "project") {
+            newBuilds.sort(function (a, b) {
+                if(a.project > b.project) return 1;
+                if(a.project < b.project) return -1;
+
+                return 0;
+            });
+        }
+        else {
+            sortBuildsByDate(newBuilds);
+        }
+        
         if (errorFirst)
         {
             var errorChunk = [];
@@ -28,22 +40,7 @@ var async = require('async'),
                     normalChunk.push(newBuilds[i]);
             }
 
-            sortBuilds(errorChunk, sortOrder);
-            sortBuilds(normalChunk, sortOrder);
-
-            return errorChunk.concat(normalChunk);
-        }
-        
-        if(sortOrder == "project") {
-            newBuilds.sort(function (a, b) {
-                if(a.project > b.project) return 1;
-                if(a.project < b.project) return -1;
-
-                return 0;
-            });
-        }
-        else {
-            sortBuildsByDate(newBuilds);
+            newBuilds = errorChunk.concat(normalChunk);
         }
 
         return newBuilds;

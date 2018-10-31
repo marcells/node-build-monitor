@@ -157,7 +157,7 @@ module.exports = function () {
                 statusText: getStatusText(res),
                 status: getStatus(res),
                 reason: getCommitMessage(res),
-                hasErrors: false,
+                hasErrors: (res.status === "FAILURE" || res.status === "ERROR"),
                 hasWarnings: false,
                 url: self.configuration.url.replace(/(https?):\/\/([\w]*:[\w]*@)/, '$1://') + '/viewLog.html?buildId=' + res.id + '&buildTypeId=' + res.buildTypeId
             };

@@ -29,6 +29,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
 - [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
 - [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
+- CCTray <sub><sup>([Configuration](#cctray))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -444,6 +445,23 @@ Supports the [Bitrise](https://bitrise.io/) build service.
 | `url`        | Build / API server url, defaults to bitrise.io
 | `token`      | API access token (can be generated in account settings)
 | `apiVersion` | API version to use, defaults to v0.1
+
+#### CCTray
+
+Supports CCTray format.
+
+```json
+{
+  "name": "CCTray",
+  "configuration": {
+    "url": "<URL FOR CCTRAY>"
+  }
+}
+```
+
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `url`        | Url of CCTray feed.
 
 
 ### Run the standalone version (easiest way)

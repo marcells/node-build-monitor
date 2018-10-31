@@ -1,6 +1,6 @@
 {
   "name": "node-build-monitor",
-  "version": "0.9.35",
+  "version": "0.9.51",
   "description": "A Build Monitor written in Node.js, which supports several build services and can be extended easily.",
   "author": "Marcell Spies <marcells@gmx.de>",
   "contributors": [
@@ -19,26 +19,26 @@
     "express": "4.16.2",
     "graphql.js": "^0.4.20",
     "httpntlm": "^1.7.5",
-    "moment": "2.19.4",
+    "moment": "2.21.0",
     "morgan": "1.9.0",
-    "pug": "2.0.0-beta11",
+    "pug": "2.0.1",
     "request": "2.83.0",
     "socket.io": "2.0.4",
     "striptags": "3.1.1"
   },
   "devDependencies": {
     "chai": "4.1.2",
-    "grunt": "1.0.1",
+    "grunt": "1.0.2",
     "grunt-bump": "^0.8.0",
     "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-watch": "1.0.0",
     "grunt-mocha-test": "0.13.3",
-    "mocha": "4.0.1",
-    "nock": "9.1.4",
+    "mocha": "5.0.4",
+    "nock": "9.2.3",
     "rewire": "3.0.2",
-    "should": "13.1.3",
-    "sinon": "4.1.3",
-    "sinon-chai": "2.14.0"
+    "should": "13.2.1",
+    "sinon": "4.4.2",
+    "sinon-chai": "3.0.0"
   },
   "keywords": [],
   "repository": "git://github.com/marcells/node-build-monitor",

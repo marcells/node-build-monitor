@@ -32,11 +32,13 @@ module.exports = function() {
           pipelines(first: 100, team: "${configuration.teamSlug}") {
             edges {
               node {
+                id
                 name
                 slug
                 builds(first: 1) {
                   edges {
                     node {
+                      id
                       branch
                       message
                       number
@@ -69,31 +71,32 @@ module.exports = function() {
             const build = x.node.builds.edges[0].node;
 
             const buildStates = {
-              SKIPPED: { desc: "The build was skipped", color: "#ffff00" },
-              SCHEDULED: { desc: "The build has yet to start running jobs", color: "#0000ff" },
-              RUNNING: { desc: " The build is currently running jobs", color: "#ffa500" },
-              PASSED: { desc: "The build passed", color: "#008000" },
-              FAILED: { desc: "The build failed", color: "#ff0000" },
-              CANCELING: { desc: "The build is currently being canceled", color: "#ffb3b3" },
-              CANCELED: { desc: "The build was canceled", color: "#ff4d4d" },
-              BLOCKED: { desc: "The build is blocked", color: "#003300" },
-              NOT_RUN: { desc: "The build wasn't run", color: "#808080" }
+              SKIPPED: { desc: "The build was skipped", status: "Gray", warning: true, statusText: "Skipped" },
+              SCHEDULED: { desc: "The build has yet to start running jobs", status: "Blue", statusText: "Scheduled" },
+              RUNNING: { desc: " The build is currently running jobs", status: "Blue", statusText: "Running" },
+              PASSED: { desc: "The build passed", status: "Green", statusText: "Passed" },
+              FAILED: { desc: "The build failed", status: "Red", error: true, statusText: "Failed" },
+              CANCELING: { desc: "The build is currently being canceled", status: "Gray", warning: true, statusText: "Canceling" },
+              CANCELED: { desc: "The build was canceled", status: "Gray", warning: true, statusText: "Cancelled" },
+              BLOCKED: { desc: "The build is blocked", status: "Blue", warning: true, statusText: "Blocked" },
+              NOT_RUN: { desc: "The build wasn't run", status: "Gray", statusText: "Not Run" }
             };
 
             return {
-              id: pipeline.slug + "/" + build.number,
+              id: build.id,
               project: pipeline.name,
               branch: build.branch,
+              commit: build.commit,
               number: build.number,
               isRunning: build.state === "RUNNING",
               startedAt: new Date(build.startedAt),
               finishedAt: new Date(build.finishedAt),
-              requestedFor: build.createdBy.name || "x",
-              status: buildStates[build.state].color,
-              statusText: build.state,
+              requestedFor: build.createdBy.name || "",
+              status: buildStates[build.state].status,
+              statusText: buildStates[build.state].statusText,
               reason: build.message,
-              hasErrors: false,
-              hasWarnings: false,
+              hasErrors: buildStates[build.state].error || false,
+              hasWarnings: buildStates[build.state].warning || false,
               url: build.url
             };
           });

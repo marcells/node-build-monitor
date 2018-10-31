@@ -29,20 +29,20 @@ function getConfig() {
 
 function printStartupInformation() {
     const importantEnvironmentVariables = [
-        { 
+        {
             name : 'PORT',
-            defaultValue : '3000' 
+            defaultValue : '3000'
         },
         {
             name : 'NODE_TLS_REJECT_UNAUTHORIZED',
-            defaultValue : '1' 
+            defaultValue : '1'
         }];
 
     console.log(`Printing environment Variables...`);
     importantEnvironmentVariables
         .map(x => ({ variable : x, stringValue : process.env.hasOwnProperty(x.name) ? process.env[x.name] : `unset (Default: ${x.defaultValue})` }))
         .forEach(x => console.log(`    ${x.variable.name} = ${x.stringValue}`));
-  
+
     console.log('node-build-monitor is starting...');
 }
 
@@ -95,7 +95,7 @@ for (var i = 0; i < config.services.length; i++) {
     var serviceConfig = config.services[i],
         service = new (require('./services/' + serviceConfig.name))();
 
-    service.configure(serviceConfig.configuration);
+    service.configure(tryExpandEnvironmentVariables(config.monitor, serviceConfig.configuration));
 
     monitor.watchOn(service);
 }
@@ -108,3 +108,28 @@ monitor.on('buildsChanged', function (changes) {
 
 // run monitor
 monitor.run();
+
+// helpers
+function tryExpandEnvironmentVariables(monitorConfiguration, serviceConfiguration) {
+    if (monitorConfiguration.expandEnvironmentVariables) {
+        for (var property in serviceConfiguration) {
+            serviceConfiguration[property] = tryExpandEnvironmentVariable(serviceConfiguration[property]);
+        }
+    }
+
+    return serviceConfiguration;
+}
+
+function tryExpandEnvironmentVariable(value) {
+    const environmentPattern = /^\${(.*?)}$/g;
+
+    if (typeof value === 'string') {
+        let match = environmentPattern.exec(value);
+
+        if (match && match.length == 2) {
+            return process.env[match[1]];
+        }
+    }
+
+    return value;
+}

@@ -10,7 +10,7 @@
 
 __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-support))</sup></sub>
 <br />
-<sub>(automatically deployed from [this repository](docker/) with [Tutum](https://www.tutum.co) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
+<sub>(automatically deployed from [this repository](docker/) with [Docker Cloud](https://cloud.docker.com/) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
 
 [![Screenshot](docs/node-build-monitor.png?raw=true)](docs/node-build-monitor.png?raw=true)
 
@@ -19,13 +19,16 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
-- [Visual Studio Team Services](http://www.visualstudio.com/) <sub><sup>([Configuration](#visual-studio-team-services))</sup></sub>
+- [Azure DevOps and Team Foundation Server Builds)](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
+- [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
 - [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
+- [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
+- [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -53,6 +56,7 @@ The build monitor configuration can be placed in one of the following locations:
     "numberOfBuilds": 12,
     "latestBuildOnly": false,
     "sortOrder": "date",
+    "expandEnvironmentVariables": false,
     "debug": true
   },
   "services": [
@@ -65,7 +69,8 @@ The build monitor configuration can be placed in one of the following locations:
     {
       "name": "Travis",
       "configuration": {
-        "slug": "marcells/bloggy"
+        "slug": "marcells/bloggy",
+        "latestBuildOnly": true
       }
     }
   ]
@@ -74,13 +79,14 @@ The build monitor configuration can be placed in one of the following locations:
 
 In the `monitor` section you can set up some general settings:
 
-| Setting           | Description
-|-------------------|---------------------------------------------------------------------------------------------------------------------
-| `interval`        | The update interval (in milliseconds)
-| `numberOfBuilds`  | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
-| `latestBuildOnly` | Will only retrieve single latest build from each service configuration
-| `sortOrder`       | The sort order for buils, options : `project`, `date`
-| `debug`           | Enable or disable some debug output on the console
+| Setting                      | Description
+|------------------------------|---------------------------------------------------------------------------------------------------------------------
+| `interval`                   | The update interval (in milliseconds)
+| `numberOfBuilds`             | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
+| `latestBuildOnly`            | Will only retrieve single latest build from each service configuration. This setting can be overwritten in each service configuration.
+| `sortOrder`                  | The sort order for buils, options : `project`, `date`
+| `expandEnvironmentVariables` | Tries to expand root service configuration properties from environment variables (e.g.: "${MY_PASSWORD}" will look for an environment variable `MY_PASSWORD` and will use that)
+| `debug`                      | Enable or disable some debug output on the console
 
 The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
 - the `name` setting refers to the used service
@@ -99,11 +105,12 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 }
 ```
 
-| Setting      | Description
-|--------------|--------------------------------------------------------------------------------------------
-| `slug`       | The name of the build (usually your GitHub user name and the project name)
-| `url`        | The Travis CI server (travis-ci.org, travis-ci.com). Defaults to travis-ci.org.
-| `token`      | The Travis access token, to access your private builds (can be found on your Accounts page)
+| Setting          | Description
+|------------------|--------------------------------------------------------------------------------------------
+| `slug`           | The name of the build (usually your GitHub user name and the project name)
+| `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to travis-ci.org.
+| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token). 
+| `is_enterprise`  | Set this value to 'true' if you plan to use Travis CI enterprise. Default to false.
 
 #### Jenkins
 
@@ -153,42 +160,90 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
     "branch": "master",
     "authentication": "ntlm",
     "username": "teamcity_username",
-    "password": "teamcity_password"
+    "password": "teamcity_password",
+    "useGuest": true
   }
 }
 ```
 
 | Setting                 | Description
 |-------------------------|-----------------------------------------------------------------------------------------
-| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash).
+| `url`                   | The url to the TeamCity server (including the credentials without a trailing backslash, if not the guest user is used).
 | `buildConfigurationId`  | The id of the TeamCity build configuration
 | `branch`                | The name of branch that needs to be monitored. Will monitor all branches if not specified.
 | `authentication`        | This option is only required if using 'ntlm' other option have no meaning
 | `username`              | Your TeamCity user name (if required)
 | `password`              | Your TeamCity password (if required)
+| `useGuest`              | Uses the guest user (if required)
 
-#### Visual Studio Team Services
+#### Azure DevOps and Team Foundation Server Builds
 
-Supports the [Visual Studio Team Services](http://www.visualstudio.com/) build service.
+Supports Azure Pipelines, the [Azure DevOps](https://azure.microsoft.com/services/devops/) and [Team Foundation Server](https://www.visualstudio.com/tfs/) build service.
 
 ```json
 {
-  "name": "VSTSRest",
+  "name": "Tfs",
   "configuration": {
-    "collection": "collection",
-    "accountname": "account",
+    "url": "https://{youraccount}.visualstudio.com or http://tfs-server:8080/tfs",
+    "collection": "DefaultCollection",
+    "project": "projectname",
+    "username": "username",
     "pat": "personalaccesstoken",
-    "queryparams" : "&branchName=refs/heads/develop&$top=10&maxBuildsPerDefinition=1"
+    "queryparams": "&branchName=refs/heads/master&definitions=4,5,6,7&maxBuildsPerDefinition=1",
+    "includeQueued": false,
+    "showBuildStep": false
   }
 }
 ```
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `collection`    | The name of the collection, which builds are displayed (selecting single team projects or build definitions is not supported currently)
-| `accountname`   | Your Visual Studio Online account name (https://[accountname].visualstudio.com)
-| `pat`           | Personal Access Token with access to builds
-| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/builds/list
+| `url`           | Url to your Azure DevOps account (https://dev.azure.com/youraccount/) or TFS server (http://tfs-server:8080/tfs)
+| `collection`    | Collection name. Defaults to DefaultCollection.
+| `project`       | Team project ID or name
+| `username`      | Username used to login (if it's a domain user, ensure to escape the backslash in the configuration: `"domain\\username"`)
+| `pat`           | Personal Access Token with access to builds (TFS 2015 users should be able to use the password for the given user)
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/
+| `includeQueued` | Set to `true`, if queued builds should be shown on the monitor. Defaults to `false`.
+| `showBuildStep` | Set to `true`, to add the current step/stage to the text show for the status. Defaults to `false`.
+
+_Note_:
+- [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+- The url formed is of the following format: https://{instance}/{collection}/{project}/_apis/build/builds?api-version=2.0[queryparams]
+- Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
+
+
+#### Azure DevOps and Team Foundation Server Releases
+
+Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services/devops/) and [Team Foundation Server (Releases)](https://www.visualstudio.com/tfs/) release service.
+
+```json
+{
+  "name": "TfsRelease",
+  "configuration": {
+    "project": "projectname",
+    "instance": "instance",
+    "username": "username",
+    "pat": "personalaccesstoken",
+    "queryparams" : "&$top=10"
+  }
+}
+```
+
+| Setting         | Description
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `project`       | Team project ID or name
+| `instance`      | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
+| `username`      | Username used to login
+| `pat`           | Personal Access Token with access to releases
+| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters
+
+_Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+- The url formed is of the following format: https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]
+- Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
+
+
+
 
 #### Team Foundation Server 2013 and lower (on-premise)
 
@@ -312,17 +367,21 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
     "url": "http://yourbamboo.com",
     "planKey": "Plan-Key",
     "username": "user",
-    "password": "pass"
+    "password": "pass",
+    "includeAllStates": true,
+    "latestBuildPerBuildPlanOnly": true
   }
 }
 ```
 
-| Setting          | Description
-|------------------|------------------------------------
-| `url`            | URL of the Bamboo host
-| `planKey`        | Plan-Key
-| `username`       | HTTP-Basic-Auth Username (optional)
-| `password`       | HTTP-Basic-Auth Password (optional)
+| Setting                       | Description
+|-------------------------------|------------------------------------
+| `url`                         | URL of the Bamboo host
+| `planKey`                     | Plan-Key
+| `username`                    | HTTP-Basic-Auth Username (optional)
+| `password`                    | HTTP-Basic-Auth Password (optional)
+| `includeAllStates`            | include in-progress/stopped state (optional)
+| `latestBuildPerBuildPlanOnly` | request only latest build per build plan. The behavior is similar to `monitor.latestBuildOnly` but this setting limits number of results returned from Bamboo server instead of retrieving all builds and limiting from the application (optional)
 
 #### Bitbucket Pipelines
 
@@ -345,12 +404,57 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 | `username`       | The account username
 | `slug`           | The name of the project
 
+#### Buildkite
+
+Supports [Buildkite](https://buildkite.com) build service
+
+```json
+{
+  "name": "Buildkite",
+  "configuration": {
+    "orgSlug": "your-organisation-slug",
+    "teamSlug": "everyone"
+  }
+}
+```
+
+| Setting           | Description
+|------------------ |------------------------------------
+| `orgSlug`         | Organization slug, visible in the url when on the pipelines page (e.g `https://buildkite.com/<your-organisation-slug>`)
+| `teamSlug`        | An team slug to filter the pipelines on, set to `everyone` for all pipelines
+| `BUILDKITE_TOKEN` | An **ENVIRONMENT VARIABLE** with your access token. See: https://buildkite.com/docs/graphql-api for instructions on generating your token.
+
+#### Bitrise
+
+Supports the [Bitrise](https://bitrise.io/) build service.
+
+```json
+{
+  "name": "Bitrise",
+  "configuration": {
+    "slug": "<ID OF YOUR APPLICATION>",
+    "token": "<YOUR PERSONAL API TOKEN>"
+  }
+}
+```
+
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `slug`       | APP ID of your application
+| `url`        | Build / API server url, defaults to bitrise.io
+| `token`      | API access token (can be generated in account settings)
+| `apiVersion` | API version to use, defaults to v0.1
+
+
 ### Run the standalone version (easiest way)
 
 1. Download the [latest release](https://github.com/marcells/node-build-monitor/releases/latest) for Linux (x64), MacOS (x64) or Windows (x64)
-2. Place a file `config.json` next to the executable (see the description of the file in the [configuration section](#configuration) above)
-3. Run the executable
-4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
+2. For MacOS and Linux you need to set the execute permission to run it
+    - MacOS: `chmod +x node-build-monitor-macos`
+    - Linux: `chmod +x node-build-monitor-linux`
+3. Place a file `config.json` next to the executable (see the description of the file in the [configuration section](#configuration) above)
+4. Run the executable
+5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) (switch to fullscreen for the best experience)
 
 ### Run it manually (during development)
 

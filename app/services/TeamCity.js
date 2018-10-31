@@ -10,7 +10,8 @@ module.exports = function () {
         },
         getBuildsUrl = function(status) {
             var url =  self.configuration.url +
-                '/httpAuth/app/rest/buildTypes/id:' + self.configuration.buildConfigurationId +
+                (self.configuration.useGuest === true ? '/guestAuth' : '/httpAuth') +
+                '/app/rest/buildTypes/id:' + self.configuration.buildConfigurationId +
                 '/builds';
             var locators = [];
             if(self.configuration.branch) {

@@ -37,10 +37,17 @@ var async = require('async'),
             var dateA = takeDate(a);
             var dateB = takeDate(b);
 
-            if(dateA < dateB) return 1;
-            if(dateA > dateB) return -1;
+            if (dateA && dateB) {
+              if(dateA < dateB) return 1;
+              if(dateA > dateB) return -1;
 
-            return 0;
+              return 0;
+            }
+            else {
+              // if either of the date is not available, compare by id
+              // build with higher id is sorted before build with lower id
+              return b.id.toString().localeCompare(a.id.toString());
+            }
         });
     },
     distinctBuildsByETag = function (newBuilds) {
@@ -113,6 +120,10 @@ var async = require('async'),
         changes.order = newBuildIds;
 
         return changes;
+    },
+    shouldOnlyTakeLatestBuild = function (globalConfiguration, pluginConfiguration) {
+      return (globalConfiguration.latestBuildOnly && pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly === undefined) ||
+             (pluginConfiguration != undefined && pluginConfiguration.latestBuildOnly);
     };
 
 module.exports = function () {
@@ -155,8 +166,9 @@ module.exports = function () {
                   callback();
                   return;
                 }
+
                 if(pluginBuilds.length > 0) {
-                    if(self.configuration.latestBuildOnly) {
+                    if (shouldOnlyTakeLatestBuild(self.configuration, plugin.configuration)) {
                         sortBuildsByDate(pluginBuilds);
                         Array.prototype.push.apply(allBuilds, [pluginBuilds.shift()]);
                     } else {

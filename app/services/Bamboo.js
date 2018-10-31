@@ -16,11 +16,25 @@ module.exports = function () {
             });
         });
     },
+    getUrlParams = function() {
+      var params = {
+        "os_authType": "basic"
+      };
+
+      if(self.configuration.includeAllStates &&
+        self.configuration.includeAllStates.toString().toLowerCase() === "true") {
+          params.includeAllStates = "1";
+      }
+
+      if (self.configuration.latestBuildPerBuildPlanOnly === true) {
+        params["max-results"] = "1";
+      }
+
+      return params;
+    },
     requestBuilds = function (callback) {
         var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.planKey + ".json";
-        var urlParams = {
-            "os_authType": "basic"
-        };
+        var urlParams = getUrlParams();
 
         request({ uri: planUri, qs: urlParams }, function(error, response, body) {
             try {
@@ -33,9 +47,8 @@ module.exports = function () {
     },
     requestBuild = function (build, callback) {
         var planUri = self.configuration.url + "/rest/api/latest/result/" + self.configuration.planKey + "/" + build.number + ".json";
-        var urlParams = {
-            "os_authType": "basic"
-        };
+        var urlParams = getUrlParams();
+
         request({ uri: planUri, qs: urlParams }, function(error, response, body) {
             if (error) {
                 callback(error);
@@ -54,12 +67,12 @@ module.exports = function () {
             id: self.configuration.slug + '|' + res.number,
             project: res.plan.shortName,
             number: res.number,
-            isRunning: res.state === 'started',
+            isRunning: !res.buildCompletedTime,
             startedAt: res.buildStartedTime,
             finishedAt: res.buildCompletedTime,
             requestedFor: getAuthors(res.buildReason),
-            status: getStatus(res.state),
-            statusText: res.state,
+            status: getStatus(res.state, res.lifeCycleState),
+            statusText: getStatusText(res.state, res.lifeCycleState),
             reason: striptags(res.buildReason),
             hasErrors: !res.successful,
             hasWarnings: !res.successful,
@@ -78,12 +91,24 @@ module.exports = function () {
         }
         return 'System';
     },
-    getStatus = function(state) {
+    getStatus = function(state, lifeCycleState) {
         if (state === 'started') return "Blue";
         if (state === 'created') return "Blue";
         if (state === 'canceled') return "Gray";
         if (state === 'Failed') return "Red";
+        if (state === 'Unknown') {
+          if (lifeCycleState === 'NotBuilt') return 'Gray';
+          if (lifeCycleState === 'InProgress') return '#FF8C00';  // dark orange
+        }
         return "Green";
+    },
+    getStatusText = function(state, lifeCycleState) {
+      if (state === 'Unknown') {
+        if (lifeCycleState === 'NotBuilt') return 'Stopped';
+        if (lifeCycleState === 'InProgress') return 'In Progress';
+      }
+
+      return state;
     };
 
     self.cache = {

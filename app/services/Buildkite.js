@@ -78,18 +78,18 @@ module.exports = function() {
           const result = response.organization.pipelines.edges.map(x => {
             const pipeline = x.node;
             const build =
-              x.node.builds.edges.length > 0 // If no edges, means no builds have been done yet.
-                ? x.node.builds.edges[0].node
-                : {
-                    branch: "master",
-                    isRunning: false,
-                    createdBy: {
-                      name: ""
-                    },
-                    state: "NOT_RUN",
-                    message: "Pipeline Created",
-                    number: "N/A"
-                  };
+              x.node.builds.edges.length > 0 ?
+                x.node.builds.edges[0].node :
+                {
+                  branch: "master",
+                  isRunning: false,
+                  createdBy: {
+                    name: ""
+                  },
+                  state: "NOT_RUN",
+                  message: "Pipeline Created",
+                  number: "N/A"
+                };
 
             const buildStates = {
               SKIPPED: { desc: "The build was skipped", color: "#ffff00" },

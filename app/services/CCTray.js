@@ -13,7 +13,7 @@ module.exports = function () {
                     return;
                 }
                 callback(err, result.Projects.Project.map(function(project) {
-                    return simplifyBuild(project['$']);
+                    return simplifyBuild(project.$);
                 }));
             });
         },
@@ -50,7 +50,7 @@ module.exports = function () {
             };
         },
         isRunning = function(activity) {
-            return activity = 'Building';
+            return activity === 'Building';
         },
         getBuildStatus = function(res) {
             if (res.activity === 'Building') {

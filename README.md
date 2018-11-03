@@ -29,7 +29,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
 - [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
 - [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
-- CCTray <sub><sup>([Configuration](#cctray))</sup></sub>
+- [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -450,7 +450,7 @@ Supports the [Bitrise](https://bitrise.io/) build service.
 
 #### CCTray
 
-Supports CCTray format.
+Supports CCTray format. CCTray is part of [CruiseControl.NET](http://www.cruisecontrolnet.org/).
 
 ```json
 {

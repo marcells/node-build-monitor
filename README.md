@@ -57,6 +57,7 @@ The build monitor configuration can be placed in one of the following locations:
     "numberOfBuilds": 12,
     "latestBuildOnly": false,
     "sortOrder": "date",
+    "errorsFirst": false,
     "expandEnvironmentVariables": false,
     "debug": true
   },
@@ -86,6 +87,7 @@ In the `monitor` section you can set up some general settings:
 | `numberOfBuilds`             | The number of builds, which will be read and displayed in the web frontend (ignored if `latestBuildOnly` is enabled)
 | `latestBuildOnly`            | Will only retrieve single latest build from each service configuration. This setting can be overwritten in each service configuration.
 | `sortOrder`                  | The sort order for buils, options : `project`, `date`
+| `errorsFirst`                | Errors should be before success elements, apply sortOrder after that
 | `expandEnvironmentVariables` | Tries to expand root service configuration properties from environment variables (e.g.: "${MY_PASSWORD}" will look for an environment variable `MY_PASSWORD` and will use that)
 | `debug`                      | Enable or disable some debug output on the console
 

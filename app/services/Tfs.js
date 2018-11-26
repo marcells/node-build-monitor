@@ -76,6 +76,7 @@ function VSTSRestBuilds() {
    */
   const allowedAPIVersions = Object.freeze({
     '2.0':      '2.0',
+    '4.1':      '4.1',
     undefined:  '2.0'
   });
 

@@ -398,7 +398,7 @@ https://bitbucket.org/account/user/<username>/app-passwords
 
 Once "Create app password" has been clicked, one has to ensure that the "read pipelines" box
 has been checked. Once this box has been checked, click "create" and an AppPassword will be returned
-that have to be copied to the config.json:
+that has to be copied to the config.json:
 
 ```json
 {

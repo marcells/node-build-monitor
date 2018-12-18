@@ -388,7 +388,17 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 
 #### Bitbucket Pipelines
 
-Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service
+Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service.
+
+In order to monitor a Bitbucket pipeline, one has to create an app-password by navigating to
+
+```
+https://bitbucket.org/account/user/<username>/app-passwords
+```
+
+Once "Create app password" has been clicked, one has to ensure that the "read pipelines" box
+has been checked. Once this box has been checked, click "create" and an AppPassword will be returned
+that have to be copied to the config.json:
 
 ```json
 {

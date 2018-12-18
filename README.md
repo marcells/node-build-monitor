@@ -394,18 +394,20 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 {
   "name": "BitbucketPipelines",
   "configuration": {
-    "apiKey": "key",
-    "username": "username",
+    "appPasswordUsername": "appPasswordUsername",
+    "appPassword": "appPassword",
+    "owner": "owner",
     "slug": "slug"
   }
 }
 ```
 
-| Setting          | Description
-|------------------|------------------------------------
-| `apiKey`         | The API key on the Bitbucket settings
-| `username`       | The account username
-| `slug`           | The name of the project
+| Setting               | Description
+|-----------------------|--------------------------------------------------------------------------
+| `appPasswordUsername` | The username of the appPassword that is created in the Bitbucket settings
+| `appPassword`         | The appPassword that is created in the Bitbucket settings
+| `owner`               | The owner of the repository aka slug
+| `slug`                | The name of the repository
 
 #### Buildkite
 

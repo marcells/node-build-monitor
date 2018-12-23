@@ -404,20 +404,20 @@ that has to be copied to the config.json:
 {
   "name": "BitbucketPipelines",
   "configuration": {
-    "appPasswordUsername": "appPasswordUsername",
-    "appPassword": "appPassword",
-    "owner": "owner",
-    "slug": "slug"
+    "apiKey": "key",
+    "username": "username",
+    "slug": "slug",
+    "teamname": "teamname"
   }
 }
 ```
 
-| Setting               | Description
-|-----------------------|--------------------------------------------------------------------------
-| `appPasswordUsername` | The username of the appPassword that is created in the Bitbucket settings
-| `appPassword`         | The appPassword that is created in the Bitbucket settings
-| `owner`               | The owner of the repository aka slug
-| `slug`                | The name of the repository
+| Setting          | Description
+|------------------|------------------------------------
+| `apiKey`         | The API key on the Bitbucket settings
+| `username`       | The account username
+| `slug`           | The name of the project
+| `teamname`       | The team owner of the project. Only use this if the team is the project owner.
 
 #### Buildkite
 

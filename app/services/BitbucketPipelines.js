@@ -3,10 +3,10 @@ var request = require('../requests');
 module.exports = function () {
     var self = this,
         makeUrl = function () {
-            return 'https://api.bitbucket.org/2.0/repositories/' + self.configuration.username + '/' + self.configuration.slug + '/pipelines/?sort=-created_on&pagelen=1';
+            return 'https://api.bitbucket.org/2.0/repositories/' + (self.configuration.teamname || self.configuration.username) + '/' + self.configuration.slug + '/pipelines/?sort=-created_on&pagelen=1';
         },
         makeBasicAuthToken = function() {
-           return Buffer.from(self.configuration.username + ':' + self.configuration.apiKey).toString('base64');
+            return Buffer.from(self.configuration.username + ':' + self.configuration.apiKey).toString('base64');
         },
         makeRequest = function (url, callback) {
           request.makeRequest({

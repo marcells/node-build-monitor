@@ -388,7 +388,17 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 
 #### Bitbucket Pipelines
 
-Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service
+Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service.
+
+In order to monitor a Bitbucket pipeline, one has to create an app-password by navigating to
+
+```
+https://bitbucket.org/account/user/<username>/app-passwords
+```
+
+Once "Create app password" has been clicked, one has to ensure that the "read pipelines" box
+has been checked. Once this box has been checked, click "create" and an AppPassword will be returned
+that has to be copied to the config.json:
 
 ```json
 {
@@ -396,7 +406,8 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
   "configuration": {
     "apiKey": "key",
     "username": "username",
-    "slug": "slug"
+    "slug": "slug",
+    "teamname": "teamname"
   }
 }
 ```
@@ -406,6 +417,7 @@ Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 | `apiKey`         | The API key on the Bitbucket settings
 | `username`       | The account username
 | `slug`           | The name of the project
+| `teamname`       | The team owner of the project. Only use this if the team is the project owner.
 
 #### Buildkite
 

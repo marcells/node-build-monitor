@@ -37,11 +37,12 @@ Jump to the [configuration documentation](#configuration) and see how the servic
 
 ### Quickstart
 
-You have three options:
+You have four options:
 
 - Run node-build-monitor [by downloading the standalone version](#run-the-standalone-version-easiest-way) <sub><sup>(easiest way to run it)</sup></sub>
 - Run node-build-monitor [manually with node](#run-it-manually-during-development) <sub><sup>(preferred during development)</sup></sub>
 - Run node-build-monitor [with Docker Compose](#run-it-with-docker-compose-in-production) <sub><sup>(preferred in production)</sup></sub>
+- Run node-build-monitor [in kubernetes](#run-it-in-kubernetes-as-a-helm-chart) <sub><sup>(as a helm chart)</sup></sub>
 
 ### Configuration
 
@@ -112,7 +113,7 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 |------------------|--------------------------------------------------------------------------------------------
 | `slug`           | The name of the build (usually your GitHub user name and the project name)
 | `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to travis-ci.org.
-| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token). 
+| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token).
 | `is_enterprise`  | Set this value to 'true' if you plan to use Travis CI enterprise. Default to false.
 
 #### Jenkins
@@ -580,6 +581,12 @@ You can take a look at the logs of the build monitor by using this command:
 ```
 docker-compose logs
 ```
+
+### Run it in Kubernetes as a helm chart
+
+You can use the helm chart to deploy node-build-monitor in your kubernetes cluster.
+
+__TL;DR:__ Go to the [charts directory](charts/), and deploy it to your cluster with `helm install . --name build-monitor`. To set the configuration you need to modify the values.yaml file. See [Readme](charts/README.md) in chart folder for more informations.
 
 ### Theming support
 

@@ -43,6 +43,10 @@ module.exports = function () {
                     return;
                 }
                 if(pipelines && pipelines.slice) {
+                    pipelines = pipelines.filter(function(pipeline) {
+                        return (self.config.pipeline.status.includes(pipeline.status));
+                    });
+
                     if(typeof self.config.numberOfPipelinesPerProject !== 'undefined') {
                         pipelines = pipelines.slice(0, self.config.numberOfPipelinesPerProject);
                     }
@@ -147,7 +151,7 @@ module.exports = function () {
                 'url': getProjectsApiUrl(1, 100),
                 json: true
             }, function(err, response, body) {
-                if (!err && response.statusCode == 200) {
+                if (!err && response.statusCode === 200) {
                     var urls = [], pages = Math.ceil(
                         parseInt(response.headers['x-total-pages'], 10));
                     for (var i = 1; i <= pages; i = i + 1) {
@@ -204,7 +208,12 @@ module.exports = function () {
             self.config.slugs = [{project: '*/*'}];
         }
         if (typeof self.config.additional_query === 'undefined') {
-          self.config.additional_query = "";
+            self.config.additional_query = "";
+        }
+        if(typeof self.config.pipeline === 'undefined' || typeof self.config.pipeline.status === 'undefined') {
+            self.config.pipeline = {
+              status: ['running', 'pending', 'success', 'failed', 'canceled', 'skipped']
+            };
         }
         if (typeof process.env.GITLAB_TOKEN !== 'undefined') {
             self.config.token = process.env.GITLAB_TOKEN;

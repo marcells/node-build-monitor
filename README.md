@@ -310,6 +310,9 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
     "token": "secret_user_token",
     "additional_query": "&search=gitlab-org&starred=true",
     "numberOfPipelinesPerProject": 3,
+    "pipeline": {
+      "status": ["running", "pending", "success", "failed", "canceled", "skipped"]
+    },
     "slugs": [
       {
         "project": "gitlab-org/gitlab-ci-multi-runner",
@@ -331,6 +334,7 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 
 Because API V4 returns **all** internal and public projects by default, you propably
 want to set `additional_query` as well. Good choices could be `&owned=true` or `&membership=true`.
+If you want to filter the pipeline status you'll need to set `pipeline.status` otherwise it will show every status.
 
 #### BuddyBuild
 

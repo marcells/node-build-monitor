@@ -26,6 +26,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
+- [BambooDeploy](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboodeploy))</sup></sub>
 - [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) <sub><sup>([Configuration](#bitbucket-pipelines))</sup></sub>
 - [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
 - [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
@@ -390,6 +391,38 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 | `password`                    | HTTP-Basic-Auth Password (optional)
 | `includeAllStates`            | include in-progress/stopped state (optional)
 | `latestBuildPerBuildPlanOnly` | request only latest build per build plan. The behavior is similar to `monitor.latestBuildOnly` but this setting limits number of results returned from Bamboo server instead of retrieving all builds and limiting from the application (optional)
+
+#### BambooDeploy
+
+Supports [BambooDeploy](https://www.atlassian.com/software/bamboo) deployment service
+
+```json
+{
+  "name": "BambooDeploy",
+  "configuration": {
+    "url": "http://yourbamboo.com",
+    "planKey": "Plan-Key",
+    "username": "user",
+    "password": "pass",
+    "includeAllStates": true,
+    "latestBuildPerBuildPlanOnly": true,
+    "environmentName": "dev",
+    "projectId": 123
+  }
+}
+```
+
+| Setting                       | Description
+|-------------------------------|------------------------------------
+| `url`                         | URL of the Bamboo host
+| `planKey`                     | Plan-Key
+| `username`                    | HTTP-Basic-Auth Username (optional)
+| `password`                    | HTTP-Basic-Auth Password (optional)
+| `includeAllStates`            | include in-progress/stopped state (optional)
+| `latestBuildPerBuildPlanOnly` | request only latest build per build plan. The behavior is similar to `monitor.latestBuildOnly` but this setting limits number of results returned from Bamboo server instead of retrieving all builds and limiting from the application (optional)
+| `environmentName` | Environment Name of the deployment region (dev, prod etc)
+| `projectId` | ProjectId for the PlanKey/Project
+
 
 #### Bitbucket Pipelines
 

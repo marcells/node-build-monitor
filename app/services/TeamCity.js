@@ -14,6 +14,9 @@ module.exports = function () {
                 '/app/rest/buildTypes/id:' + self.configuration.buildConfigurationId +
                 '/builds';
             var locators = [];
+            if(self.configuration.reportFailedToStart) {
+                locators.push('failedToStart:any');
+            }
             if(self.configuration.branch) {
                 locators.push('branch:' + self.configuration.branch);
             }
@@ -113,6 +116,7 @@ module.exports = function () {
         getStatus = function (build) {
             if (build.running) return "Blue";
             if (build.canceledInfo) return "Gray";
+            if (build.failedToStart) return "Red";
 
             if (build.status === "SUCCESS") return "Green";
             if (build.status === "FAILURE") return "Red";
@@ -124,6 +128,7 @@ module.exports = function () {
         getStatusText = function (build) {
             if (build.running) return "Running";
             if (build.canceledInfo) return "Canceled";
+            if (build.failedToStart) return "Failed to Start";
 
             if (build.status === "SUCCESS") return "Success";
             if (build.status === "FAILURE") return "Failure";

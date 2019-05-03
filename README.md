@@ -229,18 +229,20 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
     "instance": "instance",
     "username": "username",
     "pat": "personalaccesstoken",
-    "queryparams" : "&$top=10"
+    "queryparams" : "&$top=10",
+    "groupbyrelease": false
   }
 }
 ```
 
-| Setting         | Description
-|-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `project`       | Team project ID or name
-| `instance`      | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
-| `username`      | Username used to login
-| `pat`           | Personal Access Token with access to releases
-| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters
+| Setting          | Description
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `project`        | Team project ID or name
+| `instance`       | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
+| `username`       | Username used to login
+| `pat`            | Personal Access Token with access to releases
+| `queryparams`    | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters
+| `groupbyrelease` | Group builds by same release id. Defaults to `false`.
 
 _Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 - The url formed is of the following format: https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]

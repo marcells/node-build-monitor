@@ -15,6 +15,7 @@ function TfsRestRelease() {
   let instance = null;
   let project = null;
   let params = null;
+  let groupbyrelease = null;
 
   /**
    * This object is the representation of resultFilter mentioned in the docs
@@ -98,6 +99,7 @@ function TfsRestRelease() {
    * @property {string} username Username
    * @property {string} pat Personal Access Token with access to Release
    *  information
+   * @property {boolean} groupbyrelease Group builds by same release id
    */
 
   /**
@@ -123,6 +125,7 @@ function TfsRestRelease() {
     instance = config.instance;
     params = config.queryparams;
     project = config.project;
+    groupbyrelease = config.groupbyrelease || false;
 
     console.log(config);
   };
@@ -164,7 +167,32 @@ function TfsRestRelease() {
         callback('No values found');
         return;
       }
-      const transformedData = body.value.map(transformer);
+
+      var transformedData = body.value.map(transformer);
+      if (groupbyrelease) {
+        var groupedDataIds = [];
+        var groupedData = [];
+
+        transformedData.forEach(function(build) {
+          var index = groupedDataIds.indexOf(build.id);
+
+          if (index == -1) {
+            groupedDataIds.push(build.id);
+            groupedData.push(build);
+          }
+          else
+          {
+            if (build.hasErrors) {
+              groupedData[index].hasErrors = true;
+            }
+            if (build.hasWarnings) {
+              groupedData[index].hasWarnings = true;
+            }
+          }
+        });
+        transformedData = groupedData;
+      }
+
       callback(null, transformedData);
     };
 
@@ -182,7 +210,7 @@ function TfsRestRelease() {
         finishedAt: release.completedOn ? new Date(release.completedOn) : new Date(),
         hasErrors: release.deploymentStatus === resultFilter.failed || release.deploymentStatus === resultFilter.notDeployed,
         hasWarnings: release.deploymentStatus === resultFilter.partiallySucceeded,
-        id: release.id,
+        id: groupbyrelease ? release.release.id : release.id,
         isRunning: release.deploymentStatus === resultFilter.inProgress,
         number: release.release.name,
         project: release.releaseDefinition.name,

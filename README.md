@@ -7,7 +7,7 @@
 
 > A __Build Monitor__ written in __Node.js__, which supports several build services. It can __be easily extended__ to support new services. You can __mix different services__ as you like and you'll always see the newest builds in its __responsive and themable web frontend__ automatically. And finally, everything is prepared to run as a __Docker__ container.
 
-__Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-support))</sup></sub>
+__Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([other themes](#theming-support))</sup></sub>
 <br />
 <sub>(automatically deployed from [this repository](docker/) with [Docker Cloud](https://cloud.docker.com/) as a [Docker](https://www.docker.com/) container to the [Microsoft Azure Cloud](http://azure.microsoft.com/))</sub>
 
@@ -21,7 +21,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [Azure DevOps and Team Foundation Server Builds](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
 - [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
-- [Team Foundation Server 2015/2017 (on-premise) ](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
+- [Team Foundation Server 2015/2017 (on-premise)](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
@@ -46,6 +46,7 @@ You have four options:
 ### Configuration
 
 The build monitor configuration can be placed in one of the following locations:
+
 1. `%HomeDirectory%/node-build-monitor-config.json`
 2. `%PathOfExecutable%/config.json` (only for the standalone version)
 3. `app/config.json`
@@ -92,6 +93,7 @@ In the `monitor` section you can set up some general settings:
 | `debug`                      | Enable or disable some debug output on the console
 
 The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
+
 - the `name` setting refers to the used service
 - the `configuration` setting refers to its configuration, which may differ from each service (see below)
 
@@ -111,9 +113,9 @@ Supports the [Travis CI](https://travis-ci.org/) build service.
 | Setting          | Description
 |------------------|--------------------------------------------------------------------------------------------
 | `slug`           | The name of the build (usually your GitHub user name and the project name)
-| `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to travis-ci.org.
-| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at https://blog.travis-ci.com/2013-01-28-token-token-token).
-| `is_enterprise`  | Set this value to 'true' if you plan to use Travis CI enterprise. Default to false.
+| `url`            | The Travis CI server (travis-ci.org, travis-ci.com, travis.enterprise_name.com). Defaults to `travis-ci.org`.
+| `token`          | The Travis access token, to access your private builds (can be found on your Accounts page. If this does not work then you must use the access token you get by executing shell commands. More information can be found at [https://blog.travis-ci.com/2013-01-28-token-token-token](https://blog.travis-ci.com/2013-01-28-token-token-token)).
+| `is_enterprise`  | Set this value to `true` if you plan to use Travis CI enterprise. Default to `false`.
 
 #### Jenkins
 
@@ -201,20 +203,20 @@ Supports Azure Pipelines, the [Azure DevOps](https://azure.microsoft.com/service
 
 | Setting         | Description
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------
-| `url`           | Url to your Azure DevOps account (https://dev.azure.com/youraccount/) or TFS server (http://tfs-server:8080/tfs)
-| `collection`    | Collection name. Defaults to DefaultCollection.
+| `url`           | Url to your Azure DevOps account (`https://dev.azure.com/youraccount/`) or TFS server (`http://tfs-server:8080/tfs`)
+| `collection`    | Collection name. Defaults to `DefaultCollection`.
 | `project`       | Team project ID or name
 | `username`      | Username used to login (if it's a domain user, ensure to escape the backslash in the configuration: `"domain\\username"`)
 | `pat`           | Personal Access Token with access to builds (TFS 2015 users should be able to use the password for the given user)
-| `queryparams`   | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/build/
+| `queryparams`   | Any query params that REST API accepts, more info: [https://docs.microsoft.com/en-us/rest/api/vsts/build/](https://docs.microsoft.com/en-us/rest/api/vsts/build/)
 | `includeQueued` | Set to `true`, if queued builds should be shown on the monitor. Defaults to `false`.
 | `showBuildStep` | Set to `true`, to add the current step/stage to the text show for the status. Defaults to `false`.
 
 _Note_:
-- [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
-- The url formed is of the following format: https://{instance}/{collection}/{project}/_apis/build/builds?api-version=2.0[queryparams]
-- Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
 
+- [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
+- The url formed is of the following format: `https://{instance}/{collection}/{project}/_apis/build/builds?api-version=2.0[queryparams]`
+- Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
 
 #### Azure DevOps and Team Foundation Server Releases
 
@@ -240,15 +242,14 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
 | `instance`       | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
 | `username`       | Username used to login
 | `pat`            | Personal Access Token with access to releases
-| `queryparams`    | Any query params that REST API accepts, more info: https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters
+| `queryparams`    | Any query params that REST API accepts, more info: [VSTS Rest Uri parameters](https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters)
 | `groupbyrelease` | Group builds by same release id. Defaults to `false`.
 
-_Note_: [Create a peronal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
-- The url formed is of the following format: https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]
-- Please note that all the configuration fields are mandatory. If a field is not required like queryparams, please provide empty string in the configuration.
+_Note_: [Create a personal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 
-
-
+- The url formed is of the following format:
+  `https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]`
+- Please note that all the configuration fields are mandatory. If a field is not required like `queryparams`, please provide empty string in the configuration.
 
 #### Team Foundation Server 2013 and lower (on-premise)
 
@@ -298,7 +299,6 @@ Supports an on-premise Microsoft Team Foundation Server 2015/2017 (and later).
 
 _Important_: For TFS 2017 you have to [create a personal access token](https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate). It only needs
 the permission to read builds. Please use your username and the generated token as the password.
-
 
 #### GitLab (on-premise, beta)
 
@@ -397,10 +397,7 @@ Supports [Bamboo](https://www.atlassian.com/software/bamboo) build service
 Supports [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines) build service.
 
 In order to monitor a Bitbucket pipeline, one has to create an app-password by navigating to
-
-```
-https://bitbucket.org/account/user/<username>/app-passwords
-```
+`https://bitbucket.org/account/user/<username>/app-passwords`
 
 Once "Create app password" has been clicked, one has to ensure that the "read pipelines" box
 has been checked. Once this box has been checked, click "create" and an AppPassword will be returned
@@ -443,7 +440,7 @@ Supports [Buildkite](https://buildkite.com) build service
 |------------------ |------------------------------------
 | `orgSlug`         | Organization slug, visible in the url when on the pipelines page (e.g `https://buildkite.com/<your-organisation-slug>`)
 | `teamSlug`        | An team slug to filter the pipelines on, set to `everyone` for all pipelines
-| `BUILDKITE_TOKEN` | An **ENVIRONMENT VARIABLE** with your access token. See: https://buildkite.com/docs/graphql-api for instructions on generating your token.
+| `BUILDKITE_TOKEN` | An **ENVIRONMENT VARIABLE** with your access token. See: [graphql-api](https://buildkite.com/docs/graphql-api) for instructions on generating your token.
 
 #### Bitrise
 
@@ -462,9 +459,9 @@ Supports the [Bitrise](https://bitrise.io/) build service.
 | Setting      | Description
 |--------------|--------------------------------------------------------------------------------------------
 | `slug`       | APP ID of your application
-| `url`        | Build / API server url, defaults to bitrise.io
+| `url`        | Build / API server url, defaults to `bitrise.io`
 | `token`      | API access token (can be generated in account settings)
-| `apiVersion` | API version to use, defaults to v0.1
+| `apiVersion` | API version to use, defaults to `v0.1`
 
 #### CCTray
 
@@ -482,7 +479,6 @@ Supports CCTray format. CCTray is part of [CruiseControl.NET](http://www.cruisec
 | Setting      | Description
 |--------------|--------------------------------------------------------------------------------------------
 | `url`        | Url of CCTray feed.
-
 
 ### Run the standalone version (easiest way)
 
@@ -514,7 +510,9 @@ __TL;DR:__ Go to the [docker directory](docker/), rename the file `config.exampl
 Below, each commands is explained in detail.
 
 #### 1. Create configuration and set up the build monitor
+
 Place a file `config.json` next to the `docker-compose.*.yml` and configure the services:
+
 ```json
 {
   "monitor": {
@@ -552,7 +550,8 @@ Build your custom node-build-monitor docker image. This will also include your c
 Installing and running node-build-monitor in a docker container for use on the same machine is simple with the following commands:
 
 Run docker-compose from your custom `docker-compose.yml`:
-```
+
+```bash
 docker-compose build --pull
 docker-compose up -d
 ```
@@ -562,16 +561,19 @@ docker-compose up -d
 If you want to get access to the tfs-proxy, then you need a slighly different command, which allows the build monitor container to access the tfs-proxy container.
 
 Run docker-compose from your custom `docker-compose.with-tfs-proxy.yml`:
-```
+
+```bash
 docker-compose -f docker-compose.with-tfs-proxy.yml build --pull
 docker-compose -f docker-compose.with-tfs-proxy.yml up -d
 ```
+
 Ensure that you omit the `tfsProxyUrl` setting in your `config.json`, so that it can be determined automatically. [Here](https://docs.docker.com/userguide/dockerlinks/#container-linking) you'll get more information about container linking.
 
 ##### c. With self-signed-certs
 
 If you connect to services which are using self signed certificates, run docker-compose from your custom `docker-compose.with-self-signed-certs.yml`:
-```
+
+```bash
 docker-compose -f docker-compose.with-self-signed-certs.yml build --pull
 docker-compose -f docker-compose.with-self-signed-certs.yml up -d
 ```
@@ -583,7 +585,8 @@ Now open your browser and navigate to [http://localhost:3000](http://localhost:3
 #### (4. Access logs)
 
 You can take a look at the logs of the build monitor by using this command:
-```
+
+```bash
 docker-compose logs
 ```
 
@@ -610,6 +613,7 @@ e.g.: [http://localhost:3000?theme=list](http://localhost:3000?theme=list)
 #### Creating a new theme
 
 If you want to create a new theme, you simply have to create one template file and one stylesheet in the following paths.
+
 - Stylesheet: `app/public/stylesheets/themes/[name of theme]/style.css` (you can place dependent css files in this folder)
 - Template: `app/public/templates/themes/[name of theme]/.html`
 

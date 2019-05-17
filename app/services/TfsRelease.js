@@ -170,26 +170,61 @@ function TfsRestRelease() {
 
       var transformedData = body.value.map(transformer);
       if (groupbyrelease) {
-        var groupedDataIds = [];
-        var groupedData = [];
+        var groupedData = [],
+        groupBy = function(xs, key) {
+          return xs.reduce(function(rv, x) {
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+          }, {});
+        },
+        prioritySort = function (a, b)
+              {
+                if (b.hasErrors)      
+                {
+                  return 1;
+                }
+                else if (a.hasErrors)      
+                {
+                  return -1;
+                }
+                else if (b.hasWarnings)
+                {
+                  return 1;
+                }
+                else if (a.hasWarnings)
+                {
+                  return -1;
+                }
+                else if (b.statusText == resultFilter.inProgress)
+                {
+                  return 1;
+                }
+                else if (a.statusText == resultFilter.inProgress)
+                {
+                  return -1;
+                }
+                else if (b.statusText == resultFilter.succeeded)
+                {
+                  return 1;
+                }
+                else if (a.statusText == resultFilter.succeeded)
+                {
+                  return -1;
+                }
+                return 0;
+              };
 
-        transformedData.forEach(function(build) {
-          var index = groupedDataIds.indexOf(build.id);
+        var groupedByData = groupBy(transformedData, "id");
 
-          if (index == -1) {
-            groupedDataIds.push(build.id);
-            groupedData.push(build);
+        for (var currentTransformedDataKey in groupedByData){
+          if (groupedByData.hasOwnProperty(currentTransformedDataKey)) {
+            var currentTransformedData = groupedByData[currentTransformedDataKey];
+            currentTransformedData.sort(prioritySort);
+
+            groupedData.push(currentTransformedData[0]);
           }
-          else
-          {
-            if (build.hasErrors) {
-              groupedData[index].hasErrors = true;
-            }
-            if (build.hasWarnings) {
-              groupedData[index].hasWarnings = true;
-            }
-          }
-        });
+        }
+        
         transformedData = groupedData;
       }
 
@@ -208,7 +243,7 @@ function TfsRestRelease() {
     const transformer = (release) => {
       let result = {
         finishedAt: release.completedOn ? new Date(release.completedOn) : new Date(),
-        hasErrors: release.deploymentStatus === resultFilter.failed || release.deploymentStatus === resultFilter.notDeployed,
+        hasErrors: release.deploymentStatus === resultFilter.failed,
         hasWarnings: release.deploymentStatus === resultFilter.partiallySucceeded,
         id: groupbyrelease ? release.release.id : release.id,
         isRunning: release.deploymentStatus === resultFilter.inProgress,

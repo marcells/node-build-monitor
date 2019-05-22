@@ -29,6 +29,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [Buildkite](https://buildkite.com/) <sub><sup>([Configuration](#buildkite))</sup></sub>
 - [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
 - [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
+- [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -479,6 +480,31 @@ Supports CCTray format. CCTray is part of [CruiseControl.NET](http://www.cruisec
 | Setting      | Description
 |--------------|--------------------------------------------------------------------------------------------
 | `url`        | Url of CCTray feed.
+
+#### Shippable
+
+Supports the [Shippable](https://shippable.com/) build service.
+
+```json
+{
+  "name": "Shippable",
+  "configuration": {
+    "url": "https://api.shippable.com",
+    "token": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee",
+    "projects": "123456789012345678901234,098765432109876543210987,...",
+    "branch": "master",
+    "limit": 12
+  }
+}
+```
+
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `url`        | Shippable API URL (default `https://api.shippable.com`)
+| `token`      | Shippable API token (can be generated under Account settings)
+| `projects`   | Comma separated list of Shippable project IDs to be used
+| `branch`     | The branch to be monitored (all branches if not specified)
+| `limit`      | Limit the number of returned results from the Shippable API
 
 ### Run the standalone version (easiest way)
 

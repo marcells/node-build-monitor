@@ -166,7 +166,8 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
     "authentication": "ntlm",
     "username": "teamcity_username",
     "password": "teamcity_password",
-    "useGuest": true
+    "useGuest": true,
+    "reportFailedToStart": true
   }
 }
 ```
@@ -180,6 +181,7 @@ Supports the [TeamCity](https://www.jetbrains.com/teamcity/) build service.
 | `username`              | Your TeamCity user name (if required)
 | `password`              | Your TeamCity password (if required)
 | `useGuest`              | Uses the guest user (if required)
+| `reportFailedToStart`   | Causes "Failed to Start" builds to be reported as build failures.
 
 #### Azure DevOps and Team Foundation Server Builds
 

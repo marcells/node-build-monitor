@@ -30,6 +30,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [Bitrise](https://bitrise.io) <sub><sup>([Configuration](#bitrise))</sup></sub>
 - [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
 - [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
+- [PRTG](https://www.paessler.com/prtg) <sub><sup>([Configuration](#prtg))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 

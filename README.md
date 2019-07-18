@@ -508,6 +508,29 @@ Supports the [Shippable](https://shippable.com/) build service.
 | `branch`     | The branch to be monitored (all branches if not specified)
 | `limit`      | Limit the number of returned results from the Shippable API
 
+#### PRTG
+
+Supports the [PRTG](https://www.paessler.com/prtg) monitoring service.
+
+```json
+{
+  "name": "PRTG",
+  "configuration": {
+    "url": "https://myprtg.myserver",
+    "sensorId": "1234",
+    "username": "username",
+    "passhash": "123456789"
+  }
+}
+```
+
+| Setting      | Description
+|--------------|--------------------------------------------------------------------------------------------
+| `url`        | PRTG Service URL (e.g. `https://prtg.mydomain.local`)
+| `sensorId`   | Sensor Identifier
+| `username`   | Name of the user
+| `passhash`   | Passhash of the user (Visible under `Configuration` - `My Account`)
+
 ### Run the standalone version (easiest way)
 
 1. Download the [latest release](https://github.com/marcells/node-build-monitor/releases/latest) for Linux (x64), MacOS (x64) or Windows (x64)

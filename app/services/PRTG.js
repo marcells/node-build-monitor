@@ -49,7 +49,7 @@ module.exports = function () {
                 statusText: getBuildStatusText(data),
                 hasErrors: hasErrors(data),
                 hasWarnings: hasWarnings(data),
-                url: "https://alerts.bbt.local/sensor.htm?id=" + self.configuration.sensorId,
+                url: self.configuration.url + "/sensor.htm?id=" + self.configuration.sensorId,
                 reason: "sensor",
                 requestedFor: ""
             };

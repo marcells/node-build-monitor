@@ -1,4 +1,4 @@
-var request = require("request"),
+var request = require("request");
 
 module.exports = function() {
   var self = this,
@@ -20,7 +20,7 @@ module.exports = function() {
       const url = `${
         self.api_base
       }/project/${vcs}/${username}/${project}${branchSuffix}`;
-      
+
       if (self.configuration.debug) {
         console.info(`Requesting GET ${url}`);
       }
@@ -52,8 +52,10 @@ module.exports = function() {
         }
 
         if (self.configuration.groupByWorkflow) {
-          const reaas = groupBuildsByWorkflow(body);
-          callback(error, reaas.map(build => formatWorkflowBuild(build)));
+          callback(
+            error,
+            groupBuildsByWorkflow(body).map(build => formatWorkflowBuild(build))
+          );
         } else {
           callback(error, body.map(build => formatBuild(build)));
         }
@@ -218,4 +220,6 @@ module.exports = function() {
   self.check = function(callback) {
     queryBuilds(callback);
   };
+
+  self.groupBuildsByWorkflow = groupBuildsByWorkflow;
 };

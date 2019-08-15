@@ -59,7 +59,6 @@ module.exports = function() {
         case "skipped":
         case "blocked":
         case "killed":
-        default:
           return "Gray";
 
         case "declined":
@@ -69,6 +68,9 @@ module.exports = function() {
 
         case "success":
           return "Green";
+
+        default:
+          return "Gray";
       }
     },
     simplifyBuild = function(res) {

@@ -31,6 +31,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
 - [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
 - [PRTG](https://www.paessler.com/prtg) <sub><sup>([Configuration](#prtg))</sup></sub>
+- [Circle CI](https://www.circleci.com) <sub><sup>([Configuration](#circleci))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -531,6 +532,34 @@ Supports the [PRTG](https://www.paessler.com/prtg) monitoring service.
 | `sensorId`   | Sensor Identifier
 | `username`   | Name of the user
 | `passhash`   | Passhash of the user (Visible under `Configuration` - `My Account`)
+
+
+#### CircleCI
+
+Supports the [CircleCI](https://circleci.com) service
+
+```json
+{
+  "name": "CircleCI",
+  "configuration": {
+    "debug": false,
+    "token": "somePersonalToken",
+    "vcs": "bitbucket",
+    "username": "marcells",
+    "project": "node-build-monitor",
+    "branch": "master"
+  }
+}
+```
+
+| Setting          | Description
+|------------------|--------------------------------------------------------------------------------------------
+| `debug`           | Should the debug be enabled
+| `token`           | A CircleCI personal token
+| `vcs`             | The VCS type of the project (bitbucket|github)
+| `username`        | Project username or team name
+| `project`         | Project name (usually your repository)
+| `branch`          | Optional. A specific branch to display exclusively.
 
 ### Run the standalone version (easiest way)
 

@@ -127,22 +127,20 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "branch": "SomeBranch",
           "vcs_revision": "SomeRevision",
           "subject": "SomeSubject",
           "author_name": "SomeAuthor",
           "why": "SomeWhy"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "branch": "BadValue",
           "vcs_revision": "BadRevision",
           "subject": "BadSubject",
           "author_name": "BadAuthor",
           "why": "BadWhy"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -167,14 +165,14 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
-          "build_num": 456
-        },
-        {
-          ...workflowData,
-          "build_num": 123
-        }
+        Object.assign(
+          {
+            "build_num": 456
+          }, workflowData),
+        Object.assign(
+          {
+            "build_num": 123
+          }, workflowData)
       ];
 
       const expected = [
@@ -195,14 +193,13 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign(
+          {
+            "status": "queued"
+          }, workflowData),
+        Object.assign({
           "status": "queued"
-        },
-        {
-          ...workflowData,
-          "status": "queued"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -223,14 +220,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "queued"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "build_num": "not_queued"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -251,14 +246,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "running"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "running"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -278,14 +271,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "queued"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "queued"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -305,18 +296,15 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "start_time": "1980-01-01T00:00:00Z"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "start_time": "1969-01-01T00:00:00Z"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "start_time": "1970-01-01T00:00:00Z"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -336,21 +324,18 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "lifecycle": "finished",
           "stop_time": "1970-01-01T00:00:00Z"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "lifecycle": "finished",
           "stop_time": "1980-01-01T00:00:00Z"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "lifecycle": "finished",
           "stop_time": "1969-01-01T00:00:00Z"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -370,20 +355,17 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "lifecycle": "finished",
           "stop_time": "1970-01-01T00:00:00Z"
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "lifecycle": "running",
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "lifecycle": "finished",
           "stop_time": "1969-01-01T00:00:00Z"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -403,14 +385,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "no_tests" // Gray
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "failed", // Red
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -430,14 +410,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "no_tests" // Gray
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "running", // Blue
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -457,14 +435,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "success", // Green
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "no_tests" // Gray
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -484,14 +460,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "status": "success", // Green
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "status": "success" // Green
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -511,14 +485,12 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
+        Object.assign({
           "outcome": "success",
-        },
-        {
-          ...workflowData,
+        }, workflowData),
+        Object.assign({
           "outcome": "timedout"
-        }
+        }, workflowData)
       ];
 
       const expected = [
@@ -538,20 +510,16 @@ describe("CircleCI service", function () {
       };
 
       const workflow = [
-        {
-          ...workflowData,
-        },
-        {
-          ...workflowData,
-        }
+        workflowData,
+        workflowData
       ];
 
       const expected = [
         {
           "url": "https://circleci.com/workflow-run/Some_Workflow_ID"
         },
-      ];      
+      ];
       expect(circleci.formatWorkflow(workflow)).shallowDeepEqual(expected);
     });
-  })
+  });
 });

@@ -122,7 +122,7 @@ module.exports = function() {
         "fixed", "success"
       ];
 
-      return order.indexOf(a) - order.indexOf(b)
+      return order.indexOf(a) - order.indexOf(b);
     },
     formatBuild = function (build) {
       const { vcs, username, project } = self.configuration;
@@ -151,7 +151,7 @@ module.exports = function() {
       const { vcs, username, project } = self.configuration;
 
       if (buildsGroup.some(build => build.in_workflow=== false)) {
-        return buildsGroup.map(build => self.formatBuild(build))
+        return buildsGroup.map(build => self.formatBuild(build));
       }
 
       return [{

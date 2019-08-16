@@ -547,7 +547,8 @@ Supports the [CircleCI](https://circleci.com) service
     "vcs": "bitbucket",
     "username": "marcells",
     "project": "node-build-monitor",
-    "branch": "master"
+    "branch": "master",
+    "groupByWorkflow": true
   }
 }
 ```
@@ -560,6 +561,7 @@ Supports the [CircleCI](https://circleci.com) service
 | `username`        | Project username or team name
 | `project`         | Project name (usually your repository)
 | `branch`          | Optional. A specific branch to display exclusively.
+| `groupByWorkflow` | Optional. Groups jobs by workflow. Default `false`.
 
 ### Run the standalone version (easiest way)
 

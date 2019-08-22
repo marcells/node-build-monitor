@@ -66,8 +66,7 @@ module.exports = function() {
     },
 
     groupBuildsByWorkflow = function (builds) {
-      return Object.values(
-        builds.reduce(function (accumulator, curBuild, index) {
+      const grouped = builds.reduce(function (accumulator, curBuild, index) {
           if (!curBuild.workflows) {
             curBuild.in_workflow = false;
             accumulator[index] = [curBuild];
@@ -82,8 +81,11 @@ module.exports = function() {
           }
 
           return accumulator;
-        }, {})
-      );
+        }, {});
+
+        return Object.keys(grouped).map(function(key) {
+          return grouped[key];
+        })
     },
     parseDate = function (isoString) {
       return new Date(isoString);

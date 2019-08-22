@@ -2,7 +2,7 @@ var request = require("request");
 
 module.exports = function() {
   var self = this,
-    requestBuilds = function (callback) {
+    requestBuilds = function(callback) {
       const {
         vcs,
         username,
@@ -19,7 +19,7 @@ module.exports = function() {
 
       const url = `${
         self.api_base
-        }/project/${vcs}/${username}/${project}${branchSuffix}`;
+      }/project/${vcs}/${username}/${project}${branchSuffix}`;
 
       if (self.configuration.debug) {
         console.info(`Requesting GET ${url}`);
@@ -36,7 +36,7 @@ module.exports = function() {
           },
           json: true
         },
-        function (error, response, body) {
+        function(error, response, body) {
           if (!body) {
             error = `Invalid response ${JSON.stringify(response)}`;
           }
@@ -44,8 +44,8 @@ module.exports = function() {
         }
       );
     },
-    queryBuilds = function (callback) {
-      requestBuilds(function (error, body) {
+    queryBuilds = function(callback) {
+      requestBuilds(function(error, body) {
         if (error) {
           callback(error);
           return;
@@ -64,31 +64,32 @@ module.exports = function() {
         }
       });
     },
+    groupBuildsByWorkflow = function(builds) {
+      const grouped = builds.reduce(function(accumulator, curBuild, index) {
+        if (!curBuild.workflows) {
+          curBuild.in_workflow = false;
+          accumulator[index] = [curBuild];
+        } else {
+          curBuild.in_workflow = true;
 
-    groupBuildsByWorkflow = function (builds) {
-      return Object.values(
-        builds.reduce(function (accumulator, curBuild, index) {
-          if (!curBuild.workflows) {
-            curBuild.in_workflow = false;
-            accumulator[index] = [curBuild];
-          } else {
-            curBuild.in_workflow = true;
-
-            if (!accumulator[curBuild.workflows.workflow_id]) {
-              accumulator[curBuild.workflows.workflow_id] = [];
-            }
-
-            accumulator[curBuild.workflows.workflow_id].push(curBuild);
+          if (!accumulator[curBuild.workflows.workflow_id]) {
+            accumulator[curBuild.workflows.workflow_id] = [];
           }
 
-          return accumulator;
-        }, {})
-      );
+          accumulator[curBuild.workflows.workflow_id].push(curBuild);
+        }
+
+        return accumulator;
+      }, {});
+
+      return Object.keys(grouped).map(function(key) {
+        return grouped[key];
+      });
     },
-    parseDate = function (isoString) {
+    parseDate = function(isoString) {
       return new Date(isoString);
     },
-    getStatus = function (status) {
+    getStatus = function(status) {
       switch (status) {
         case "retried":
         case "running":
@@ -115,16 +116,26 @@ module.exports = function() {
           return null;
       }
     },
-    orderStatuses = function (a, b) {
+    orderStatuses = function(a, b) {
       const order = [
-        "failed", "infrastructure_failed", "timedout",
-        "retried", "running", "queued", "not_run", "not_running", "no_tests", "scheduled", "canceled",
-        "fixed", "success"
+        "failed",
+        "infrastructure_failed",
+        "timedout",
+        "retried",
+        "running",
+        "queued",
+        "not_run",
+        "not_running",
+        "no_tests",
+        "scheduled",
+        "canceled",
+        "fixed",
+        "success"
       ];
 
       return order.indexOf(a) - order.indexOf(b);
     },
-    formatBuild = function (build) {
+    formatBuild = function(build) {
       const { vcs, username, project } = self.configuration;
 
       return {
@@ -142,41 +153,73 @@ module.exports = function() {
         status: getStatus(build.status),
         statusText: build.status,
         reason: build.why,
-        hasErrors: build.outcome === "infrastructure_fail" || build.outcome === "no_tests" || build.outcome === "timedout",
+        hasErrors:
+          build.outcome === "infrastructure_fail" ||
+          build.outcome === "no_tests" ||
+          build.outcome === "timedout",
         hasWarnings: false,
         url: build.build_url
       };
     },
-    formatWorkflow = function (buildsGroup) {
+    formatWorkflow = function(buildsGroup) {
       const { vcs, username, project } = self.configuration;
 
-      if (buildsGroup.some(build => build.in_workflow=== false)) {
+      if (buildsGroup.some(build => build.in_workflow === false)) {
         return buildsGroup.map(build => self.formatBuild(build));
       }
 
-      return [{
-        id: `circle|${vcs}|${username}|${project}|workflow/${
-          buildsGroup[0].workflows.workflow_id
+      return [
+        {
+          id: `circle|${vcs}|${username}|${project}|workflow/${
+            buildsGroup[0].workflows.workflow_id
           }`,
-        project: `${username}/${project}`,
-        branch: buildsGroup[0].branch,
-        commit: buildsGroup[0].vcs_revision,
-        definition: buildsGroup[0].subject,
-        number: buildsGroup.map(b => b.build_num).join(', '),
-        isQueued: buildsGroup.every(b => b.status === "queued"),
-        isRunning: buildsGroup.some(b => b.status === "running"),
-        startedAt: parseDate( buildsGroup.map(b => b.start_time).sort().shift() ),
-        finishedAt: (buildsGroup.every(b => b.lifecycle !== "running") ?
-          parseDate( buildsGroup.map(b => b.stop_time).sort().reverse().shift() ) :
-          null),
-        requestedFor: buildsGroup[0].author_name || buildsGroup[0].author_email,
-        status: getStatus(buildsGroup.map(b => b.status).sort(orderStatuses).shift()),
-        statusText: buildsGroup.map(b => b.status).sort(orderStatuses).shift(),
-        reason: buildsGroup[0].why,
-        hasErrors: buildsGroup.some(b => b.outcome === "infrastructure_fail" || b.outcome === "no_tests" || b.outcome === "timedout"),
-        hasWarnings: false,
-        url: `https://circleci.com/workflow-run/${buildsGroup[0].workflows.workflow_id}`
-      }];
+          project: `${username}/${project}`,
+          branch: buildsGroup[0].branch,
+          commit: buildsGroup[0].vcs_revision,
+          definition: buildsGroup[0].subject,
+          number: buildsGroup.map(b => b.build_num).join(", "),
+          isQueued: buildsGroup.every(b => b.status === "queued"),
+          isRunning: buildsGroup.some(b => b.status === "running"),
+          startedAt: parseDate(
+            buildsGroup
+              .map(b => b.start_time)
+              .sort()
+              .shift()
+          ),
+          finishedAt: buildsGroup.every(b => b.lifecycle !== "running")
+            ? parseDate(
+                buildsGroup
+                  .map(b => b.stop_time)
+                  .sort()
+                  .reverse()
+                  .shift()
+              )
+            : null,
+          requestedFor:
+            buildsGroup[0].author_name || buildsGroup[0].author_email,
+          status: getStatus(
+            buildsGroup
+              .map(b => b.status)
+              .sort(orderStatuses)
+              .shift()
+          ),
+          statusText: buildsGroup
+            .map(b => b.status)
+            .sort(orderStatuses)
+            .shift(),
+          reason: buildsGroup[0].why,
+          hasErrors: buildsGroup.some(
+            b =>
+              b.outcome === "infrastructure_fail" ||
+              b.outcome === "no_tests" ||
+              b.outcome === "timedout"
+          ),
+          hasWarnings: false,
+          url: `https://circleci.com/workflow-run/${
+            buildsGroup[0].workflows.workflow_id
+          }`
+        }
+      ];
     };
 
   self.configure = function(config) {

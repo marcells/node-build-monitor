@@ -85,7 +85,7 @@ module.exports = function() {
 
         return Object.keys(grouped).map(function(key) {
           return grouped[key];
-        })
+        });
     },
     parseDate = function (isoString) {
       return new Date(isoString);

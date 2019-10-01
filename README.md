@@ -31,6 +31,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
 - [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
 - [PRTG](https://www.paessler.com/prtg) <sub><sup>([Configuration](#prtg))</sup></sub>
+- [Drone CI](https://www.drone.io) <sub><sup>([Configuration](#drone-ci))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -531,6 +532,30 @@ Supports the [PRTG](https://www.paessler.com/prtg) monitoring service.
 | `sensorId`   | Sensor Identifier
 | `username`   | Name of the user
 | `passhash`   | Passhash of the user (Visible under `Configuration` - `My Account`)
+
+
+#### Drone CI
+
+Supports the [Drone CI](https://drone.io) build service (version 1.0 minimum)
+
+```json
+{
+  "name": "Drone",
+  "configuration": {
+    "debug": false,
+    "url": "drone.company.io",
+    "token": "s0meDr0neMachineToken",
+    "slug": "marcells/node-build-monitor"
+  }
+}
+```
+
+| Setting          | Description
+|------------------|--------------------------------------------------------------------------------------------
+| `slug`           | The name of the build (usually your GitHub user name and the project name)
+| `url`            | The Drone CI server (cloud.drone.io, ci.company.io...)..
+| `token`          | The Drone access token, to access the builds. We recommand generating a machine token using the Drone CLI command `drone user add build-monitor --machine`.
+| `branch`  | Set this value to filter the builds from a specific branch. (ie. `master`)
 
 ### Run the standalone version (easiest way)
 

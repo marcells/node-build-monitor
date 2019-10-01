@@ -14,6 +14,7 @@ function TfsRestRelease() {
   let basicAuth = null;
   let instance = null;
   let project = null;
+  let protocol = null;
   let params = null;
   let groupbyrelease = null;
 
@@ -122,7 +123,8 @@ function TfsRestRelease() {
     this.configuration = config;
     basicAuth = new Buffer(`${config.username}:${config.pat}`)
       .toString('base64');
-    instance = config.instance;
+    protocol = config.protocol;
+	instance = config.instance;
     params = config.queryparams;
     project = config.project;
     groupbyrelease = config.groupbyrelease || false;
@@ -136,8 +138,11 @@ function TfsRestRelease() {
    *  requested Release information
    */
   const getListOfRelease = (callback) => {
-    const url = `https://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
-
+	if(!protocol) {
+		protocol = "https"
+	}
+	
+    const url = `${protocol}://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
     const options = {
       url,
       headers: {

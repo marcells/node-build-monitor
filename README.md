@@ -549,6 +549,8 @@ Supports the [CircleCI](https://circleci.com) service
     "project": "node-build-monitor",
     "branch": "master",
     "groupByWorkflow": true
+  }
+}
 ```
 
 | Setting           | Description

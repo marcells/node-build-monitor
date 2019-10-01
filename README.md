@@ -31,6 +31,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [CCTray](https://sourceforge.net/projects/ccnet/) <sub><sup>([Configuration](#cctray))</sup></sub>
 - [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
 - [PRTG](https://www.paessler.com/prtg) <sub><sup>([Configuration](#prtg))</sup></sub>
+- [Circle CI](https://www.circleci.com) <sub><sup>([Configuration](#circleci))</sup></sub>
 - [Drone CI](https://www.drone.io) <sub><sup>([Configuration](#drone-ci))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
@@ -533,6 +534,32 @@ Supports the [PRTG](https://www.paessler.com/prtg) monitoring service.
 | `username`   | Name of the user
 | `passhash`   | Passhash of the user (Visible under `Configuration` - `My Account`)
 
+#### CircleCI
+
+Supports the [CircleCI](https://circleci.com) service
+
+```json
+{
+  "name": "CircleCI",
+  "configuration": {
+    "debug": false,
+    "token": "somePersonalToken",
+    "vcs": "bitbucket",
+    "username": "marcells",
+    "project": "node-build-monitor",
+    "branch": "master",
+    "groupByWorkflow": true
+```
+
+| Setting           | Description
+|-------------------|--------------------------------------------------------------------------------------------
+| `debug`           | Should the debug be enabled
+| `token`           | A CircleCI personal token
+| `vcs`             | The VCS type of the project (bitbucket|github)
+| `username`        | Project username or team name
+| `project`         | Project name (usually your repository)
+| `branch`          | Optional. A specific branch to display exclusively.
+| `groupByWorkflow` | Optional. Groups jobs by workflow. Default `false`.
 
 #### Drone CI
 
@@ -555,7 +582,7 @@ Supports the [Drone CI](https://drone.io) build service (version 1.0 minimum)
 | `slug`           | The name of the build (usually your GitHub user name and the project name)
 | `url`            | The Drone CI server (cloud.drone.io, ci.company.io...)..
 | `token`          | The Drone access token, to access the builds. We recommand generating a machine token using the Drone CLI command `drone user add build-monitor --machine`.
-| `branch`  | Set this value to filter the builds from a specific branch. (ie. `master`)
+| `branch`         | Set this value to filter the builds from a specific branch. (ie. `master`)
 
 ### Run the standalone version (easiest way)
 

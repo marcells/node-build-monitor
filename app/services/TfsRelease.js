@@ -138,10 +138,10 @@ function TfsRestRelease() {
    *  requested Release information
    */
   const getListOfRelease = (callback) => {
-	if(!protocol) {
-		protocol = "https"
-	}
-	
+    if(!protocol) {
+        protocol = "https"
+    }
+    
     const url = `${protocol}://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
     const options = {
       url,

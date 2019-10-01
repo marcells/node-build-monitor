@@ -124,7 +124,7 @@ function TfsRestRelease() {
     basicAuth = new Buffer(`${config.username}:${config.pat}`)
       .toString('base64');
     protocol = config.protocol;
-	instance = config.instance;
+    instance = config.instance;
     params = config.queryparams;
     project = config.project;
     groupbyrelease = config.groupbyrelease || false;

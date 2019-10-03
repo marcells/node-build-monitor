@@ -232,6 +232,7 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
 {
   "name": "TfsRelease",
   "configuration": {
+    "protocol": "protocol",
     "project": "projectname",
     "instance": "instance",
     "username": "username",
@@ -244,6 +245,7 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
 
 | Setting          | Description
 |------------------|----------------------------------------------------------------------------------------------------------------------------------------
+| `protocol`       | Use HTTP or HTTPS will default to HTTPS if it is not set
 | `project`        | Team project ID or name
 | `instance`       | Azure DevOps account without `https://` (dev.azure.com/youraccount/yourcollection) or TFS server (tfs-server:8080/tfs/yourcollection) including collection.
 | `username`       | Username used to login

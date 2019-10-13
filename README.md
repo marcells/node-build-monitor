@@ -18,8 +18,8 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [Travis CI](https://travis-ci.org/) <sub><sup>([Configuration](#travis-ci))</sup></sub>
 - [Jenkins](http://jenkins-ci.org/) <sub><sup>([Configuration](#jenkins))</sup></sub>
 - [TeamCity](https://www.jetbrains.com/teamcity/) <sub><sup>([Configuration](#teamcity))</sup></sub>
-- [Azure DevOps and Team Foundation Server Builds](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
-- [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/services/devops/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
+- [Azure DevOps and Team Foundation Server Builds](https://azure.microsoft.com/en-us/services/devops/server/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-builds))</sup></sub>
+- [Azure DevOps and Team Foundation Server Releases](https://azure.microsoft.com/en-us/services/devops/server/) <sub><sup>([Configuration](#azure-devops-and-team-foundation-server-releases))</sup></sub>
 - [Team Foundation Server 2013 and lower (on-premise) via tfs-proxy](https://github.com/marcells/tfs-proxy) <sub><sup>([Configuration](#team-foundation-server-2013-and-lower-on-premise))</sup></sub>
 - [Team Foundation Server 2015/2017 (on-premise)](https://www.visualstudio.com/en-us/products/tfs-overview-vs.aspx) <sub><sup>([Configuration](#team-foundation-server-20152017-on-premise))</sup></sub>
 - [GitLab (on-premise, beta)](https://gitlab.com) <sub><sup>([Configuration](#gitlab-on-premise-beta))</sup></sub>
@@ -32,7 +32,7 @@ __Here's a demo:__ [http://builds.mspi.es](http://builds.mspi.es) <sub><sup>([ot
 - [Shippable](https://shippable.com/) <sub><sup>([Configuration](#shippable))</sup></sub>
 - [PRTG](https://www.paessler.com/prtg) <sub><sup>([Configuration](#prtg))</sup></sub>
 - [Circle CI](https://www.circleci.com) <sub><sup>([Configuration](#circleci))</sup></sub>
-- [Drone CI](https://www.drone.io) <sub><sup>([Configuration](#drone-ci))</sup></sub>
+- [Drone](https://www.drone.io) <sub><sup>([Configuration](#drone))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
@@ -565,9 +565,9 @@ Supports the [CircleCI](https://circleci.com) service
 | `branch`          | Optional. A specific branch to display exclusively.
 | `groupByWorkflow` | Optional. Groups jobs by workflow. Default `false`.
 
-#### Drone CI
+#### Drone
 
-Supports the [Drone CI](https://drone.io) build service (version 1.0 minimum)
+Supports the [Drone](https://drone.io) build service (version 1.0 minimum)
 
 ```json
 {

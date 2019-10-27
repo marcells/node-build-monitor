@@ -34,7 +34,7 @@ module.exports = function () {
                 } catch (parseError) {
                     callback(parseError, null);
                 }
-            })
+            });
         },
         fetchDeployment = function (build, callback) {
             const url = self.configuration.url+ "/rest/api/latest/deploy/dashboard/"+self.configuration.projectId;
@@ -57,14 +57,14 @@ module.exports = function () {
                 } catch (parseError) {
                     callback(parseError, null);
                 }
-            })
+            });
         },
         parseDeployResponse = function(res){
             return _.flatMap(res, ({ environmentStatuses, deploymentProject }) =>
             _.map(environmentStatuses, ({ environment, deploymentResult }) =>
               ({
                 id: self.configuration.slug + '|' + deploymentResult.id,
-                project: environment.name + ' ➜ ' + deploymentProject.name + ' [' + deploymentResult['deploymentVersionName'] + ']',
+                project: environment.name + ' ➜ ' + deploymentProject.name + ' [' + deploymentResult.deploymentVersionName + ']',
                 number: deploymentResult.key.resultNumber,
                 isRunning: !deploymentResult.finishedDate,
                 startedAt: deploymentResult.startedDate,
@@ -79,7 +79,7 @@ module.exports = function () {
                 environmentName: environment.name
               })
             )
-           )
+           );
         },
         getAuthors = function (reason) {
             var urlRegex = /<a[^>]*>([\s\S]*?)<\/a>/g;

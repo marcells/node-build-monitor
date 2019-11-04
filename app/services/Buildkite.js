@@ -78,9 +78,8 @@ module.exports = function() {
           const result = response.organization.pipelines.edges.map(x => {
             const pipeline = x.node;
             const build =
-              x.node.builds.edges.length > 0
-                ? x.node.builds.edges[0].node
-                : {
+              x.node.builds.edges.length > 0 ? 
+                x.node.builds.edges[0].node : {
                     branch: "master",
                     isRunning: false,
                     createdBy: {

@@ -43,13 +43,6 @@ module.exports = function () {
             var statuses = [ "Blue", "Green", "Red", "Gray" ];
             return statuses[status];
         },
-        getRequestedFor = function(text) {
-            var map = {
-                webhook: 'push'
-            };
-
-            return map[text] || text;
-        },
         getStatusText = function(text) {
             var map = {
                 success: 'finished'
@@ -65,10 +58,10 @@ module.exports = function () {
                 isRunning: res.status === 0,
                 startedAt: parseDate(res.triggered_at),
                 finishedAt: parseDate(res.finished_at),
-                requestedFor: '',
+                requestedFor: (res.original_build_params.pull_request_author || res.triggered_by || '') + " building " + res.branch,
                 status: getStatus(res.status),
                 statusText: getStatusText(res.status_text),
-                reason: getRequestedFor(res.triggered_by),
+                reason: res.triggered_workflow,
                 hasErrors: false,
                 hasWarnings: false,
                 url: 'https://www.' + self.configuration.url + '/build/' + res.slug

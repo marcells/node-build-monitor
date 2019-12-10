@@ -96,7 +96,7 @@ for (var i = 0; i < config.services.length; i++) {
         service = new (require('./services/' + serviceConfig.name))();
 
     service.configure(tryExpandEnvironmentVariables(config.monitor, serviceConfig.configuration));
-
+    service.add_direct_url(config.monitor.direct_url);
     monitor.watchOn(service);
 }
 

@@ -53,9 +53,11 @@ function TfsRestRelease() {
    * @private
    */
   const allowedAPIVersions = Object.freeze({
-    '3.2':      '3.2-preview',
-    '4.1':      '4.1-preview',
-    undefined:  '4.1-preview'
+    '3.2':            '3.2-preview',
+    '3.2-preview':    '3.2-preview',
+    '4.1':            '4.1-preview',
+    '4.1-preview':    '4.1-preview',
+    undefined:        '4.1-preview'
   });
 
   /**

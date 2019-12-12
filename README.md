@@ -239,7 +239,7 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
     "pat": "personalaccesstoken",
     "queryparams" : "&$top=10",
     "groupbyrelease": false,
-    "apiVersion": "4.1"
+    "apiVersion": "4.1-preview"
   }
 }
 ```

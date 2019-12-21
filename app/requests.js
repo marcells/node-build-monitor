@@ -39,7 +39,7 @@ module.exports = {
                   callback(error);
                 } else {
                   // If the request never reached the server, then chances are the error object is null, so lets return a status code error instead
-                  callback(new Error(httpErrRes));
+                  callback(new Error(httpErrRes), body);
                 }
               }
               else{

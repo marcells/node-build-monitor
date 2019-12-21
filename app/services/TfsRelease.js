@@ -17,6 +17,7 @@ function TfsRestRelease() {
   let protocol = null;
   let params = null;
   let groupbyrelease = null;
+  let apiVersion = null;
 
   /**
    * This object is the representation of resultFilter mentioned in the docs
@@ -45,6 +46,18 @@ function TfsRestRelease() {
     partiallySucceeded: '#F8A800',
     succeeded: 'Green',
     undefined: 'Gray'
+  });
+
+  /**
+   * This object defines the compatable api versions that we are allowed to use
+   * @private
+   */
+  const allowedAPIVersions = Object.freeze({
+    '3.2':            '3.2-preview',
+    '3.2-preview':    '3.2-preview',
+    '4.1':            '4.1-preview',
+    '4.1-preview':    '4.1-preview',
+    undefined:        '4.1-preview'
   });
 
   /**
@@ -101,6 +114,7 @@ function TfsRestRelease() {
    * @property {string} pat Personal Access Token with access to Release
    *  information
    * @property {boolean} groupbyrelease Group builds by same release id
+   * @property {string} apiVersion The TFS API version to use. This must be at least 3.2-preview or higher
    */
 
   /**
@@ -128,6 +142,7 @@ function TfsRestRelease() {
     params = config.queryparams;
     project = config.project;
     groupbyrelease = config.groupbyrelease || false;
+    apiVersion = allowedAPIVersions[config.apiVersion];
 
     console.log(config);
   };
@@ -142,7 +157,7 @@ function TfsRestRelease() {
         protocol = "https";
     }
     
-    const url = `${protocol}://${instance}/${project}/_apis/release/deployments?api-version=4.1-preview${params}`;
+    const url = `${protocol}://${instance}/${project}/_apis/release/deployments?api-version=${apiVersion}${params}`;
     const options = {
       url,
       headers: {
@@ -151,6 +166,10 @@ function TfsRestRelease() {
     };
     request.makeRequest(options, (err, body) => {
       transformData(err, body, callback);
+      if (err) {
+          console.log(url);
+          console.log(body || null);
+      }
     });
 
     /**
@@ -246,6 +265,12 @@ function TfsRestRelease() {
      * @returns {Release} the object is in the format accepted by the application
      */
     const transformer = (release) => {
+      let startTime = new Date(release.startedOn);
+      // api version 3.2 populates 'null' timestamps with 1/1/1 (for some unhelpful reason)
+      if (startTime.getTime() === new Date('0001-01-01T00:00:00').getTime()) {
+          starTime = new Date(release.queuedOn);
+      }
+      
       let result = {
         finishedAt: release.completedOn ? new Date(release.completedOn) : new Date(),
         hasErrors: release.deploymentStatus === resultFilter.failed,
@@ -256,7 +281,7 @@ function TfsRestRelease() {
         project: release.releaseDefinition.name,
         reason: release.reason,
         requestedFor: release.requestedFor.displayName,
-        startedAt: new Date(release.queuedOn),
+        startedAt: startTime,
         status: colorScheme[resultFilter[release.deploymentStatus ? release.deploymentStatus : resultFilter.inProgress]],
         statusText: release.deploymentStatus ? release.deploymentStatus : resultFilter.inProgress,
         url: release.release.webAccessUri

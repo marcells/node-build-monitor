@@ -239,7 +239,8 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
     "username": "username",
     "pat": "personalaccesstoken",
     "queryparams" : "&$top=10",
-    "groupbyrelease": false
+    "groupbyrelease": false,
+    "apiVersion": "4.1-preview"
   }
 }
 ```
@@ -253,11 +254,12 @@ Supports Azure Piplines, the [Azure DevOps](https://azure.microsoft.com/services
 | `pat`            | Personal Access Token with access to releases
 | `queryparams`    | Any query params that REST API accepts, more info: [VSTS Rest Uri parameters](https://docs.microsoft.com/en-us/rest/api/vsts/release/deployments/list?view=vsts-rest-4.1#URI_Parameters)
 | `groupbyrelease` | Group builds by same release id. Defaults to `false`.
+| `apiVersion`     | The API version to target. Defaults to `4.1-preview`. Allowed values are: `3.2-preview` `4.1-preview`
 
 _Note_: [Create a personal access token](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate) with access to read builds.
 
 - The url formed is of the following format:
-  `https://{instance}/{project}/_apis/release/deployments?api-version=4.1-preview[queryparams]`
+  `https://{instance}/{project}/_apis/release/deployments?api-version={apiVersion}[queryparams]`
 - Please note that all the configuration fields are mandatory. If a field is not required like `queryparams`, please provide empty string in the configuration.
 
 #### Team Foundation Server 2013 and lower (on-premise)

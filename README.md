@@ -620,7 +620,7 @@ Supports the [Drone](https://drone.io) build service (version 1.0 minimum)
 | `url`            | The Drone CI server (cloud.drone.io, ci.company.io...)..
 | `token`          | The Drone access token, to access the builds. We recommand generating a machine token using the Drone CLI command `drone user add build-monitor --machine`.
 | `branch`         | Set this value to filter the builds from a specific branch. (ie. `master`)
-| `event `         | Set this value to filter the builds from a specific event. (ie. `push`, `promote`, `pull_request`)
+| `event`          | Set this value to filter the builds from a specific event. (ie. `push`, `promote`, `pull_request`)
 
 ### Run the standalone version (easiest way)
 

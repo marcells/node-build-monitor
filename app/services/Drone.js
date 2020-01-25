@@ -27,10 +27,15 @@ module.exports = function() {
       );
     },
     filterBuilds = function(build) {
+      var result = true;
       if (self.configuration.branch) {
-        return build.target === self.configuration.branch;
+        result = build.target === self.configuration.branch;
       }
-      return true;
+
+      if (self.configuration.event) {
+        result = build.event === self.configuration.event;
+      }
+      return result;
     },
     queryBuilds = function(callback) {
       requestBuilds(function(error, body) {

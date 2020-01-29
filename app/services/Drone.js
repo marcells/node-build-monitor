@@ -90,7 +90,7 @@ module.exports = function() {
         status: getStatus(res.status),
         statusText: res.status,
         reason: res.event,
-        hasErrors: res.status === "error",
+        hasErrors: res.status === "error" || res.status === "failure",
         hasWarnings: res.status === "blocked",
         url: `https://${self.configuration.url}/${self.configuration.slug}/${
           res.number

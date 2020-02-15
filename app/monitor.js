@@ -170,17 +170,29 @@ module.exports = function () {
 
             plugin.check(function (error, pluginBuilds) {
                 if (error) {
-                  console.log('**********************************************************************');
-                  console.log('An error occured when fetching builds for the following configuration:');
-                  console.log('----------------------------------------------------------------------');
-                  console.log(plugin.configuration);
-                  console.log('----------------------------------------------------------------------');
-                  console.log();
-                  console.error(error);
-                  console.log('**********************************************************************');
-                  console.log();
-                  console.log();
+                  if (self.configuration.debug) {
+                    console.log('**********************************************************************');
+                    console.log('An error occured when fetching builds for the following configuration:');
+                    console.log('----------------------------------------------------------------------');
+                    console.log(plugin.configuration);
+                    console.log('----------------------------------------------------------------------');
+                    console.log();
+                    console.error(error);
+                    console.log('**********************************************************************');
+                    console.log();
+                    console.log();
+                  } else {
+                    console.log('**********************************************************************');
+                    console.log('An error occured when fetching builds:');
+                    console.log('----------------------------------------------------------------------');
+                    console.error(error);
+                    console.log('**********************************************************************');
+                    console.log();
+                    console.log();
+                  }
+                  
                   callback();
+                  
                   return;
                 }
 

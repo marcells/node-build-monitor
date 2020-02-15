@@ -95,7 +95,7 @@ In the `monitor` section you can set up some general settings:
 | `sortOrder`                  | The sort order for buils, options : `project`, `date`
 | `errorsFirst`                | Errors should be before success elements, apply sortOrder after that
 | `expandEnvironmentVariables` | Tries to expand root service configuration properties from environment variables (e.g.: "${MY_PASSWORD}" will look for an environment variable `MY_PASSWORD` and will use that)
-| `debug`                      | Enable or disable some debug output on the console
+| `debug`                      | Enable or disable some debug output on the console. Useful, if you're hunting an issue in a plugin or its configuration.
 
 The `services` section accepts an array, each describing a single build service configuration (you are allowed to mix different services):
 

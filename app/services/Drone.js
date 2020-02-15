@@ -27,15 +27,16 @@ module.exports = function() {
       );
     },
     filterBuilds = function(build) {
-      var result = true;
+      var matchesBranch, matchesEvent = true;
+
       if (self.configuration.branch) {
-        result = build.target === self.configuration.branch;
+        matchesBranch = build.target === self.configuration.branch;
       }
 
       if (self.configuration.event) {
-        result = build.event === self.configuration.event;
+        matchesEvent = build.event === self.configuration.event;
       }
-      return result;
+      return matchesBranch && matchesEvent;
     },
     queryBuilds = function(callback) {
       requestBuilds(function(error, body) {

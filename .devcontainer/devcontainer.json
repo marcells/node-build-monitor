@@ -1,0 +1,13 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.101.1/containers/javascript-node-12
+{
+	"name": "Node.js 12",
+	"dockerFile": "Dockerfile",
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"extensions": [
+		"dbaeumer.vscode-eslint"
+	],"forwardPorts": [ 3000 ],
+	"postCreateCommand": "yarn install",
+}

@@ -7,13 +7,14 @@ chai.use(sinonChai);
 
 describe('Drone service', function () {
   var droneCIUrl = 'droneserver.com';
+  var droneSlug = 'someSlug';
 
   context('Filtering Builds', function () {
     var droneService;
 
     beforeEach(function () {
       nock('https://' + droneCIUrl)
-        .get('/api/repos/someSlug/builds')
+        .get('/api/repos/' + droneSlug + '/builds')
         .reply('200',
           JSON.stringify([
             createDroneBuildEvent('master', 'push'),
@@ -31,11 +32,11 @@ describe('Drone service', function () {
       nock.cleanAll()
     })
 
-    it('should not filter out no builds when no branch or event', function (done) {
+    it('should filter out no builds when no branch or event', function (done) {
       droneService.configure({
         url: droneCIUrl,
         token: 'someToken',
-        slug: 'someSlug'
+        slug: droneSlug
       });
 
       droneService.check(function (error, builds) {
@@ -75,11 +76,12 @@ describe('Drone service', function () {
         done();
       });
     });
+
     it('should filter out builds when only branch', function (done) {
       droneService.configure({
         url: droneCIUrl,
         token: 'someToken',
-        slug: 'someSlug',
+        slug: droneSlug,
         branch: 'master'
       });
 
@@ -110,11 +112,12 @@ describe('Drone service', function () {
       });
 
     });
+
     it('should filter out builds when only event', function (done) {
       droneService.configure({
         url: droneCIUrl,
         token: 'someToken',
-        slug: 'someSlug',
+        slug: droneSlug,
         event: 'push'
       });
 
@@ -134,11 +137,12 @@ describe('Drone service', function () {
         done();
       });
     });
+
     it('should filter out builds when branch and event', function (done) {
       droneService.configure({
         url: droneCIUrl,
         token: 'someToken',
-        slug: 'someSlug',
+        slug: droneSlug,
         event: 'push',
         branch: 'master'
       });

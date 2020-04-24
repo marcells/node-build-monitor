@@ -1,9 +1,8 @@
-var request = require("request"),
-  async = require("async");
+var request = require("request");
 
-module.exports = function() {
+module.exports = function () {
   var self = this,
-    requestBuilds = function(callback) {
+    requestBuilds = function (callback) {
       const url = `${self.api_base}/repos/${self.configuration.slug}/builds`;
       if (self.configuration.debug) {
         console.info(`Requesting GET ${url}`);
@@ -18,7 +17,7 @@ module.exports = function() {
           },
           json: true
         },
-        function(error, response, body) {
+        function (error, response, body) {
           if (!body || body.message === "Unauthorized") {
             error = `Invalid response ${JSON.stringify(response)}`;
           }
@@ -26,9 +25,9 @@ module.exports = function() {
         }
       );
     },
-    filterBuilds = function(build) {
+    filterBuilds = function (build) {
       var matchesBranch = true,
-          matchesEvent = true;
+        matchesEvent = true;
 
       if (self.configuration.branch) {
         matchesBranch = build.target === self.configuration.branch;
@@ -39,8 +38,8 @@ module.exports = function() {
       }
       return matchesBranch && matchesEvent;
     },
-    queryBuilds = function(callback) {
-      requestBuilds(function(error, body) {
+    queryBuilds = function (callback) {
+      requestBuilds(function (error, body) {
         if (error) {
           callback(error);
           return;
@@ -52,10 +51,10 @@ module.exports = function() {
         );
       });
     },
-    parseDate = function(unix_timestamp) {
+    parseDate = function (unix_timestamp) {
       return new Date(unix_timestamp * 1000);
     },
-    getStatus = function(status) {
+    getStatus = function (status) {
       // Statuses : https://github.com/drone/drone/blob/5b6a3d8ff4c37283cf37df20d871cc8dfe439565/core/status.go
       switch (status) {
         case "pending":
@@ -80,7 +79,7 @@ module.exports = function() {
           return "Gray";
       }
     },
-    simplifyBuild = function(res) {
+    simplifyBuild = function (res) {
       return {
         id: `drone|${self.configuration.slug}|${res.id}`,
         project: self.configuration.slug,
@@ -100,7 +99,7 @@ module.exports = function() {
       };
     };
 
-  self.configure = function(config) {
+  self.configure = function (config) {
     self.configuration = config;
 
     if (!self.configuration.slug) {
@@ -143,7 +142,7 @@ module.exports = function() {
     self.api_base = `https://${self.configuration.url}/api`;
   };
 
-  self.check = function(callback) {
+  self.check = function (callback) {
     queryBuilds(callback);
   };
 };

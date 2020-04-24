@@ -27,7 +27,8 @@ module.exports = function() {
       );
     },
     filterBuilds = function(build) {
-      var matchesBranch, matchesEvent = true;
+      var matchesBranch = true,
+          matchesEvent = true;
 
       if (self.configuration.branch) {
         matchesBranch = build.target === self.configuration.branch;

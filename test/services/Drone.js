@@ -26,11 +26,11 @@ describe('Drone service', function () {
           ])
         );
       droneService = new (require('../../app/services/Drone'));
-    })
+    });
 
     afterEach(function () {
       nock.cleanAll()
-    })
+    });
 
     it('should filter out no builds when no branch or event', function (done) {
       droneService.configure({

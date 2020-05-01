@@ -25,7 +25,7 @@ describe('Drone service', function () {
             createDroneBuildEvent('branch2', 'pull_request')
           ])
         );
-      droneService = new (require('../../app/services/Drone')());
+      droneService = new (require('../../app/services/Drone'))();
     });
 
     afterEach(function () {

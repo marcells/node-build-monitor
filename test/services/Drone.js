@@ -25,11 +25,11 @@ describe('Drone service', function () {
             createDroneBuildEvent('branch2', 'pull_request')
           ])
         );
-      droneService = new (require('../../app/services/Drone'));
+      droneService = new (require('../../app/services/Drone')());
     });
 
     afterEach(function () {
-      nock.cleanAll()
+      nock.cleanAll();
     });
 
     it('should filter out no builds when no branch or event', function (done) {

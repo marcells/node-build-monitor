@@ -41,8 +41,8 @@ module.exports = function () {
         flatten = function(arrayOfArray) {
             return [].concat.apply([], arrayOfArray);
         },
-        requestBuildsForJob = function (job, callback) {
-            requestBuildsForJobByUrl(job, self.configuration.url + '/job/' + job, callback);
+        requestBuildsForJob = function (job, jobUrl, callback) {
+            requestBuildsForJobByUrl(job, jobUrl, callback);
         },
         requestBuildsForJobByUrl = function (job, url, callback) {
             if (url.substr(url.length - 1, 1) !== '/') {
@@ -53,7 +53,6 @@ module.exports = function () {
                     callback(error);
                     return;
                 }
-
                 if (typeof self.configuration.numberOfBuildsPerJob !== 'undefined') {
                     data.builds = data.builds.slice(0, self.configuration.numberOfBuildsPerJob);
                 }
@@ -66,7 +65,7 @@ module.exports = function () {
             });
         },
         requestBuild = function (build, callback) {
-            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + build.jobId + '/' + build.number + '/api/json', function(error, data) {
+            makeRequest(requestWithDefaults, build.url + '/api/json', function(error, data) {
                 if (error) {
                     callback(error);
                     return;
@@ -78,6 +77,7 @@ module.exports = function () {
             });
         },
         requestJobsForView = function (viewId, callback) {
+            
             makeRequest(requestWithDefaults, self.configuration.url + '/view/' + viewId + '/api/json', function(error, data) {
                 if (error) {
                     callback(error);
@@ -87,8 +87,8 @@ module.exports = function () {
                 callback(error, data.jobs);
             });
         },
-        queryBuildsForJob = function (jobId, callback) {
-            requestBuildsForJob(jobId, function (error, body) {
+        queryBuildsForJob = function (jobId, jobUrl, callback) {
+            requestBuildsForJob(jobId, jobUrl, function (error, body) {
                 if (error) {
                     callback(error);
                     return;
@@ -105,9 +105,8 @@ module.exports = function () {
                   callback(error);
                   return;
                 }
-
                 async.map(body, function (job, callback) {
-                    queryBuildsForJob(job.name, callback);
+                    queryBuildsForJob(job.name, job.url, callback);
                 }, function (error, results) {
                     callback(error, flatten(results));
                 });

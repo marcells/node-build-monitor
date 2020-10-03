@@ -19,36 +19,39 @@ var request = require('request'),
         requestWithDefaults({
             'url': url,
             'headers': { 'Accept': 'application/json' }
-            },
-            function(error, response, body) {
-              if (error || response.statusCode !== 200) {
-                callback(error || true);
-                return;
-              }
+        },
+            function (error, response, body) {
+                if (error || response.statusCode !== 200) {
+                    callback(error || true);
+                    return;
+                }
 
-              try {
-                var json = JSON.parse(body);
-                callback(error, json);
-              } catch (e) {
-                callback (e);
-              }
-        });
+                try {
+                    var json = JSON.parse(body);
+                    callback(error, json);
+                } catch (e) {
+                    callback(e);
+                }
+            });
     };
 
 module.exports = function () {
     var self = this,
         requestWithDefaults,
-        flatten = function(arrayOfArray) {
+        flatten = function (arrayOfArray) {
             return [].concat.apply([], arrayOfArray);
         },
-        requestBuildsForJob = function (job, callback) {
-            requestBuildsForJobByUrl(job, self.configuration.url + '/job/' + job, callback);
+        requestBuildsForJob = function (job, jobUrl, callback) {
+            if (jobUrl == '') {
+                jobUrl = self.configuration.url + '/job/' + job;
+            }
+            requestBuildsForJobByUrl(job, jobUrl, callback);
         },
         requestBuildsForJobByUrl = function (job, url, callback) {
             if (url.substr(url.length - 1, 1) !== '/') {
                 url = url + '/';
             }
-            makeRequest(requestWithDefaults, url + 'api/json', function(error, data) {
+            makeRequest(requestWithDefaults, url + 'api/json', function (error, data) {
                 if (error) {
                     callback(error);
                     return;
@@ -66,7 +69,7 @@ module.exports = function () {
             });
         },
         requestBuild = function (build, callback) {
-            makeRequest(requestWithDefaults, self.configuration.url + '/job/' + build.jobId + '/' + build.number + '/api/json', function(error, data) {
+            makeRequest(requestWithDefaults, build.url + 'api/json', function (error, data) {
                 if (error) {
                     callback(error);
                     return;
@@ -78,7 +81,7 @@ module.exports = function () {
             });
         },
         requestJobsForView = function (viewId, callback) {
-            makeRequest(requestWithDefaults, self.configuration.url + '/view/' + viewId + '/api/json', function(error, data) {
+            makeRequest(requestWithDefaults, self.configuration.url + '/view/' + viewId + '/api/json', function (error, data) {
                 if (error) {
                     callback(error);
                     return;
@@ -87,8 +90,8 @@ module.exports = function () {
                 callback(error, data.jobs);
             });
         },
-        queryBuildsForJob = function (jobId, callback) {
-            requestBuildsForJob(jobId, function (error, body) {
+        queryBuildsForJob = function (jobId, jobUrl, callback) {
+            requestBuildsForJob(jobId, jobUrl, function (error, body) {
                 if (error) {
                     callback(error);
                     return;
@@ -102,12 +105,12 @@ module.exports = function () {
         queryBuildsForView = function (viewId, callback) {
             requestJobsForView(viewId, function (error, body) {
                 if (error) {
-                  callback(error);
-                  return;
+                    callback(error);
+                    return;
                 }
 
                 async.map(body, function (job, callback) {
-                    queryBuildsForJob(job.name, callback);
+                    queryBuildsForJob(job.name, job.url, callback);
                 }, function (error, results) {
                     callback(error, flatten(results));
                 });
@@ -141,13 +144,13 @@ module.exports = function () {
             return null;
         },
         getRequestedFor = function (build) {
-            if(build.actions) {
+            if (build.actions) {
                 for (var i = 0; i < build.actions.length; i++) {
                     var action = build.actions[i];
                     if ((action) && (action.causes)) {
                         for (var j = 0; j < action.causes.length; j++) {
                             var cause = action.causes[j];
-                            if(cause && cause.userName) {
+                            if (cause && cause.userName) {
                                 return cause.userName;
                             }
                         }
@@ -171,7 +174,7 @@ module.exports = function () {
                 reason: "Build",
                 hasErrors: false,
                 hasWarnings: res.result == 'UNSTABLE',
-                url: self.configuration.url + '/job/' + res.jobId + '/' + res.number
+                url: res.url
             };
         };
 
@@ -194,7 +197,7 @@ module.exports = function () {
         if (self.configuration.view) {
             queryBuildsForView(self.configuration.view, callback);
         } else {
-            queryBuildsForJob(self.configuration.job, callback);
+            queryBuildsForJob(self.configuration.job, '', callback);
         }
     };
 };

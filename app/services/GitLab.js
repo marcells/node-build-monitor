@@ -97,11 +97,11 @@ module.exports = function () {
                 startedAt: getDateTime(build.started_at),
                 finishedAt: getDateTime(build.finished_at),
                 requestedFor: getAuthor(build),
-                status: getBuildStatus(build.status, build.jobs),
+                status: getBuildStatus(build.status, build.detailed_status, build.jobs),
                 statusText: build.status,
                 reason: getCommitMessage(build),
                 hasErrors: false,
-                hasWarnings: false,
+                hasWarnings: getHasWarnings(build.detailed_status),
                 url: getBuildUrl(project, build)
             };
         },
@@ -116,7 +116,10 @@ module.exports = function () {
             var job = build.jobs && build.jobs[0];
             return job && job.commit ? job.commit.author_name : undefined;
         },
-        getBuildStatus = function (status, jobs) {
+        getHasWarnings = function (detailed_status) {
+          return detailed_status.icon === "status_warning";
+        },
+        getBuildStatus = function (status, detailed_status, jobs) {
             switch (status) {
                 case 'pending':
                     return '#ffa500';
@@ -125,18 +128,22 @@ module.exports = function () {
                 case 'failed':
                     return 'Red';
                 case 'success':
+                    if (getHasWarnings(detailed_status)) {
+                      return '#ffa500';
+                    }
                     return 'Green';
                 case 'manual':
-                    return getStatusForManual(jobs);
+                    return getStatusForManual(detailed_status, jobs);
                 default:
-                    return 'Gray';
+                  return 'Gray';
             }
         },
-        getStatusForManual = function (jobs) {
+      getStatusForManual = function (detailed_status, jobs) {
             return getBuildStatus(jobs
                 .map(job => job.status)
-                .includes('running') ? 'running' : 'success');
-        },
+                .includes('running') ? 'running' : 'success',
+                  detailed_status);
+    },
         getBuildUrl = function(project, build) {
             if(build.jobs && build.jobs[0]) {
                 var base = self.config.url + '/';

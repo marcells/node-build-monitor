@@ -125,7 +125,7 @@ describe('GitLab service', function () {
         "updated_at": "2016-08-11T11:32:35.169Z",
       });
 
-      gitlab.configure({"slugs": [{"project": "diaspora/diaspora-client"}], "url": "http://foo"})
+      gitlab.configure({"slugs": [{"project": "diaspora/diaspora-client"}], "url": "http://foo"});
 
       gitlab.check(function (err, builds) {
         expect(builds.length).to.equal(1);

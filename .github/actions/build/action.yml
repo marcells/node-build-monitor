@@ -1,9 +1,6 @@
 name: 'Install dependencies and build project'
 runs:
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:

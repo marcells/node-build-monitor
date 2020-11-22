@@ -15,4 +15,7 @@ jobs:
         node-version: [14.x]
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - uses: ./.github/actions/build

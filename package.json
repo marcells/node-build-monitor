@@ -48,7 +48,7 @@
     "start": "node app/app.js",
     "ci": "grunt ci",
     "test": "grunt mochaTest:test",
-    "pkg": "pkg -c ./package.json --out-dir ./release ./app/app.js"
+    "pkg": "pkg -c ./package.json -t node14-linux,node14-macos,node14-win --out-dir ./release ./app/app.js"
   },
   "engines": {
     "node": ">= 6.10.0"

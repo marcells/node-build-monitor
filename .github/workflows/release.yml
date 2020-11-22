@@ -56,7 +56,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/node-build-monitor-linux
           asset_name: node-build-monitor-linux
-          asset_content_type: application/zip
+          asset_content_type: application/octet-stream
       
       - name: Upload Release Asset (Mac OS)
         id: upload-release-asset-macos
@@ -67,7 +67,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/node-build-monitor-macos
           asset_name: node-build-monitor-macos
-          asset_content_type: application/zip
+          asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (Windows)
         id: upload-release-asset-windows

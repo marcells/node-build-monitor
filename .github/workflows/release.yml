@@ -25,7 +25,7 @@ jobs:
       - name: Install global dependencies
         run: |
           npm install -g grunt-cli
-          npm install -g pkg@4.3.0
+          npm install -g pkg
 
       - name: Install local dependencies
         run: npm install

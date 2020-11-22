@@ -1,0 +1,81 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install global dependencies
+        run: |
+          npm install -g grunt-cli
+          npm install -g pkg@4.3.0
+
+      - name: Install local dependencies
+        run: npm install
+
+      - name: Run CI build
+        run: npm run-script ci
+      
+      - name: Build Release Package
+        run: npm run-script pkg
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset (Linux)
+        id: upload-release-asset-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/node-build-monitor-linux
+          asset_name: node-build-monitor-linux
+          asset_content_type: application/zip
+      
+      - name: Upload Release Asset (Mac OS)
+        id: upload-release-asset-macos
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/node-build-monitor-macos
+          asset_name: node-build-monitor-macos
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset (Windows)
+        id: upload-release-asset-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/node-build-monitor-windows.zip
+          asset_name: node-build-monitor-windows.zip
+          asset_content_type: application/zip

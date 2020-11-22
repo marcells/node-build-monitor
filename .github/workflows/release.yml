@@ -12,8 +12,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - uses: ./.github/actions/build
+    
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install grunt-cli
+        run: npm install -g grunt-cli
+
+      - name: Install local dependencies
+        run: npm install
+
+      - name: Run CI build
+        run: npm run-script ci
+
+      # - uses: ./.github/actions/build
   
   release:
     runs-on: ubuntu-latest

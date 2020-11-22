@@ -15,9 +15,18 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm run-script ci
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+    
+      - name: Install global dependencies
+        run: |
+          npm install -g grunt-cli
+          npm install -g pkg@4.3.0
+    
+      - name: Run CI build
+        run: npm run-script ci

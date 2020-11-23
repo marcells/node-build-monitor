@@ -36,8 +36,21 @@ jobs:
     needs: build
 
     steps:
-      - name: Install pkg dependency
-        run: npm install -g pkg
+      - name: Checkout code
+        uses: actions/checkout@v2
+    
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install global dependencies
+        run: |
+          npm install -g grunt-cli
+          npm install -g pkg
+
+      - name: Install local dependencies
+        run: npm install
 
       - name: Build Release Package
         run: npm run-script pkg

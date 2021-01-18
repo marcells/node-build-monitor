@@ -412,7 +412,7 @@ function VSTSRestBuilds() {
       
       for (let key in records) {
         let record = records[key];
-        if (record.state === timelineRecordState.inProgress) {
+        if (record.state === timelineRecordState.inProgress && record.type === 'Task') {
           build.statusText += ' - ' + record.name;
         }
       }

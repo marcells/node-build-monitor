@@ -379,7 +379,7 @@ function VSTSRestBuilds() {
   const getLatestBuildStep = (build, callback) => {
     const timelineURL = build.timeline;
     if (!timelineURL || timelineURL === '') {
-      console.log("no timeline url");
+      console.log('no timeline url');
       callback(null, build);
       return;
     }
@@ -394,13 +394,13 @@ function VSTSRestBuilds() {
     
     request.makeRequest(options, (err, body) => {
       if (err) {
-        console.log("getLatestBuildStep:", err);
+        console.log('getLatestBuildStep:', err);
         callback(null, build);
         return;
       }
       
       if (!(body && body.records)) {
-        console.log("getLatestBuildStep invalid Body", body);
+        console.log('getLatestBuildStep invalid Body', body);
         callback(null, build);
         return;
       }

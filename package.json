@@ -23,7 +23,7 @@
     "morgan": "^1.9.1",
     "pug": "^2.0.3",
     "request": "^2.88.0",
-    "socket.io": "2.0.4",
+    "socket.io": "2.4.0",
     "striptags": "3.1.1",
     "xml2js": "0.4.19"
   },

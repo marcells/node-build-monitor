@@ -24,7 +24,7 @@
     "pug": "^2.0.3",
     "request": "^2.88.0",
     "socket.io": "2.0.4",
-    "striptags": "3.1.1",
+    "striptags": "3.2.0",
     "xml2js": "0.4.19"
   },
   "devDependencies": {

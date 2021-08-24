@@ -41,7 +41,6 @@ module.exports = function () {
           return statusText;
         },
         simplifyBuild = function (res) {
-          console.dir(res)
             return {
                 id: res.uuid,
                 project: res.repository.name,

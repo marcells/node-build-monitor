@@ -22,14 +22,16 @@ module.exports = function () {
                 callback(body.values[i]);
             }
         },
-        getStatus = function (statusText, resultText) {
+        getStatus = function (statusText, resultText, stageType) {
+            if (statusText === "IN_PROGRESS" && stageType === "pipeline_state_in_progress_paused") return "Gray";
             if (statusText === "COMPLETED" && resultText === "SUCCESSFUL") return "Green";
             if (statusText === "COMPLETED" && resultText === "FAILED") return "Red";
             if (statusText === "COMPLETED" && resultText === "STOPPED") return "Gray";
             if (statusText === "PENDING") return "'#FFA500'";
             if (statusText === "IN_PROGRESS") return "Blue";
         },
-        getStatusText = function (statusText, resultText) {
+        getStatusText = function (statusText, resultText, stageType) {
+          if (statusText === "IN_PROGRESS" && stageType === "pipeline_state_in_progress_paused") return "Paused";
           if (statusText === "COMPLETED" && resultText === "SUCCESSFUL") return "Succeeded";
           if (statusText === "COMPLETED" && resultText === "FAILED") return "Failed";
           if (statusText === "COMPLETED" && resultText === "STOPPED") return "Stopped";
@@ -39,6 +41,7 @@ module.exports = function () {
           return statusText;
         },
         simplifyBuild = function (res) {
+          console.dir(res)
             return {
                 id: res.uuid,
                 project: res.repository.name,
@@ -46,9 +49,9 @@ module.exports = function () {
                 isRunning: !res.completed_on,
                 startedAt: parseDate(res.created_on),
                 finishedAt: parseDate(res.completed_on),
-                requestedFor: res.creator.display_name,
-                statusText: getStatusText(res.state.name, (res.state.result || {}).name),
-                status: getStatus(res.state.name, (res.state.result || {}).name),
+                requestedFor: (res.creator || {}).display_name,
+                statusText: getStatusText(res.state.name, (res.state.result || {}).name, (res.state.stage || {}).type),
+                status: getStatus(res.state.name, (res.state.result || {}).name, (res.state.stage || {}).type),
                 url: res.repository.links.self.href
             };
         },

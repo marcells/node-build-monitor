@@ -384,6 +384,12 @@ function VSTSRestBuilds() {
       return;
     }
     
+    if (!build.isRunning) {
+        // The build is already finished, no need to get the latest step
+        callback(null, build);
+        return;
+    }
+    
     const apiUrl = timelineURL;
     const options = {
       url : apiUrl,

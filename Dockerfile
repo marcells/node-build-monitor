@@ -1,4 +1,4 @@
-FROM node:7.7.3-slim
+FROM node:lts-slim
 
 RUN npm install -g forever
 

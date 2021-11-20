@@ -18,8 +18,8 @@ module.exports = function () {
           json: true
         },
         function (error, response, body) {
-          if (!body || body.message === "Unauthorized") {
-            error = `Invalid response ${JSON.stringify(response)}`;
+          if (response.statusCode !== 200 || !body || !Array.isArray(body)) {
+            error = `Invalid response for GET ${url}: ${response.statusCode} with body ${JSON.stringify(response)}`;
           }
           callback(error, body);
         }

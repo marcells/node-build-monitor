@@ -19,7 +19,7 @@
     "express": "4.16.2",
     "graphql.js": "^0.4.20",
     "httpntlm": "^1.7.5",
-    "moment": "2.21.0",
+    "moment": "2.29.4",
     "morgan": "^1.9.1",
     "pug": "^2.0.3",
     "request": "^2.88.0",

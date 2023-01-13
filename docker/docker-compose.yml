@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
     image: yaman/node-build-monitor
     build: ../
-    # volumes: 
-    #   - type: bind
-    #     source: ./config.json
-    #     target: /build-mon/app/config.json
+    volumes: 
+      - type: bind
+        source: ./config.json
+        target: /build-mon/app/config.json
     environment:
       NODE_ENV: production
       TOKEN: "${TOKEN}"

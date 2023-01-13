@@ -319,9 +319,11 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 {
   "name": "GitLab",
   "configuration": {
+    "debug": false,
     "url": "http://gitlab.example.com:8080",
     "token": "secret_user_token",
     "additional_query": "&search=gitlab-org&starred=true",
+    "main_group" : "your_main_project_group",
     "numberOfPipelinesPerProject": 3,
     "pipeline": {
       "status": ["running", "pending", "success", "failed", "canceled", "skipped"]
@@ -338,11 +340,13 @@ Supports an on-premise [GitLab](http://gitlab.com) Community Edition/Enterprise 
 
 | Setting            | Description
 |--------------------|-------------------------------------------------------------------------------------------------------------
-| `url`              | GitLab server http(s) address string
-| `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API
-| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have access to. Use `/*` when specifying group slug to include projects only from current group and `/**` to also include subgroups. Optional 'ref' attribute can be used to specify the branch.
+| `debug`            | Print all available logs to console.
+| `url`              | GitLab server http(s) address string.
+| `token`            | Secret token string for the existing user to be used to authenticate against GitLab REST API.
+| `slugs`            | List of project slugs to display and check for builds. Defaults to `*/*` for all projects you have .access to. Use `/*` when specifying group slug to include projects only from current group and `/**` to also include subgroups. Optional 'ref' attribute can be used to specify the branch.
 | `intervals`        | How often (in integer of milliseconds) ...
 | `additional_query` | Add [additional query parameters](https://gitlab.com/help/api/projects.md) so not too many projects are fetched.
+| `main_group`       | Gitlab needs a main group to analyze the project only you want to monitor, otherwise, you will get the whole world.
 | `numberOfPipelinesPerProject` | Limit the number of pipelines fetched for each project. Optional, defaults to no limitation.
 
 Because API V4 returns **all** internal and public projects by default, you propably

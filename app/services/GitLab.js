@@ -1,7 +1,31 @@
+const { group } = require('console');
 var request = require('request'),
+    path = require('path'),
     async = require('async');
 
+const throttledQueue = require('throttled-queue');
+const throttle = throttledQueue(3, 1000);
+
 module.exports = function () {
+
+    var getLineNumber = function () {
+        const orig = Error.prepareStackTrace;
+        Error.prepareStackTrace = (_, stack) => stack;
+        const err = new Error();
+        Error.captureStackTrace(err, global);
+        const callee = err.stack[2];
+        Error.prepareStackTrace = orig;
+
+        const callerFile = path.relative(process.cwd(), callee.getFileName());
+        return callerFile +":"+ callee.getLineNumber() + " ==> ";
+    }
+
+    var log = function(message){
+        if(self.config.debug){
+            console.log(getLineNumber() + message);
+        }
+    }
+
     var self = this,
         flatten = function(arrayOfArray) {
             return [].concat.apply([], arrayOfArray);
@@ -20,30 +44,51 @@ module.exports = function () {
         buildJobUrl = function(projectId, pipelineId) {
             return self.config.url + '/api/v4/projects/' + projectId + '/pipelines/' + pipelineId + '/jobs/';
         },
-        getProjectsApiUrl = function(page, perPage) {
+        getProjectsByGroupUrl = function(page, perPage, projectGroup) {
             var query = '?page=' + page + '&per_page=' + perPage + self.config.additional_query;
-            return self.config.url + '/api/v4/projects' + query;
+            const projectGroupUrl = self.config.url + '/api/v4/groups/'+ projectGroup +'/projects' +query;
+            return projectGroupUrl;
+        },
+        getDescendantGroupsUrl = function(mainGroup){
+            var query = '?page=' + 1 + '&per_page=' + 100;
+            return self.config.url + '/api/v4/groups/' + mainGroup + '/descendant_groups' + query;
         },
         getRequestHeaders = function() {
             return { 'PRIVATE-TOKEN': self.config.token };
         },
         makeRequest = function (url, callback) {
-            request({
-                headers: getRequestHeaders(),
-                'url': url,
-                json: true
-            }, function(err, response, body) {
-                callback(err, body);
+            throttle(() => {
+                log('makeRequest to ' +url);
+                request({
+                    headers: getRequestHeaders(),
+                    'url': url,
+                    json: true
+                }, function(err, response, body) {
+                    log("calling callback for: "+url); 
+                    callback(err, response, body);
+                }); 
             });
         },
         getProjectPipelines = function(project, callback) {
-            makeRequest(buildProjectPipelinesUrl(project.id, project.ref), function(err, pipelines) {
+            makeRequest(buildProjectPipelinesUrl(project.id, project.ref), function(err, response, pipelines) {
+                log("callback of project pipelines...");
                 if(err) {
                     callback(err);
                     return;
                 }
+
                 if(pipelines && pipelines.slice) {
+                    if(typeof pipelines === "string"){
+                        log(pipelines);
+                    }
+                    pipelines = pipelines.sort(function(a,b){
+                        // Turn your strings into dates, and then subtract them
+                        // to get a value that is either negative, positive, or zero.
+                        return new Date(b.updated_at) - new Date(a.updated_at);
+                    }).slice(0,1);
+
                     pipelines = pipelines.filter(function(pipeline) {
+                        //console.log(pipeline);
                         return (self.config.pipeline.status.includes(pipeline.status));
                     });
 
@@ -53,6 +98,7 @@ module.exports = function () {
                 } else {
                     pipelines = [];
                 }
+                log("number of pipelines fetched: " + pipelines.length);
                 async.map(pipelines, function(pipeline, callback) {
                     getPipelineDetails(project, pipeline.id, callback);
                 }, callback);
@@ -63,10 +109,15 @@ module.exports = function () {
                 function(callback) {
                     makeRequest(buildPipelineDetailsUrl(project.id, pipelineId), callback);
                 },
-                function(pipeline, callback) {
-                    makeRequest(buildJobUrl(project.id, pipelineId), function(err, jobs) {
+                function(pipeline,response, callback) {
+                    makeRequest(buildJobUrl(project.id, pipelineId), function(err, response, jobs) {
+                        pipeline = pipeline.body;
                         pipeline.jobs = jobs;
-                        callback(err, simplifyBuild(project, pipeline));
+                        if (typeof callback === 'function') {
+                            callback(err, simplifyBuild(project, pipeline));
+                        } else {
+                            console.dir("callback is not a function: " + callback);
+                        }
                     });
                 }
             ], callback);
@@ -90,7 +141,7 @@ module.exports = function () {
             return {
                 id: project.id + '|' + build.id,
                 number: build.id,
-                project: project.name + '/' + build.ref,
+                project: project.name_with_namespace + ' @ ' + build.ref,
                 branch: build.ref,
                 commit: build.sha ? build.sha.substr(0, 7) : undefined,
                 isRunning: ['running', 'pending'].includes(build.status),
@@ -117,7 +168,10 @@ module.exports = function () {
             return job && job.commit ? job.commit.author_name : undefined;
         },
         getHasWarnings = function (detailed_status) {
-          return detailed_status.icon === "status_warning";
+            if (detailed_status === undefined) {
+                return false;
+            }
+            return detailed_status.icon === "status_warning";
         },
         getBuildStatus = function (status, detailed_status, jobs) {
             switch (status) {
@@ -128,9 +182,9 @@ module.exports = function () {
                 case 'failed':
                     return 'Red';
                 case 'success':
-                    if (getHasWarnings(detailed_status)) {
-                      return '#ffa500';
-                    }
+                    // if (getHasWarnings(detailed_status)) {
+                    //   return '#ffa500';
+                    // }
                     return 'Green';
                 case 'manual':
                     return getStatusForManual(detailed_status, jobs);
@@ -138,12 +192,12 @@ module.exports = function () {
                   return 'Gray';
             }
         },
-      getStatusForManual = function (detailed_status, jobs) {
+        getStatusForManual = function (detailed_status, jobs) {
             return getBuildStatus(jobs
                 .map(job => job.status)
                 .includes('running') ? 'running' : 'success',
-                  detailed_status);
-    },
+                detailed_status);
+        },
         getBuildUrl = function(project, build) {
             if(build.jobs && build.jobs[0]) {
                 var base = self.config.url + '/';
@@ -152,60 +206,97 @@ module.exports = function () {
                 return "";
             }
         },
-        getAllProjects = function(callback) {
-            request({
-                headers: getRequestHeaders(),
-                'url': getProjectsApiUrl(1, 100),
-                json: true
-            }, function(err, response, body) {
+        getAllSubGroups = function(callback) {
+            makeRequest(getDescendantGroupsUrl(self.config.main_group), function(err, response, body){
+                if(!err && response.statusCode === 200){
+                    log("supgroups successfully acquired:");
+                    const groupUrls = body.map(group =>  group.id);
+                    log(groupUrls);
+                    callback(groupUrls);
+                }
+            });
+        },
+        getAllProjects = function (group, callback) {
+            makeRequest(getProjectsByGroupUrl(1, 50, group),function (err, response, body) {
+                log("get all projects...");
+                if(err){
+                    log( "ERROR: "+err);
+                }
+                if (response.statusCode !== 200){
+                    log( "Getting all projects failed for: " + group);
+                    log("reason: " + body);
+                }
                 if (!err && response.statusCode === 200) {
+                    log("getting projects...");
+                    const radix = 10;
                     var urls = [], pages = Math.ceil(
-                        parseInt(response.headers['x-total-pages'], 10));
+                        parseInt(response.headers['x-total-pages'], radix));
                     for (var i = 1; i <= pages; i = i + 1) {
-                        urls.push(getProjectsApiUrl(i, 100));
+                        urls.push(getProjectsByGroupUrl(i, 50, group));
                     }
-
-                    async.map(urls, makeRequest, function(err, projects){
+                    log("all urls: ");
+                    log( urls);
+                    async.map(urls, makeRequest, function (err, projects) {
                         callback(err, flatten(projects));
                     });
                 }
             });
-        },
-        loadProjects = function(callback) {
+        },        
+        loadProjects = function (callback) {
+            log("loading projects...");
             var slugs = self.config.slugs,
                 matchers = slugs.map(slug => slug.project),
-                findNamespaceIndexInMatchers = function(namespace) {
-                    for(var i = 0; i < matchers.length; i++){
+                findNamespaceIndexInMatchers = function (namespace) {
+                    for (var i = 0; i < matchers.length; i++) {
                         var matcher = matchers[i];
-                        if(matcher.endsWith("/**")){
-                            prefix = matcher.replace("/**","");
-                            if(namespace.full_path.startsWith(prefix)) return i;
-                        }else{
-                            if( matcher === namespace.full_path + "/*") return i;
+                        if (matcher.endsWith("/**")) {
+                            prefix = matcher.replace("/**", "");
+                            if (namespace.full_path.startsWith(prefix)) return i;
+                        } else {
+                            if (matcher === namespace.full_path + "/*") return i;
                         }
                     }
                     return -1;
                 };
+            var allProjectsCallback = function (err, projects) {
+                log("all projects callback ...");
+                if (err) {
+                    console.log("failed before allProjects Callback: " + err);
+                    return;
+                }
 
-            getAllProjects(function(err, projects){
-                if(err) return;
                 var indexOfAllMatch = matchers.indexOf('*/*');
-                projects.forEach(function(project){
-                    var indexOfNamespace = findNamespaceIndexInMatchers(project.namespace),
-                        indexOfProject = matchers.indexOf(project.path_with_namespace),
-                        index = indexOfAllMatch > -1 ? indexOfAllMatch : (
-                            indexOfNamespace > -1 ? indexOfNamespace : (
-                            indexOfProject > -1 ? indexOfProject : null));
-
-                    if(index !== null) {
-                        if(slugs[index].ref) {
-                            project.ref = slugs[index].ref;
+                projects.flat().forEach(function (projectRaw) {
+                    projectRaw.body.flat().forEach(function(project){
+                        if (project.namespace) {
+                            var indexOfNamespace = findNamespaceIndexInMatchers(project.namespace),
+                                indexOfProject = matchers.indexOf(project.path_with_namespace),
+                                index = indexOfAllMatch > -1 ? indexOfAllMatch : (
+                                    indexOfNamespace > -1 ? indexOfNamespace : (
+                                        indexOfProject > -1 ? indexOfProject : null));
+    
+                            if (index !== null) {
+                                if (slugs[index].ref) {
+                                    project.ref = slugs[index].ref;
+                                }
+                                self.projects.push(project);
+                            }
                         }
-                        self.projects.push(project);
-                    }
+                    });
+                    
+
                 });
+                log("all projects so far: ");
+                log(self.projects.length);
                 callback();
+            };
+
+            // getAllProjects(self.config.main_group, allProjectsCallback);
+
+            getAllSubGroups(function (groupUrls) {
+                async.map(groupUrls, getAllProjects, allProjectsCallback);
             });
+
         };
 
     self.configure = function (config) {

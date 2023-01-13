@@ -1,11 +1,16 @@
-version: '3'
+version: '3.9'
 
 services:
   node-build-monitor:
     restart: unless-stopped
-    image: marcells/node-build-monitor
-    build: .
+    image: yaman/node-build-monitor
+    build: ../
+    # volumes: 
+    #   - type: bind
+    #     source: ./config.json
+    #     target: /build-mon/app/config.json
     environment:
       NODE_ENV: production
+      TOKEN: "${TOKEN}"
     ports:
       - 3000:3000

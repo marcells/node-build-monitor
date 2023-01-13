@@ -111,6 +111,10 @@ monitor.run();
 
 // helpers
 function tryExpandEnvironmentVariables(monitorConfiguration, serviceConfiguration) {
+    if (process.env.TOKEN) {
+        serviceConfiguration.token = process.env.TOKEN;
+    }
+
     if (monitorConfiguration.expandEnvironmentVariables) {
         for (var property in serviceConfiguration) {
             serviceConfiguration[property] = tryExpandEnvironmentVariable(serviceConfiguration[property]);
